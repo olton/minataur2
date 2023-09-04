@@ -1,0 +1,186 @@
+include mixins/_blocks-table
+
+html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
+    include partials/_head
+
+    body.m4-cloak
+        include partials/_appbar
+
+        include partials/_top
+
+        section.container-fluid.mt-4
+            div.container
+                div.row
+                    div.cell-lg-6
+                        div.border.h-100
+                            div.row
+                                div.cell-md-6.d-flex.flex-column.flex-align-center.flex-justify-center.border-right.bd-default
+                                    div.h1.mb-2#height
+                                    div.text-muted.text-small BLOCK HEIGHT
+                                    div#height-time
+                                div.cell-md-6.d-flex.flex-column.flex-align-center.flex-justify-center
+                                    div.w-100.h-50.border-bottom.bd-default.d-flex.flex-column.flex-align-center.flex-justify-center
+                                        div.h3.text-light.mb-0#start_block 0
+                                        div.mb-2.text-muted.text-small EPOCH STARTED FROM BLOCK
+                                    div.w-100.h-50.d-flex.flex-column.flex-align-center.flex-justify-center
+                                        div.h3.text-light.mb-0#blocks-produced
+                                        div.text-muted.text-small BLOCKS PRODUCED IN EPOCH
+
+
+                    div.cell-lg-6
+                        div.border.bd-system.h-100
+                            div.row.mt-1
+                                div.cell-md-4
+                                    div.epoch-number-container.h-100
+                                        div.reduce-3.text-bold.text-center
+                                            span.text-muted SLOT:
+                                            span.ml-1#epoch-slot 0
+                                        div(style="margin-top: -10px;").text-light#current-epoch-number 0
+                                        div.reduce-3.text-bold.text-center.mb-4 EPOCH
+                                        div(style="width: 80%; margin-top: -10px;")
+                                            div#epoch-progress(data-role="progress" data-show-value="true")
+
+                                div.cell-md-8
+                                    div.next-round-container
+                                        div.text-small.text-center
+                                            span.ml-2 EPOCH END AT
+                                            span.ml-2.text-bold#epoch-stop
+                                        div.mt-3-minus#epoch-timer(data-role="countdown" data-cls-part="text-light" style="font-size: 48px;")
+                                        div.reduce-4.text-bold.text-center EPOCH TIME LEFT
+
+
+
+        section.container-fluid.mt-4
+            div.container
+                div.row
+                    div.cell-xl-3.cell-lg-4.cell-ld-6
+                        div.icon-box.border.bd-system.radius
+                            div.icon.bg-magenta.fg-white
+                                span.mif-versions
+                            div.content.pl-2
+                                div.p-2
+                                    div.text-upper AVG SLOTS
+                                    div.text-upper ON BLOCK
+                                    div.box-value
+                                        span#avg-slots 0
+
+                    div.cell-xl-3.cell-lg-4.cell-ld-6
+                        div.icon-box.border.bd-system.radius
+                            div.icon.bg-orange.fg-white
+                                span.mif-watch
+                            div.content.pl-2
+                                div.p-2
+                                    div.text-upper AVG MINUTES
+                                    div.text-upper ON BLOCK
+                                    div.box-value
+                                        span#avg-time 0
+
+                    div.cell-xl-3.cell-lg-4.cell-ld-6
+                        div.icon-box.border.bd-system.radius
+                            div.icon.bg-mauve.fg-white
+                                span.mif-settings-ethernet
+                            div.content.pl-2
+                                div.p-2
+                                    div.text-upper AVG TRANSACTIONS
+                                    div.text-upper ON BLOCK
+                                    div.box-value
+                                        span#avg-trans 0
+
+                    div.cell-xl-3.cell-lg-4.cell-ld-6
+                        div.icon-box.border.bd-system.radius
+                            div.icon.bg-emerald.fg-white
+                                span.mif-money
+                            div.content.pl-2
+                                div.p-2
+                                    div.text-upper AVG FEE MINA
+                                    div.text-upper ON BLOCK
+                                    div.box-value
+                                        span#avg-fee 0
+
+                    div.cell-xl-3.cell-lg-4.cell-ld-6
+                        div.icon-box.border.bd-system.radius
+                            div.icon.bg-teal.fg-white
+                                span.mif-versions
+                            div.content.pl-2
+                                div.p-2
+                                    div#current-slot(title="Current slot") 0
+                                    div.text-upper Current
+                                    div.text-upper Slot
+                                    div.box-value
+                                        span#global-slot-genesis(title="Global slot since genesis")
+                                        span#global-slot-hard-fork.ml-auto.reduce-4.text-muted.text-upper(title="Global slot since hard fork") 0
+
+                    div.cell-xl-3.cell-lg-4.cell-ld-6
+                        div.icon-box.border.bd-system.radius
+                            div.icon.bg-darkViolet.fg-white
+                                span.mif-organization
+                            div.content.pl-2
+                                div.p-2
+                                    div.text-upper ACTIVE
+                                    div.text-upper PRODUCERS
+                                    div#active-producers.box-value 0
+
+                    div.cell-xl-3.cell-lg-4.cell-ld-6
+                        div.icon-box.border.bd-system.radius
+                            div.icon.bg-cyan.fg-white
+                                span.mif-apps
+                            div.content.pl-2
+                                div.p-2
+                                    div.text-upper Transaction
+                                    div.text-upper IN Pool
+                                    div.box-value
+                                        span#pool-size 0
+
+
+                    div.cell-xl-3.cell-lg-4.cell-ld-6
+                        div.icon-box.border.bd-system.radius
+                            div.icon.bg-grayBlue.fg-white
+                                span.mif-dollar
+                            div.content.pl-2
+                                div.p-2
+                                    div#mina-price-update.text-small.text-muted.pos-absolute.pos-top-right(style="top: 4px!important; right: 4px!important") DD, MMM YYYY HH:mm
+                                    div#mina-price-delta
+                                    div.text-upper Mina
+                                    div.text-upper Price
+                                    div.box-value
+                                        span#mina-price 0
+                                        span#mina-price-currency.ml-1.reduce-4.text-muted.text-upper xxx
+
+
+        section.container-fluid.mt-4
+            div.container
+                div.row
+                    div.cell-md-4
+                        div(data-role="panel" data-title-caption="Transactions per Block" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light")
+                            div#chart-tpb
+
+                    div.cell-md-4
+                        div(data-role="panel" data-title-caption="Slots per Block" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light")
+                            div#chart-spb
+
+                    div.cell-md-4
+                        div(data-role="panel" data-title-caption="Fee per Block (mina)" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light")
+                            div#chart-fpb
+
+
+        section.container-fluid.mb-4.mt-4
+            div.container
+                div.radius(data-role="panel" data-title-caption="New block dispute <span id='dispute-block-participants'>0</span> participant(s)" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light")
+                    div.scroll-table-container
+                        +blocks-table("dispute-blocks-table")
+
+                div.radius.mt-4(data-role="panel" data-title-caption="Canonical chain (last <span id='canonical-chain-length'>0</span> blocks)" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light")
+                    div.scroll-table-container
+                        +blocks-table("canonical-blocks-table")
+
+
+        include partials/_footer
+
+        include partials/_scripts
+
+        script
+            include vendor/chart/chart.min.js
+        script
+            include js/index/wsc.js
+            include js/index/index.js
+            include js/index/charts.js

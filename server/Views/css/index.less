@@ -1,0 +1,70 @@
+:root {
+
+}
+
+body {
+    display: flex;
+    flex-flow: column;
+    padding-top: 52px;
+}
+
+.hero {
+    padding: 60px 0;
+}
+
+#dispute-block-participants,
+#canonical-chain-length {
+    font-weight: bold;
+}
+
+.box-value {
+    font-weight: 600;
+    font-size: 22px;
+    white-space: nowrap;
+    margin-top: 10px;
+    display: flex;
+    align-items: end;
+    flex-flow: row nowrap;
+    line-height: 1;
+}
+
+#current-slot {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    font-size: 24px;
+    color: var(--color-alert);
+    z-index: 1;
+}
+
+.epoch-number-container {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+
+    #current-epoch-number {
+        font-size: 36px;
+    }
+}
+
+#mina-price-delta {
+    position: absolute;
+    right: 4px;
+    bottom: 6px;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+@media screen and (min-width: 768px){
+    .epoch-number-container {
+        border-right: 1px solid #ccc;
+        border-bottom: none;
+    }
+}
+
+@import "global";
+@import "appbar";
+@import "footer";
+@import "live";

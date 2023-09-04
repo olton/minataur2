@@ -10,6 +10,3 @@ You can support me with donation MINA to address:
 
 Or PayPal to address:
 > serhii@pimenov.com.ua
-
-## Key Features
-+ [x] HTTP/WS server for provide data

@@ -1,0 +1,24 @@
+section.container-fluid.pos-fixed.fixed-top.z-top.bg-darkViolet.fg-white
+    nav.container.pos-relative.bg-darkViolet(data-role="app-bar" data-expand-point="lg")
+        span.no-wrap.brand.no-hover
+            a.fg-white.no-decor(href="/") MINATAUR
+            span.ml-1.text-bold 2
+            span.text-light &nbsp;&nbsp;-&nbsp; #{appTitle}
+
+        ul.app-bar-menu.ml-auto
+            li
+                a(href="/") Home
+            li
+                a(href="/blocks") Blocks
+            li
+                a(href="/transactions") Transactions
+            li
+                a(href="/zkapps") zkApps
+            li
+                a(href="/addresses") Addresses
+            li
+                a(href="/uptime") Uptime
+            li
+                a(href="#").live
+                    span.reduce-2 Live
+                    span.mif-feed.ml-1

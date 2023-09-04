@@ -1,8 +1,8 @@
 {
-  "name": "@olton/minataur2",
+  "name": "minataur2",
   "version": "0.1.0",
   "description": "The Fastest block explorer for Mina Blockchain",
-  "main": "src/index.js",
+  "main": "server/index.js",
   "type": "module",
   "scripts": {
     "start": "node .",
@@ -26,15 +26,15 @@
   "homepage": "https://github.com/olton/minataur2#readme",
   "dependencies": {
     "@faustbrian/node-base58": "^1.0.0",
-    "@olton/datetime": "^2.0.8",
+    "@olton/datetime": "^3.0.2",
     "esm": "^3.2.25",
-    "express": "^4.17.2",
-    "node-fetch": "^3.1.0",
-    "node-html-parser": "^5.2.0",
-    "pg": "^8.7.1",
-    "pg-cursor": "^2.7.1",
+    "express": "^4.18.2",
+    "node-fetch": "^3.3.2",
+    "node-html-parser": "^6.1.6",
+    "pg": "^8.11.3",
+    "pg-cursor": "^2.10.3",
     "pug": "^3.0.2",
     "serve-favicon": "^2.5.0",
-    "ws": "^8.4.0"
+    "ws": "^8.13.0"
   }
 }

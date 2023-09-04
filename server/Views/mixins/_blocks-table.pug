@@ -1,0 +1,91 @@
+mixin blocks-table(tableId)
+    table.table.data-table.row-border.striped.monospace.row-hover.mt-2.mb-2(id=tableId)
+        thead
+            tr
+                th.text-center(style="width: 30px;")
+                    span.mif-link(style="display: block; top: 10px;")
+
+                th(style="width: 100px")
+                    span Height
+                    div.text-small Timelapse
+                th
+                    span Block Producer
+                    div.text-small Name
+
+                th.text-center(style="width: 80px")
+                    span Coinbase
+                    div.text-small Snark Fee
+
+                th.text-center(style="width: 80px")
+                    span Slot
+                    div.text-small GEN/HF
+
+                th.text-center(style="width: 80px")
+                    span Epoch
+                    div.text-small GEN/HF
+
+                th.text-center(style="width: 80px")
+                    span Trans
+                    div.text-small Fee
+
+                th(style="width: 140px")
+                    soan Hash
+                    div.text-small Time
+
+        tbody
+            tr
+                td.text-center(colspan="8")
+                    div.d-flex.flex-align-center.flex-justify-center
+                        div(data-role="activity" data-type="bars" data-style="color")
+
+
+script.
+    ;const drawBlocksTable = data => {
+        const rows = []
+
+        for (let row of data) {
+            let tr = $("<tr>")
+
+            tr.html(`
+                <td>
+                    <span class="mif-stop ${row.chain_status === 'pending' ? 'fg-cyan' : row.chain_status === 'canonical' ? 'fg-green' : 'fg-red'}"></span>
+                </td>
+                <td>
+                    <a class="link" href="/block/${row.hash}">${row.height}</a>
+                    <div class="text-muted text-small">${datetime(+row.timestamp).timeLapse()}</div>
+                </td>
+                <td>
+                    <a class="link" href="/address/${row.creator_key}">
+                        ${shorten(row.creator_key, 12)}
+                    </a>
+                    <span title="Copy address to clipboard" class="reduce-1 mif-copy copy-data-to-clipboard c-pointer" data-value="${row.creator_key}"></span>
+                    <div class="text-muted text-small fg-violet">${row.creator_name || ''}</div>
+                </td>
+                <td class="text-center">
+                    <span>${normMina(row.coinbase)}</span>
+                    <div class="text-muted text-small">${normMina(row.snark_fee)}</div>
+                </td>
+                <td class="text-center">
+                    <span>${row.slot}</span>
+                    <div class="text-muted text-small">${row.global_slot_since_genesis + "/" + row.global_slot_since_hard_fork}</div>
+                </td>
+                <td class="text-center">
+                    <span>${row.epoch_since_genesis + " / " + row.epoch_since_hard_fork}</span>
+                    <div class="text-muted text-small">epoch</div>
+                </td>
+                <td class="text-center">
+                    <span>${row.trans_count}</span>
+                    <div class="text-muted text-small">${normMina(row.trans_fee)}</div>
+                </td>
+                <td>
+                    <a class="link" href="/block/${row.hash}">${shorten(row.hash, 5)}</a>
+                    <span title="Copy hash to clipboard" class="reduce-1 mif-copy copy-data-to-clipboard c-pointer" data-value="${row.hash}"></span>
+                    <div class="text-muted text-small">${datetime(+row.timestamp).format(config.format.datetime)}</div>
+                </td>
+            `)
+
+            rows.push(tr)
+        }
+
+        return rows
+    }
