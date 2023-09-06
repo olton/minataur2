@@ -14,6 +14,7 @@ globalThis.wsController = (ws, res) => {
         }
         case "blocks": {
             updateBlocksTable(data)
+            updateBlockchainCharts(data)
             enableElements()
             break
         }

@@ -35,12 +35,20 @@ export const create_websocket_server = (httpServer) => {
                     response(ws, "canonical", cache.canonical)
                     break
                 }
+                case "last_canonical_block": {
+                    response(ws, "last_canonical_block", cache.last_canonical_block)
+                    break
+                }
                 case "price": {
                     response(ws, "price", cache.price)
                     break
                 }
                 case "block_stats": {
                     response(ws, "block_stats", cache.block_stats)
+                    break
+                }
+                case "blocks_crt": {
+                    response(ws, "blocks_crt", cache.blocks_crt)
                     break
                 }
                 case "block_stats_avg": {

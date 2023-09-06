@@ -3,10 +3,10 @@ import {create_db_connection} from "./postgres.js";
 import {create_api_server} from "./api.js";
 import {create_web_server} from "./webserver.js";
 import {
-    cache_block_stats, cache_block_stats_avg,
+    cache_block_stats, cache_block_stats_avg, cache_blocks_crt,
     cache_canonical_chain,
     cache_dispute,
-    cache_epoch,
+    cache_epoch, cache_last_canonical_block,
     cache_price_info,
     cache_transaction_in_pool
 } from "./cache.js";
@@ -54,6 +54,8 @@ export const run = () => {
     cache_block_stats()
     cache_block_stats_avg()
     cache_transaction_in_pool()
+    cache_blocks_crt()
+    cache_last_canonical_block()
 
     listen_notifies()
 }

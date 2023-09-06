@@ -1,10 +1,11 @@
-mixin page-top(pageTitle)
+mixin page-top(pageTitle, icon)
     section.container-fluid
         div.container
             div.row
                 div.cell-md-6
                     div.d-flex.flex-nowrap.flex-align-center.pt-4
-                        div.h1 #{pageTitle}
+                        div
+                            span.h1 #{pageTitle}
                 div.cell-md-6.d-flex.flex-align-center
                     div.w-100.pt-4
                         include ../partials/_search

@@ -12,6 +12,8 @@ globalThis.wsController = (ws, res) => {
             request("block_stats")
             request("block_stats_avg")
             request("pool")
+            request("blocks_crt")
+            request("last_canonical_block")
             break
         }
         case "epoch": {
@@ -25,6 +27,8 @@ globalThis.wsController = (ws, res) => {
             request("canonical")
             request("block_stats")
             request("block_stats_avg")
+            request("blocks_crt")
+            request("last_canonical_block")
             break
         }
         case "dispute": {
@@ -54,7 +58,17 @@ globalThis.wsController = (ws, res) => {
         }
         case "block_stats_avg": {
             updateBlockStatsAvg(data)
-            setTimeout(request, 30000, "block_stats_avg")
+            setTimeout(request, 60000, "block_stats_avg")
+            break
+        }
+        case "blocks_crt": {
+            updateBlocksCrt(data)
+            setTimeout(request, 60000, "blocks_crt")
+            break
+        }
+        case "last_canonical_block": {
+            updateLastCanonicalBlock(data)
+            setTimeout(request, 60000, "last_canonical_block")
             break
         }
     }

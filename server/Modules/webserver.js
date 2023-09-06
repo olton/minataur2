@@ -24,10 +24,10 @@ const routes = () => {
         })
     })
 
-    app.get('/blocks', async (req, res) => {
-        res.render('blocks', {
-            title: 'Blocks :: Minataur - The Fastest block explorer for Mina Blockchain',
-            appTitle: 'Blocks',
+    app.get('/blockchain', async (req, res) => {
+        res.render('blockchain', {
+            title: 'Blockchain :: Minataur - The Fastest block explorer for Mina Blockchain',
+            appTitle: 'Blockchain',
             client: JSON.stringify(client)
         })
     })

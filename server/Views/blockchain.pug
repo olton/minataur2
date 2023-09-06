@@ -7,14 +7,33 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
     body.m4-cloak
         include partials/_appbar
 
-        +page-top("Blocks")
+        +page-top("Blockchain")
 
-        section.container-fluid
+        section.container-fluid.mt-4
+            div.container
+                div.row
+                    div.cell-md-3
+                        div(data-role="panel" data-title-caption="Coinbase per Block" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light")
+                            div#chart-blockchain-coinbase
+
+                    div.cell-md-3
+                        div(data-role="panel" data-title-caption="Transactions per Block" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light")
+                            div#chart-blockchain-trans
+
+                    div.cell-md-3
+                        div(data-role="panel" data-title-caption="Fee per Block" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light")
+                            div#chart-blockchain-fee
+
+                    div.cell-md-3
+                        div(data-role="panel" data-title-caption="Slots per Block" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light")
+                            div#chart-blockchain-slots
+
+        section.container-fluid.mt-4
             div.container
                 div
                     div.row.flex-align-start.border.bd-default.ml-0.mr-0
                         div.cell-md-4
-                            span.ml-1.text-muted.reduce-4.text-bold BLOCK CHAIN STATE FILTER
+                            span.ml-1.text-muted.reduce-4.text-bold BLOCK STATE FILTER
                             div.mt-1-minus
                                 input(type="checkbox" checked data-cls-check="bg-cyan no-border" data-role="checkbox" data-caption="<span>Pending</span>" onchange="blocksApplyFilter(this, 'pending')")
                                 input(type="checkbox" checked data-cls-check="bg-green no-border" data-role="checkbox" data-caption="<span>Canonical</span>" onchange="blocksApplyFilter(this, 'canonical')")
@@ -42,20 +61,25 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
 
                         div.cell-md-3
                             select(data-role="select" data-filter="false" data-prepend="Show rows: " data-on-change="blocksApplyRowsCount")
-                                option(value="10") 10
                                 option(value="20") 20
                                 option(value="50" selected) 50
                                 option(value="100") 100
 
+                div.mt-2.mb-2#pagination-top
+
                 div.scroll-table-container.border.bd-default.mt-2
                     +blocks-table("blocks-table")
 
-                div.mt-4#pagination
+                div.mt-4#pagination-bottom
 
         include partials/_footer
 
         include partials/_scripts
 
         script
+            include vendor/chart/chart.min.js
+
+        script
             include js/blocks/wsc.js
             include js/blocks/index.js
+            include js/blocks/charts.js

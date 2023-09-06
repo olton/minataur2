@@ -44,8 +44,8 @@ const updateChartTPB = data => {
             name: "TPB"
         }
     ]
-    chart.areaChart("#chart-tpb", [_data], {
-        areas,
+    chart.lineChart("#chart-tpb", [_data], {
+        lines: areas,
         ...chartOptions,
         colors: [chart.defaultColors.cornflowerBlue],
         onTooltipShow: (data) => {
@@ -67,8 +67,8 @@ const updateChartSPB = data => {
             name: "SPB"
         }
     ]
-    chart.areaChart("#chart-spb", [_data], {
-        areas,
+    chart.lineChart("#chart-spb", [_data], {
+        lines: areas,
         ...chartOptions,
         colors: [chart.defaultColors.coral],
         onTooltipShow: (data) => {
@@ -90,8 +90,8 @@ const updateChartFPB = data => {
             name: "FPB"
         }
     ]
-    chart.areaChart("#chart-fpb", [_data], {
-        areas,
+    chart.lineChart("#chart-fpb", [_data], {
+        lines: areas,
         ...chartOptions,
         padding: {
             bottom: 20,

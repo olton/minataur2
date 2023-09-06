@@ -23,7 +23,14 @@ const updateBlocksTable = (data) => {
     if (!data) return
 
     Metro.pagination({
-        target: "#pagination",
+        target: "#pagination-top",
+        length: data.length,
+        rows: blocksLimit,
+        current: blocksPage
+    })
+
+    Metro.pagination({
+        target: "#pagination-bottom",
         length: data.length,
         rows: blocksLimit,
         current: blocksPage
@@ -44,7 +51,7 @@ function refreshBlocksTable(){
     }
 }
 
-$("#pagination").on("click", ".page-link", function(){
+$("#pagination-top, #pagination-bottom").on("click", ".page-link", function(){
     const val = $(this).data("page")
     if (val === 'next') {
         blocksPage++

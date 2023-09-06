@@ -1,4 +1,11 @@
-import {db_get_block_stats, db_get_block_stats_avg, db_get_blocks_short, db_get_dispute, db_get_epoch} from "./db.js";
+import {
+    db_get_block_stats,
+    db_get_block_stats_avg,
+    db_get_blocks_crt,
+    db_get_blocks_short,
+    db_get_dispute,
+    db_get_epoch, db_get_last_canonical_block
+} from "./db.js";
 import {parseTime} from "../Helpers/parsers.js";
 import {get_price_info} from "./price.js"
 import {ql_get_transaction_in_pool} from "./graphql.js";
@@ -15,8 +22,16 @@ export const cache_canonical_chain = async () => {
     cache.canonical = await db_get_blocks_short({limit: 20})
 }
 
+export const cache_last_canonical_block = async () => {
+    cache.last_canonical_block = await db_get_last_canonical_block()
+}
+
 export const cache_block_stats = async () => {
     cache.block_stats = await db_get_block_stats()
+}
+
+export const cache_blocks_crt = async () => {
+    cache.blocks_crt = await db_get_blocks_crt()
 }
 
 export const cache_block_stats_avg = async () => {

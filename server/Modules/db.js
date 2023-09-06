@@ -72,6 +72,13 @@ export const db_get_block_stats = async () => {
     return (await query(sql)).rows
 }
 
+export const db_get_last_canonical_block = async () => {
+    const sql = `
+        select * from v_last_canonical_block
+    `
+    return (await query(sql)).rows[0]
+}
+
 export const db_get_block_stats_avg = async () => {
     const sql = `
         select * from v_block_stats_avg
@@ -123,4 +130,27 @@ export const db_get_blocks_count = async ({
     console.log(sql)
 
     return (await query(sql, [Array.isArray(type) ? type : [type]])).rows[0].length
+}
+
+export const db_get_blocks_crt = async (deep = 100) => {
+    const sql = `
+    WITH blocks_100 AS (SELECT b.id,
+                           b.chain_status
+                    FROM blocks b
+                    WHERE b.height >= ((SELECT max(blocks.height) - $1
+                                        FROM blocks))),
+         blocks_total AS (SELECT count(1) AS value
+                          FROM blocks_100),
+         blocks_canonical AS (SELECT count(1) AS value
+                              FROM blocks_100
+                              WHERE blocks_100.chain_status = 'canonical'::chain_status_type),
+         blocks_pending AS (SELECT count(1) AS value
+                            FROM blocks_100
+                            WHERE blocks_100.chain_status = 'pending'::chain_status_type)
+    SELECT blocks_canonical.value * 100 / (blocks_total.value - blocks_pending.value) AS crt
+    FROM blocks_total,
+         blocks_canonical,
+         blocks_pending
+    `
+    return (await query(sql, [deep])).rows[0].crt
 }

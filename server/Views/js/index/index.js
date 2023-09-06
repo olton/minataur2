@@ -21,6 +21,7 @@ const updateEpoch = ({active_producers, block_time, epoch_blocks, height, epoch_
     $("#height-time").html(datetime(+block_time).format(config.format.datetime))
     $("#active-producers").html(num2fmt(active_producers))
     $("#epoch-slot").html(`${current_slot} of 7140`)
+    $("#global-slot").html(`${num2fmt(global_slot_since_genesis)} / ${num2fmt(global_slot_since_hard_fork)}`)
 
     const epochDurationProgress = Math.round((+current_slot * SLOT_DURATION * 100) / EPOCH_DURATION)
     const progress = Metro.getPlugin('#epoch-progress', 'progress')
@@ -66,10 +67,18 @@ const updatePool = data => {
 }
 
 const updateBlockStatsAvg = data => {
-    console.log(data)
     const {avg_slots, avg_trans_count, avg_trans_fee, avg_time} = data
     $("#avg-slots").html((+avg_slots).toFixed(2))
     $("#avg-time").html((+avg_time).toFixed(2))
     $("#avg-trans").html((+avg_trans_count).toFixed(2))
     $("#avg-fee").html(normMina(+avg_trans_fee))
+}
+
+const updateBlocksCrt = data => {
+    $("#blocks-crt").html(num2fmt(data) + "%")
+}
+
+const updateLastCanonicalBlock = data => {
+    $("#height-slot").html(num2fmt(data.slot))
+    $("#height-slot-global").html("("+num2fmt(data.global_slot_since_genesis) + " / " + num2fmt(data.global_slot_since_hard_fork)+")")
 }

@@ -14,11 +14,17 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                     div.cell-lg-6
                         div.border.h-100
                             div.row
-                                div.cell-md-6.d-flex.flex-column.flex-align-center.flex-justify-center.border-right.bd-default
-                                    div.h1.mb-2#height
-                                    div.text-muted.text-small BLOCK HEIGHT
-                                    div#height-time
-                                div.cell-md-6.d-flex.flex-column.flex-align-center.flex-justify-center
+                                div.cell-md-7.border-right.bd-default
+                                    div.d-flex.flex-column.flex-align-center.flex-justify-center
+                                        div.h1.mb-0#height
+                                        div.reduce-4
+                                            span.text-muted IN SLOT
+                                            span.ml-1.mr-1#height-slot 0
+                                            span.text-muted#height-slot-global (0/0)
+                                        div.text-muted.text-small CANONICAL BLOCK
+                                        div#height-time
+
+                                div.cell-md-5.d-flex.flex-column.flex-align-center.flex-justify-center
                                     div.w-100.h-50.border-bottom.bd-default.d-flex.flex-column.flex-align-center.flex-justify-center
                                         div.h3.text-light.mb-0#start_block 0
                                         div.mb-2.text-muted.text-small EPOCH STARTED FROM BLOCK
@@ -35,8 +41,9 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                                         div.reduce-3.text-bold.text-center
                                             span.text-muted SLOT:
                                             span.ml-1#epoch-slot 0
+                                            div.text-muted#global-slot(title="Global slot GEN/HF")
                                         div(style="margin-top: -10px;").text-light#current-epoch-number 0
-                                        div.reduce-3.text-bold.text-center.mb-4 EPOCH
+                                        div(style="margin-top: -10px;").reduce-3.text-bold.text-center.mb-4 EPOCH
                                         div(style="width: 80%; margin-top: -10px;")
                                             div#epoch-progress(data-role="progress" data-show-value="true")
 
@@ -67,7 +74,7 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                     div.cell-xl-3.cell-lg-4.cell-ld-6
                         div.icon-box.border.bd-system.radius
                             div.icon.bg-orange.fg-white
-                                span.mif-watch
+                                span.mif-alarm-on
                             div.content.pl-2
                                 div.p-2
                                     div.text-upper AVG MINUTES
@@ -100,15 +107,13 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                     div.cell-xl-3.cell-lg-4.cell-ld-6
                         div.icon-box.border.bd-system.radius
                             div.icon.bg-teal.fg-white
-                                span.mif-versions
+                                span.mif-discout
                             div.content.pl-2
                                 div.p-2
-                                    div#current-slot(title="Current slot") 0
-                                    div.text-upper Current
-                                    div.text-upper Slot
+                                    div.text-upper COEFFICIENT
+                                    div.text-upper OF PERFORMANCE
                                     div.box-value
-                                        span#global-slot-genesis(title="Global slot since genesis")
-                                        span#global-slot-hard-fork.ml-auto.reduce-4.text-muted.text-upper(title="Global slot since hard fork") 0
+                                        span#blocks-crt
 
                     div.cell-xl-3.cell-lg-4.cell-ld-6
                         div.icon-box.border.bd-system.radius
