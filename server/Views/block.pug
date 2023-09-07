@@ -6,9 +6,176 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
     body.m4-cloak
         include partials/_appbar
 
-        +page-top("Block Data")
+        +page-top("Block Info")
+
+        section.container-fluid.mt-4
+            div.container
+                div
+                    div.row
+                        div.cell-md-2
+                            div.border.bd-default.p-2
+                                div#block-height-icon.text-muted.pos-absolute(style="top: 4px; right: 4px; font-size: 28px;")
+                                    span.mif-satellite
+                                div.text-small.text-muted.text-upper Block Height
+                                div.box-value2#block-height 0
+
+                        div.cell-md-2
+                            div.border.bd-default.p-2
+                                div#chain-status-icon.pos-absolute(style="top: 4px; right: 4px; font-size: 28px;")
+                                    span.mif-stop
+                                div.text-small.text-muted.text-upper Chain Status
+                                div.box-value2#chain-status XXXXXXXX
+
+                        div.cell-md-5
+                            div.border.bd-default.p-2
+                                div#block-hash-icon.text-muted.pos-absolute(style="top: 4px; right: 4px; font-size: 28px;")
+                                    span.mif-barcode
+                                div.text-small.text-muted.text-upper Block Hash
+                                div.box-value2#block-hash XXXXXXXXXX...XXXXXXXXXX
+
+                        div.cell-md-3
+                            div.border.bd-default.p-2
+                                div#block-date-icon.text-muted.pos-absolute(style="top: 4px; right: 4px; font-size: 28px;")
+                                    span.mif-calendar
+                                div.text-small.text-muted.text-upper Block Date
+                                div.box-value2#block-date DD, Mon YYYY hh:mm
+
+        section.container-fluid.mt-4
+            div.container
+                div.row
+                    div.cell-xl-3.cell-lg-4.cell-ld-6
+                        div.icon-box.border.bd-system.radius
+                            div.icon.bg-magenta.fg-white
+                                span.mif-coins
+                            div.content.pl-2
+                                div.p-2
+                                    div.text-upper BLOCK
+                                    div.text-upper COINBASE
+                                    div.box-value
+                                        span#block-coinbase 0
+
+                    div.cell-xl-3.cell-lg-4.cell-ld-6
+                        div.icon-box.border.bd-system.radius
+                            div.icon.bg-mauve.fg-white
+                                span.mif-alarm
+                            div.content.pl-2
+                                div.p-2
+                                    div.text-upper BLOCK
+                                    div.text-upper EPOCH
+                                    div.box-value
+                                        span#block-epoch-genesis(title="Epoch since genesis") 0
+                                        div.reduce-4.ml-auto#block-epoch-hard-fork(title="Epoch since hard fork") 0
+
+                    div.cell-xl-3.cell-lg-4.cell-ld-6
+                        div.icon-box.border.bd-system.radius
+                            div.icon.bg-teal.fg-white
+                                span.mif-versions
+                            div.content.pl-2
+                                div.p-2
+                                    div.box-value3#block-slot(title="Slot in epoch") 0
+                                    div.text-upper BLOCK
+                                    div.text-upper SLOT
+                                    div.box-value
+                                        span#block-slot-genesis(title="Global slot since genesis") 0
+                                        div.reduce-4.ml-auto#block-slot-hard-fork(title="Global slot since hard fork") 0
+
+                    div.cell-xl-3.cell-lg-4.cell-ld-6
+                        div.icon-box.border.bd-system.radius
+                            div.icon.bg-cyan.fg-white
+                                span.mif-users
+                            div.content.pl-2
+                                div.p-2
+                                    div.text-upper BLOCK
+                                    div.text-upper PARTICIPANTS
+                                    div.box-value
+                                        span#block-participants 0
+
+                    div.cell-xl-3.cell-lg-4.cell-ld-6
+                        div.icon-box.border.bd-system.radius
+                            div.icon.bg-lightIndigo.fg-white
+                                span.mif-hour-glass
+                            div.content.pl-2
+                                div.p-2
+                                    div.text-upper BLOCK
+                                    div.text-upper TIMELAPSE
+                                    div.box-value
+                                        span#block-timelapse 0
+                                        div.reduce-4.ml-auto#block-slots(title="Slots before block") 0
+
+                    div.cell-xl-3.cell-lg-4.cell-ld-6
+                        div.icon-box.border.bd-system.radius
+                            div.icon.bg-emerald.fg-white
+                                span.mif-settings-ethernet
+                            div.content.pl-2
+                                div.p-2
+                                    div.text-upper USER TRANS
+                                    div.text-upper IN BLOCK
+                                    div.box-value
+                                        span#block-user-trans 0
+
+                    div.cell-xl-3.cell-lg-4.cell-ld-6
+                        div.icon-box.border.bd-system.radius
+                            div.icon.bg-pink.fg-white
+                                span.mif-cogs
+                            div.content.pl-2
+                                div.p-2
+                                    div.text-upper INT TRANS
+                                    div.text-upper IN BLOCK
+                                    div.box-value
+                                        span#block-internal-trans 0
+
+                    div.cell-xl-3.cell-lg-4.cell-ld-6
+                        div.icon-box.border.bd-system.radius
+                            div.icon.bg-olive.fg-white
+                                span.mif-apps
+                            div.content.pl-2
+                                div.p-2
+                                    div.text-upper ZKAPP TRANS
+                                    div.text-upper IN BLOCK
+                                    div.box-value
+                                        span#block-zkapp-trans 0
+
+        section.container-fluid.mt-4
+            div.container
+                div.row
+                    div.cell-lg-4
+                        div.border.bd-default.p-2
+                            div#block-producer-icon.text-muted.pos-absolute(style="top: 4px; right: 4px; font-size: 28px;")
+                                span.mif-cog
+                            div.text-small.text-muted.text-upper Block Producer
+                            div.box-value2#block-producer XXXXXXXXXX...XXXXXXXXXX
+                            div#block-producer-name noname
+
+                    div.cell-lg-4
+                        div.border.bd-default.p-2
+                            div#block-winner-icon.text-muted.pos-absolute(style="top: 4px; right: 4px; font-size: 28px;")
+                                span.mif-dice
+                            div.text-small.text-muted.text-upper Block Winner
+                            div.box-value2#block-winner XXXXXXXXXX...XXXXXXXXXX
+                            div#block-winner-name noname
+
+                    div.cell-lg-4
+                        div.border.bd-default.p-2
+                            div#block-coinbase-receiver-icon.text-muted.pos-absolute(style="top: 4px; right: 4px; font-size: 28px;")
+                                span.mif-coins
+                            div.text-small.text-muted.text-upper Coinbase Receiver
+                            div.box-value2#block-coinbase-receiver XXXXXXXXXX...XXXXXXXXXX
+                            div#block-coinbase-receiver-name noname
+
+        section.container-fluid.mt-10
+            div.container
+                ul(data-role="tabs" data-expand-point="md")
+                    li#user-trans-tab
+                        a(href="#") User Transactions
+                    li#internal-trans-tab
+                        a(href="#") Internal Commands
+                    li#zkapp-trans-tab
+                        a(href="#") zkApp Transactions
 
         include partials/_footer
+
+        script.
+            globalThis.blockHash = "!{hash}"
 
         include partials/_scripts
 

@@ -1,6 +1,6 @@
 import {debug} from "../Helpers/log.js";
 import WebSocket, {WebSocketServer} from "ws";
-import {CHAIN_STATUS, db_get_blocks, db_get_blocks_count, db_save_ip} from "./db.js";
+import {CHAIN_STATUS, db_get_block_info, db_get_blocks, db_get_blocks_count, db_save_ip} from "./db.js";
 
 export const create_websocket_server = (httpServer) => {
     globalThis.wss = new WebSocketServer({ server: httpServer })
@@ -63,6 +63,10 @@ export const create_websocket_server = (httpServer) => {
                     const recordsCount = await db_get_blocks_count({ ...data })
                     const recordsData = await db_get_blocks({ ...data })
                     response(ws, "blocks", {rows: recordsData, length: recordsCount})
+                    break
+                }
+                case "block_info": {
+                    response(ws, "block_info", await db_get_block_info(data.hash))
                     break
                 }
             }

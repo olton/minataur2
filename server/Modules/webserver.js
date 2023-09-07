@@ -34,14 +34,12 @@ const routes = () => {
 
     app.get('/block/:hash', async (req, res) => {
         const hash = req.params.hash
-        const hashShort = shorten(hash, 10)
 
         res.render('block', {
             title: 'Block Info :: Minataur - The Fastest block explorer for Mina Blockchain',
             appTitle: 'Block Info',
             client: JSON.stringify(client),
             hash,
-            hashShort,
         })
     })
 

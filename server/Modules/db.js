@@ -127,8 +127,6 @@ export const db_get_blocks_count = async ({
     sql = sql.replace("%HASH_SEARCH%", search && search.hash ? `and (creator_key = '${search.hash}' or lower(creator_name) like '%${search.hash.toLowerCase()}%' or hash = '${search.hash}')` : "")
     sql = sql.replace("%COINBASE_SEARCH%", search && !isNaN(search.coinbase) ? `and coinbase = ${search.coinbase}` : "")
 
-    console.log(sql)
-
     return (await query(sql, [Array.isArray(type) ? type : [type]])).rows[0].length
 }
 
@@ -153,4 +151,12 @@ export const db_get_blocks_crt = async (deep = 100) => {
          blocks_pending
     `
     return (await query(sql, [deep])).rows[0].crt
+}
+
+export const db_get_block_info = async (hash) => {
+    const sql = `
+        select * from v_block_info
+        where hash = $1
+    `
+    return (await query(sql, [hash])).rows[0]
 }

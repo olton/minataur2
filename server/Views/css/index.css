@@ -10,7 +10,9 @@ body {
 #canonical-chain-length {
   font-weight: bold;
 }
-.box-value {
+.box-value,
+.box-value2,
+.box-value3 {
   font-weight: 600;
   font-size: 22px;
   white-space: nowrap;
@@ -19,6 +21,16 @@ body {
   align-items: end;
   flex-flow: row nowrap;
   line-height: 1;
+  font-family: monospace;
+}
+.box-value2 {
+  font-size: 18px;
+  margin-top: 0;
+}
+.box-value3 {
+  position: absolute;
+  top: 0;
+  right: 8px;
 }
 #current-slot {
   position: absolute;
@@ -89,6 +101,17 @@ a.link:hover {
 }
 .mif-copy:hover {
   opacity: 1;
+}
+.tabs ul,
+.tabs li {
+  border-color: #7700b3 !important;
+}
+.tabs li.active {
+  background: #7700b3 !important;
+  color: #ffffff !important;
+}
+.tabs li:not(.active):hover {
+  background: #f4e9ff !important;
 }
 .app-bar .app-bar-menu > li,
 .app-bar .app-bar-menu > li > a {
