@@ -52,9 +52,15 @@ const updatePrice = (data) => {
 
     const {current_price, currency, last_updated, total_supply, delta} = data
 
-    const minaPriceDelta = $("#mina-price-delta").clear()
-    if (delta > 0) { minaPriceDelta.html(`<span class="mif-arrow-up fg-green">`) }
-    if (delta < 0) { minaPriceDelta.html(`<span class="mif-arrow-down fg-red">`) }
+    if (delta !== 0) {
+        const minaPriceDelta = $("#mina-price-delta").clear()
+        if (delta > 0) {
+            minaPriceDelta.html(`<span class="mif-arrow-up fg-green">`)
+        }
+        if (delta < 0) {
+            minaPriceDelta.html(`<span class="mif-arrow-down fg-red">`)
+        }
+    }
 
     $("#mina-price").html(current_price)
     $("#mina-price-currency").html(currency)
@@ -67,10 +73,10 @@ const updatePool = data => {
 }
 
 const updateBlockStatsAvg = data => {
-    const {avg_slots, avg_trans_count, avg_trans_fee, avg_time} = data
+    const {avg_slots, avg_user_trans_count, avg_trans_fee, avg_time} = data
     $("#avg-slots").html((+avg_slots).toFixed(2))
     $("#avg-time").html((+avg_time).toFixed(2))
-    $("#avg-trans").html((+avg_trans_count).toFixed(2))
+    $("#avg-trans").html((+avg_user_trans_count).toFixed(2))
     $("#avg-fee").html(normMina(+avg_trans_fee))
 }
 

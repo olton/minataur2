@@ -24,9 +24,17 @@ mixin blocks-table(tableId)
                     span Epoch
                     div.text-small GEN/HF
 
-                th.text-center(style="width: 80px")
-                    span Trans
+                th.text-center(style="width: 100px")
+                    span User Trans
                     div.text-small Fee
+
+                th.text-center(style="width: 30px")
+                    span Int
+                    div.text-small Trans
+
+                th.text-center(style="width: 30px")
+                    span ZKAPP
+                    div.text-small Trans
 
                 th(style="width: 140px")
                     soan Hash
@@ -74,8 +82,14 @@ script.
                     <div class="text-muted text-small">epoch</div>
                 </td>
                 <td class="text-center">
-                    <span>${row.trans_count}</span>
+                    <span>${row.user_trans_count}</span>
                     <div class="text-muted text-small">${normMina(row.trans_fee)}</div>
+                </td>
+                <td class="text-center">
+                    <span>${row.internal_trans_count}</span>
+                </td>
+                <td class="text-center">
+                    <span>${row.zkapp_trans_count}</span>
                 </td>
                 <td>
                     <a class="link" href="/block/${row.hash}">${shorten(row.hash, 5)}</a>

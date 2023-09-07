@@ -22,6 +22,7 @@ const chartOptions = {
             label: false
         },
     },
+    arrows: false,
     legend: false,
     border: false,
 }
@@ -83,7 +84,7 @@ const updateChartTrans = data => {
     let index = 0
     for(let r of data.rows.reverse()) {
         if (r.chain_status !== 'canonical') continue
-        _data.push([+r.height, +r.trans_count])
+        _data.push([+r.height, +r.user_trans_count + +r.internal_trans_count + +r.zkapp_trans_count])
         index++
     }
     const areas = [

@@ -1,6 +1,6 @@
 ;
 const chartOptions = {
-    height: 150,
+    height: 120,
     title: false,
     padding: {
         bottom: 20,
@@ -22,6 +22,7 @@ const chartOptions = {
             label: false
         },
     },
+    arrows: false,
     legend: false,
     border: false,
 }
@@ -30,13 +31,14 @@ const updateCharts = (data) => {
     updateChartTPB(data)
     updateChartSPB(data)
     updateChartFPB(data)
+    updateChartPAR(data)
 }
 
 const updateChartTPB = data => {
     let _data = []
     let index = 0
     for(let r of data.reverse()) {
-        _data.push([index, +r.trans_count])
+        _data.push([+r.height, +r.user_trans_count + +r.internal_trans_count + +r.zkapp_trans_count])
         index++
     }
     const areas = [
@@ -49,8 +51,8 @@ const updateChartTPB = data => {
         ...chartOptions,
         colors: [chart.defaultColors.cornflowerBlue],
         onTooltipShow: (data) => {
-            const [_, transactionsCount] = data
-            return `<span>Transactions: ${transactionsCount}</span>`
+            const [block, transactionsCount] = data
+            return `<span>Block: ${block}, Trans: ${transactionsCount}</span>`
         }
     })
 }
@@ -59,7 +61,7 @@ const updateChartSPB = data => {
     let _data = []
     let index = 0
     for(let r of data.reverse()) {
-        _data.push([index, +r.block_slots])
+        _data.push([+r.height, +r.block_slots])
         index++
     }
     const areas = [
@@ -72,8 +74,31 @@ const updateChartSPB = data => {
         ...chartOptions,
         colors: [chart.defaultColors.coral],
         onTooltipShow: (data) => {
-            const [_, slotsCount] = data
-            return `<span>Slots: ${slotsCount}</span>`
+            const [block, slotsCount] = data
+            return `<span>Block: ${block}, Slots: ${slotsCount}</span>`
+        }
+    })
+}
+
+const updateChartPAR = data => {
+    let _data = []
+    let index = 0
+    for(let r of data.reverse()) {
+        _data.push([+r.height, +r.block_participants])
+        index++
+    }
+    const areas = [
+        {
+            name: "SPB"
+        }
+    ]
+    chart.lineChart("#chart-par", [_data], {
+        lines: areas,
+        ...chartOptions,
+        colors: [chart.defaultColors.oliveDrab],
+        onTooltipShow: (data) => {
+            const [block, count] = data
+            return `<span>Block: ${block}, Parts: ${count}</span>`
         }
     })
 }
@@ -82,7 +107,7 @@ const updateChartFPB = data => {
     let _data = []
     let index = 0
     for(let r of data.reverse()) {
-        _data.push([index, +r.trans_fee])
+        _data.push([+r.height, +r.trans_fee])
         index++
     }
     const areas = [
@@ -101,8 +126,8 @@ const updateChartFPB = data => {
         },
         colors: [chart.defaultColors.darkOrchid],
         onTooltipShow: (data) => {
-            const [_, transactionsFee] = data
-            return `<span>Fee: ${transactionsFee / 10**9}</span>`
+            const [block, transactionsFee] = data
+            return `<span>Block: ${block}, Fee: ${transactionsFee / 10**9}</span>`
         },
         onDrawLabelY: (val) => {
             return (val / 10**9).toFixed(4)

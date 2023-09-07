@@ -1,0 +1,17 @@
+include mixins/_top
+
+html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
+    include partials/_head
+
+    body.m4-cloak
+        include partials/_appbar
+
+        +page-top("Block Data")
+
+        include partials/_footer
+
+        include partials/_scripts
+
+        script
+            include js/block/wsc.js
+            include js/block/index.js
