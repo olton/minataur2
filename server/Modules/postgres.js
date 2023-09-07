@@ -1,6 +1,6 @@
 import pg from 'pg'
-import {log, debug} from "../helpers/log.js"
-import {timestamp} from "../helpers/timestamp.js"
+import {log, debug} from "../Helpers/log.js"
+import {timestamp} from "../Helpers/timestamp.js"
 
 const { Pool } = pg
 
