@@ -1,6 +1,6 @@
 import path from "path"
 import { fileURLToPath } from 'url'
-import {run} from "./modules/server.js"
+import {run} from "./Modules/server.js"
 import fs from "fs";
 import {nvl} from "./Helpers/nvl.js";
 import {hostname} from "os";
