@@ -43,7 +43,7 @@ mixin block-zkapp-commands-table(tableId)
                     <td>${index}</td>
                     <td class="text-center">
                         <div class="bg-blue fg-white reduce-3 text-upper">zkapp</div>
-                        <div class="${row.status === 'pending' ? 'bg-cyan' : row.status === 'applied' ? 'bg-green' : 'bg-red'} fg-white reduce-3 text-upper">${row.status}</div>
+                        <div class="${row.status === 'pending' ? 'bg-cyan' : row.status === 'applied' ? 'bg-green' : 'bg-red'} fg-white reduce-3 text-upper pl-1 pr-1">${row.status}</div>
                     </td>
                     <td>
                         <a class="link enlarge-1" href="/zkapp-command/${row.hash}">${shorten(row.hash, 10)}</a>

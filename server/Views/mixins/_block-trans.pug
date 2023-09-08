@@ -40,7 +40,7 @@ mixin block-trans-table(tableId)
                 tr.html(`
                     <td>${index}</td>
                     <td class="text-center">
-                        <div class="${row.command_type === 'payment' ? 'bg-blue' : 'bg-pink'} fg-white reduce-3 text-upper">${row.command_type}</div>
+                        <div class="${row.command_type === 'payment' ? 'bg-blue' : 'bg-pink'} fg-white reduce-3 text-upper pl-1 pr-1">${row.command_type}</div>
                         <div class="${row.status === 'pending' ? 'bg-cyan' : row.status === 'applied' ? 'bg-green' : 'bg-red'} fg-white reduce-3 text-upper">${row.status}</div>
                     </td>
                     <td>
