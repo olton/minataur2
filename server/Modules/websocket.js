@@ -1,6 +1,13 @@
 import {debug} from "../Helpers/log.js";
 import WebSocket, {WebSocketServer} from "ws";
-import {CHAIN_STATUS, db_get_block_info, db_get_blocks, db_get_blocks_count, db_save_ip} from "./db.js";
+import {
+    CHAIN_STATUS,
+    db_get_block_info, db_get_block_internal_commands,
+    db_get_block_trans, db_get_block_zkapp_commands,
+    db_get_blocks,
+    db_get_blocks_count,
+    db_save_ip
+} from "./db.js";
 
 export const create_websocket_server = (httpServer) => {
     globalThis.wss = new WebSocketServer({ server: httpServer })
@@ -20,15 +27,15 @@ export const create_websocket_server = (httpServer) => {
 
             switch (channel) {
                 case "ping": {
-                    response(ws, "ping", "pong")
+                    response(ws, channel, "pong")
                     break
                 }
                 case "epoch": {
-                    response(ws, "epoch", cache.epoch)
+                    response(ws, channel, cache.epoch)
                     break
                 }
                 case "dispute": {
-                    response(ws, "dispute", cache.dispute)
+                    response(ws, channel, cache.dispute)
                     break
                 }
                 case "canonical": {
@@ -36,15 +43,15 @@ export const create_websocket_server = (httpServer) => {
                     break
                 }
                 case "last_canonical_block": {
-                    response(ws, "last_canonical_block", cache.last_canonical_block)
+                    response(ws, channel, cache.last_canonical_block)
                     break
                 }
                 case "price": {
-                    response(ws, "price", cache.price)
+                    response(ws, channel, cache.price)
                     break
                 }
                 case "block_stats": {
-                    response(ws, "block_stats", cache.block_stats)
+                    response(ws, channel, cache.block_stats)
                     break
                 }
                 case "blocks_crt": {
@@ -52,21 +59,33 @@ export const create_websocket_server = (httpServer) => {
                     break
                 }
                 case "block_stats_avg": {
-                    response(ws, "block_stats_avg", cache.block_stats_avg)
+                    response(ws, channel, cache.block_stats_avg)
                     break
                 }
                 case "pool": {
-                    response(ws, "pool", cache.pool)
+                    response(ws, channel, cache.pool)
                     break
                 }
                 case "blocks": {
                     const recordsCount = await db_get_blocks_count({ ...data })
                     const recordsData = await db_get_blocks({ ...data })
-                    response(ws, "blocks", {rows: recordsData, length: recordsCount})
+                    response(ws, channel, {rows: recordsData, length: recordsCount})
                     break
                 }
                 case "block_info": {
-                    response(ws, "block_info", await db_get_block_info(data.hash))
+                    response(ws, channel, await db_get_block_info(data.hash))
+                    break
+                }
+                case "block_trans": {
+                    response(ws, channel, await db_get_block_trans(data.block_id))
+                    break
+                }
+                case "block_internal_commands": {
+                    response(ws, channel, await db_get_block_internal_commands(data.block_id))
+                    break
+                }
+                case "block_zkapp_commands": {
+                    response(ws, channel, await db_get_block_zkapp_commands(data.block_id))
                     break
                 }
             }

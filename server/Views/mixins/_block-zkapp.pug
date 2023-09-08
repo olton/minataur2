@@ -1,0 +1,73 @@
+mixin block-zkapp-commands-table(tableId)
+    div.scroll-table-container
+        table.table.data-table.row-border.striped.monospace.row-hover.mt-2.mb-2(id=tableId)
+            thead
+                tr
+                    th.text-center(style="width: 30px;")
+                        div #
+                    th.text-center(style="width: 30px;")
+                        div Trans
+                        div.text-small Type
+                    th
+                        div Hash
+                        div.text-small Memo
+                    th
+                        div Payer
+                        div.text-small Name
+                    th.text-center(style="width: 30px;")
+                        div Sequence
+                        div.text-small Primary
+                    th.text-center(style="width: 30px;")
+                        div Nonce
+                    th.text-right(style="width: 100px;")
+                        div Fee
+                    th.text-center(style="width: 30px;")
+                        div Blocks
+                        div.text-small Confirm
+            tbody
+                tr
+                    td.text-center(colspan="8")
+                        div.d-flex.flex-align-center.flex-justify-center
+                            div(data-role="activity" data-type="bars" data-style="color")
+
+
+
+    script.
+        ;const drawBlockZkAppCommandsTable = data => {
+            const rows = []
+            let index = 1
+            for (let row of data) {
+                let tr = $("<tr>")
+
+                tr.html(`
+                    <td>${index}</td>
+                    <td class="text-center">
+                        <div class="bg-blue fg-white reduce-3 text-upper">zkapp</div>
+                        <div class="${row.status === 'pending' ? 'bg-cyan' : row.status === 'applied' ? 'bg-green' : 'bg-red'} fg-white reduce-3 text-upper">${row.status}</div>
+                    </td>
+                    <td>
+                        <a class="link enlarge-1" href="/zkapp-command/${row.hash}">${shorten(row.hash, 10)}</a>
+                        <span title="Copy hash to clipboard" class="reduce-1 mif-copy copy-data-to-clipboard c-pointer" data-value="${row.hash}"></span>
+                        <div class="text-muted reduce-2">${row.memo}</div>
+                    </td>
+                    <td>
+                        <a data-role="hint" data-hint-text="${row.payer_name}" class="link" href="/address/${row.payer_key}">${shorten(row.payer_key, 12)}</a>
+                        <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${row.payer_key}"></span>
+                        <div class="text-muted reduce-2">${row.payer_name}</div>
+                    </td>
+                    <td class="text-center">${row.sequence_no}</td>
+                    <td class="text-center">${row.nonce}</td>
+                    <td class="text-right">
+                        <div class="">${normMina(row.fee)}</div>
+                    </td>
+                    <td class="text-center">
+                        <div>${row.confirm}</div>
+                    </td>
+                `)
+
+                rows.push(tr)
+                index++
+            }
+
+            return rows
+        }

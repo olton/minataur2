@@ -80,6 +80,7 @@ a.link:hover {
 }
 .data-table {
   line-height: 1.15 !important;
+  font-size: 13px;
 }
 .data-table td {
   padding: 4px 8px!important;

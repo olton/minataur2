@@ -1,10 +1,24 @@
 ;
 const updateBlockTransactions = data => {
-
+    const target = $("#block-trans-table tbody").clear()
+    const rows = drawBlockTransTable(data)
+    rows.map( r => target.append(r) )
 }
 
+const updateBlockInternalCommands = data => {
+    const target = $("#block-internal-commands-table tbody").clear()
+    const rows = drawBlockInternalCommandsTable(data)
+    rows.map( r => target.append(r) )
+}
+
+const updateBlockZkAppCommands = data => {
+    const target = $("#block-zkapp-commands-table tbody").clear()
+    const rows = drawBlockZkAppCommandsTable(data)
+    rows.map( r => target.append(r) )
+}
+
+
 const updateBlockInfo = data => {
-    console.log(data)
     const {
         height,
         hash,

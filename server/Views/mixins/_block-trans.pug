@@ -1,0 +1,83 @@
+mixin block-trans-table(tableId)
+    div.scroll-table-container
+        table.table.data-table.row-border.striped.monospace.row-hover.mt-2.mb-2(id=tableId)
+            thead
+                tr
+                    th.text-center(style="width: 30px;")
+                        div #
+                    th.text-center(style="width: 30px;")
+                        div Trans
+                        div.text-small Type
+                    th
+                        div Hash
+                        div.text-small Memo
+                    th
+                        div Sent
+                        div.text-small from/to
+                    th.text-center(style="width: 30px;")
+                        div Nonce
+                    th.text-right(style="width: 100px;")
+                        div Amount
+                        div.text-small Fee
+                    th.text-center(style="width: 30px;")
+                        div Blocks
+                        div.text-small Confirm
+            tbody
+                tr
+                    td.text-center(colspan="7")
+                        div.d-flex.flex-align-center.flex-justify-center
+                            div(data-role="activity" data-type="bars" data-style="color")
+
+
+
+    script.
+        ;const drawBlockTransTable = data => {
+            const rows = []
+            let index = 1
+            for (let row of data) {
+                let tr = $("<tr>")
+
+                tr.html(`
+                    <td>${index}</td>
+                    <td class="text-center">
+                        <div class="${row.command_type === 'payment' ? 'bg-blue' : 'bg-pink'} fg-white reduce-3 text-upper">${row.command_type}</div>
+                        <div class="${row.status === 'pending' ? 'bg-cyan' : row.status === 'applied' ? 'bg-green' : 'bg-red'} fg-white reduce-3 text-upper">${row.status}</div>
+                    </td>
+                    <td>
+                        <a class="link enlarge-1" href="/transaction/${row.hash}">${shorten(row.hash, 10)}</a>
+                        <span title="Copy hash to clipboard" class="reduce-1 mif-copy copy-data-to-clipboard c-pointer" data-value="${row.hash}"></span>
+                        <div class="text-muted">${row.memo}</div>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="mr-2">
+                                <span class="ml-2 mt-2 mif-move-down mif-2x"></span>
+                            </div>
+                            <div>
+                                <div>
+                                    <a data-role="hint" data-hint-text="${row.sender_name}" class="link" href="/address/${row.sender_key}">${shorten(row.sender_key, 12)}</a>
+                                    <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${row.sender_key}"></span>
+                                </div>
+                                <div>
+                                    <a data-role="hint" data-hint-text="${row.receiver_name}" class="link" href="/address/${row.receiver_key}">${shorten(row.receiver_key, 12)}</a>
+                                    <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${row.receiver_key}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${row.nonce}</td>
+                    <td class="text-right">
+                        <div class="">${normMina(row.amount)}</div>
+                        <div class="text-muted reduce-2">${normMina(row.fee)}</div>
+                    </td>
+                    <td class="text-center">
+                        <div>${row.confirm}</div>
+                    </td>
+                `)
+
+                rows.push(tr)
+                index++
+            }
+
+            return rows
+        }

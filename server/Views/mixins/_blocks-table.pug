@@ -1,50 +1,51 @@
 mixin blocks-table(tableId)
-    table.table.data-table.row-border.striped.monospace.row-hover.mt-2.mb-2(id=tableId)
-        thead
-            tr
-                th.text-center(style="width: 30px;")
-                    span.mif-link(style="display: block; top: 10px;")
+    div.scroll-table-container
+        table.table.data-table.row-border.striped.monospace.row-hover.mt-2.mb-2(id=tableId)
+            thead
+                tr
+                    th.text-center(style="width: 30px;")
+                        span.mif-link(style="display: block; top: 10px;")
 
-                th(style="width: 100px")
-                    span Height
-                    div.text-small Timelapse
-                th
-                    span Block Producer
-                    div.text-small Name
+                    th(style="width: 100px")
+                        span Height
+                        div.text-small Timelapse
+                    th
+                        span Block Producer
+                        div.text-small Name
 
-                th.text-center(style="width: 80px")
-                    span Coinbase
-                    div.text-small Snark Fee
+                    th.text-center(style="width: 80px")
+                        span Coinbase
+                        div.text-small Snark Fee
 
-                th.text-center(style="width: 80px")
-                    span Slot
-                    div.text-small GEN/HF
+                    th.text-center(style="width: 80px")
+                        span Slot
+                        div.text-small GEN/HF
 
-                th.text-center(style="width: 80px")
-                    span Epoch
-                    div.text-small GEN/HF
+                    th.text-center(style="width: 80px")
+                        span Epoch
+                        div.text-small GEN/HF
 
-                th.text-center(style="width: 100px")
-                    span User Trans
-                    div.text-small Fee
+                    th.text-center(style="width: 100px")
+                        span User Trans
+                        div.text-small Fee
 
-                th.text-center(style="width: 30px")
-                    span Int
-                    div.text-small Trans
+                    th.text-center(style="width: 30px")
+                        span Int
+                        div.text-small Trans
 
-                th.text-center(style="width: 30px")
-                    span ZKAPP
-                    div.text-small Trans
+                    th.text-center(style="width: 30px")
+                        span ZKAPP
+                        div.text-small Trans
 
-                th(style="width: 140px")
-                    soan Hash
-                    div.text-small Time
+                    th(style="width: 140px")
+                        soan Hash
+                        div.text-small Time
 
-        tbody
-            tr
-                td.text-center(colspan="8")
-                    div.d-flex.flex-align-center.flex-justify-center
-                        div(data-role="activity" data-type="bars" data-style="color")
+            tbody
+                tr
+                    td.text-center(colspan="8")
+                        div.d-flex.flex-align-center.flex-justify-center
+                            div(data-role="activity" data-type="bars" data-style="color")
 
 
 script.

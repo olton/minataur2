@@ -1,6 +1,7 @@
 import {query} from "./postgres.js";
 import {debug} from "../Helpers/log.js";
 import {on_new_block} from "./events.js";
+import {decodeMemo} from "../Helpers/memo.js";
 
 export const CHAIN_STATUS = {
     PENDING: "pending",
@@ -159,4 +160,39 @@ export const db_get_block_info = async (hash) => {
         where hash = $1
     `
     return (await query(sql, [hash])).rows[0]
+}
+
+export const db_get_block_trans = async block_id => {
+    const sql = `
+        select * from v_user_transactions
+        where block_id = $1
+        order by sender_id asc, nonce desc
+    `
+    const result = (await query(sql, [block_id])).rows
+    result.map(row => {
+        row.memo = decodeMemo(row.memo)
+    })
+    return result
+}
+
+export const db_get_block_internal_commands = async block_id => {
+    const sql = `
+        select * from v_internal_commands
+        where block_id = $1
+        order by receiver_id asc
+    `
+    return (await query(sql, [block_id])).rows
+}
+
+export const db_get_block_zkapp_commands = async block_id => {
+    const sql = `
+        select * from v_zkapp_commands
+        where block_id = $1
+        order by nonce desc
+    `
+    const result = (await query(sql, [block_id])).rows
+    result.map (row => {
+        row.memo = decodeMemo(row.memo)
+    })
+    return result
 }

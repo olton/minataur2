@@ -1,4 +1,7 @@
 include mixins/_top
+include mixins/_block-trans
+include mixins/_block-internal
+include mixins/_block-zkapp
 
 html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
     include partials/_head
@@ -108,8 +111,8 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                                 span.mif-settings-ethernet
                             div.content.pl-2
                                 div.p-2
-                                    div.text-upper USER TRANS
-                                    div.text-upper IN BLOCK
+                                    div.text-upper USER
+                                    div.text-upper TRANSACTIONS
                                     div.box-value
                                         span#block-user-trans 0
 
@@ -119,8 +122,8 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                                 span.mif-cogs
                             div.content.pl-2
                                 div.p-2
-                                    div.text-upper INT TRANS
-                                    div.text-upper IN BLOCK
+                                    div.text-upper INTERNAL
+                                    div.text-upper COMMANDS
                                     div.box-value
                                         span#block-internal-trans 0
 
@@ -130,8 +133,8 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                                 span.mif-apps
                             div.content.pl-2
                                 div.p-2
-                                    div.text-upper ZKAPP TRANS
-                                    div.text-upper IN BLOCK
+                                    div.text-upper ZKAPP
+                                    div.text-upper COMMANDS
                                     div.box-value
                                         span#block-zkapp-trans 0
 
@@ -166,11 +169,21 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
             div.container
                 ul(data-role="tabs" data-expand-point="md")
                     li#user-trans-tab
-                        a(href="#") User Transactions
+                        a(href="#user-trans") User Transactions
                     li#internal-trans-tab
-                        a(href="#") Internal Commands
+                        a(href="#internal-trans") Internal Commands
                     li#zkapp-trans-tab
-                        a(href="#") zkApp Transactions
+                        a(href="#zkapp-trans") zkApp Transactions
+
+                div#transactions-container
+                    div#user-trans
+                        +block-trans-table("block-trans-table")
+
+                    div#internal-trans
+                        +block-internal-commands-table("block-internal-commands-table")
+
+                    div#zkapp-trans
+                        +block-zkapp-commands-table("block-zkapp-commands-table")
 
         include partials/_footer
 

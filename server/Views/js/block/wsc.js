@@ -6,7 +6,6 @@ globalThis.wsController = (ws, res) => {
             $(".live").show((el)=>$(el).css("display", "flex"))
             log(`Welcome to Minataur Server!`)
             request("block_info", {hash: blockHash})
-            request("block_trans")
             break
         }
         case "new_block": {
@@ -15,10 +14,21 @@ globalThis.wsController = (ws, res) => {
         }
         case "block_info": {
             updateBlockInfo(data)
+            request("block_trans", {block_id: data.id})
+            request("block_internal_commands", {block_id: data.id})
+            request("block_zkapp_commands", {block_id: data.id})
             break
         }
         case "block_trans": {
             updateBlockTransactions(data)
+            break
+        }
+        case "block_internal_commands": {
+            updateBlockInternalCommands(data)
+            break
+        }
+        case "block_zkapp_commands": {
+            updateBlockZkAppCommands(data)
             break
         }
     }
