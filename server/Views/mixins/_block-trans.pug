@@ -76,6 +76,18 @@ mixin block-trans-table(tableId)
                 `)
 
                 rows.push(tr)
+
+                if (row.status === 'failed') {
+                    tr = $("<tr>")
+                    tr.html(`
+                        <td>
+                            <span class="mif-keyboard-return flip"></span>
+                        </td>
+                        <td colspan="6" class="fg-red">${row.failure_reason}</td>
+                    `)
+                    rows.push(tr)
+                }
+
                 index++
             }
 
