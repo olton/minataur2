@@ -20,7 +20,9 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                                 div#block-height-icon.text-muted.pos-absolute(style="top: 4px; right: 4px; font-size: 28px;")
                                     span.mif-satellite
                                 div.text-small.text-muted.text-upper Block Height
-                                div.box-value2#block-height 0
+                                div.box-value2
+                                    span#block-height 0
+                                    span.reduce-4.ml-auto#block-version 0.0.0
 
                         div.cell-md-2
                             div.border.bd-default.p-2
@@ -164,6 +166,50 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                             div.text-small.text-muted.text-upper Coinbase Receiver
                             div.box-value2#block-coinbase-receiver XXXXXXXXXX...XXXXXXXXXX
                             div#block-coinbase-receiver-name noname
+
+        section.container-fluid.mt-4
+            div.container
+                div.row
+                    div.cell-lg-6
+                        div.border.bd-default.p-2
+                            div.ml-2.text-muted.text-upper STAKING EPOCH
+                            table.table.row-border
+                                tr
+                                    td.text-muted.reduce-3 LENGTH
+                                    td: div.box-value4.flex-justify-end#staking-epoch-length 0
+                                tr
+                                    td.text-muted.reduce-3 SEED
+                                    td: div.box-value4.flex-justify-end#staking-epoch-seed 0
+                                tr
+                                    td.text-muted.reduce-3 START CHECKPOINT
+                                    td: div.box-value4.flex-justify-end#staking-epoch-start-checkpoint 0
+                                tr
+                                    td.text-muted.reduce-3 LOCK CHECKPOINT
+                                    td: div.box-value4.flex-justify-end#staking-epoch-lock-checkpoint 0
+                                tr
+                                    td.text-muted.reduce-3 TOTAL CURRENCY
+                                    td: div.box-value4.flex-justify-end#staking-epoch-total-currency 0
+
+                    div.cell-lg-6
+                        div.border.bd-default.p-2
+                            div.text-muted.ml-2.text-upper NEXT EPOCH
+                            table.table.row-border
+                                tr
+                                    td.text-muted.reduce-3 LENGTH
+                                    td: div.box-value4.flex-justify-end#next-epoch-length 0
+                                tr
+                                    td.text-muted.reduce-3 SEED
+                                    td: div.box-value4.flex-justify-end#next-epoch-seed 0
+                                tr
+                                    td.text-muted.reduce-3 START CHECKPOINT
+                                    td: div.box-value4.flex-justify-end#next-epoch-start-checkpoint 0
+                                tr
+                                    td.text-muted.reduce-3 LOCK CHECKPOINT
+                                    td: div.box-value4.flex-justify-end#next-epoch-lock-checkpoint 0
+                                tr
+                                    td.text-muted.reduce-3 TOTAL CURRENCY
+                                    td: div.box-value4.flex-justify-end#next-epoch-total-currency 0
+
 
         section.container-fluid.mt-10
             div.container

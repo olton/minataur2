@@ -3,18 +3,21 @@ const updateBlockTransactions = data => {
     const target = $("#block-trans-table tbody").clear()
     const rows = drawBlockTransTable(data)
     rows.map( r => target.append(r) )
+    $("#user-trans-tab").removeClass("disabled").addClass(data.length ? "" : "disabled")
 }
 
 const updateBlockInternalCommands = data => {
     const target = $("#block-internal-commands-table tbody").clear()
     const rows = drawBlockInternalCommandsTable(data)
     rows.map( r => target.append(r) )
+    $("#internal-trans-tab").removeClass("disabled").addClass(data.length ? "" : "disabled")
 }
 
 const updateBlockZkAppCommands = data => {
     const target = $("#block-zkapp-commands-table tbody").clear()
     const rows = drawBlockZkAppCommandsTable(data)
     rows.map( r => target.append(r) )
+    $("#zkapp-trans-tab").removeClass("disabled").addClass(data.length ? "" : "disabled")
 }
 
 
@@ -41,9 +44,21 @@ const updateBlockInfo = data => {
         block_winner_name,
         coinbase_receiver_key,
         coinbase_receiver_name,
+        version,
+        staking_epoch_length,
+        staking_epoch_seed,
+        staking_epoch_start_checkpoint,
+        staking_epoch_lock_checkpoint,
+        staking_epoch_total_currency,
+        next_epoch_length,
+        next_epoch_seed,
+        next_epoch_start_checkpoint,
+        next_epoch_lock_checkpoint,
+        next_epoch_total_currency,
     } = data
-
+    console.log(data)
     $("#block-height").html(num2fmt(height))
+    $("#block-version").html(`v${version}`)
     $("#block-hash").html(`${shorten(hash, 10)} <span title="Copy hash to clipboard" data-value="${hash}" class="ml-2 mif-copy copy-data-to-clipboard c-pointer"></span>`)
     $("#block-date").html(datetime(+timestamp).format(config.format.datetime))
     $("#chain-status").html(chain_status)
@@ -65,6 +80,16 @@ const updateBlockInfo = data => {
     $("#block-winner-name").html(block_winner_name)
     $("#block-coinbase-receiver").html(`<a href="/address/${coinbase_receiver_key}">${shorten(coinbase_receiver_key, 10)}</a> <span title="Copy hash to clipboard" data-value="${coinbase_receiver_key}" class="ml-2 mif-copy copy-data-to-clipboard c-pointer"></span>`)
     $("#block-coinbase-receiver-name").html(coinbase_receiver_name)
+    $("#staking-epoch-length").html(num2fmt(staking_epoch_length))
+    $("#staking-epoch-seed").html(shorten(staking_epoch_seed, 10) + `<span class="mif-copy copy-data-to-clipboard ml-2" data-value="${staking_epoch_seed}"></span>`)
+    $("#staking-epoch-start-checkpoint").html(shorten(staking_epoch_start_checkpoint, 10) + `<span class="mif-copy copy-data-to-clipboard ml-2" data-value="${staking_epoch_start_checkpoint}"></span>`)
+    $("#staking-epoch-lock-checkpoint").html(shorten(staking_epoch_lock_checkpoint, 10) + `<span class="mif-copy copy-data-to-clipboard ml-2" data-value="${staking_epoch_lock_checkpoint}"></span>`)
+    $("#staking-epoch-total-currency").html(num2fmt(normMina(staking_epoch_total_currency).toFixed(0)) + `<small class="ml-2 text-muted">mina</small>`)
+    $("#next-epoch-length").html(num2fmt(next_epoch_length))
+    $("#next-epoch-seed").html(shorten(next_epoch_seed, 10) + `<span class="mif-copy copy-data-to-clipboard ml-2" data-value="${next_epoch_seed}"></span>`)
+    $("#next-epoch-start-checkpoint").html(shorten(next_epoch_start_checkpoint, 10) + `<span class="mif-copy copy-data-to-clipboard ml-2" data-value="${next_epoch_start_checkpoint}"></span>`)
+    $("#next-epoch-lock-checkpoint").html(shorten(next_epoch_lock_checkpoint, 10) + `<span class="mif-copy copy-data-to-clipboard ml-2" data-value="${next_epoch_lock_checkpoint}"></span>`)
+    $("#next-epoch-total-currency").html(num2fmt(normMina(next_epoch_total_currency).toFixed(0)) + `<small class="ml-2 text-muted">mina</small>`)
 
     const chainStatus = $("#chain-status-icon").removeClass("fg-red fg-green fg-cyan")
     let chainStatusClass = "fg-cyan"

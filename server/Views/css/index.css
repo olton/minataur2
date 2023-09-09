@@ -12,7 +12,8 @@ body {
 }
 .box-value,
 .box-value2,
-.box-value3 {
+.box-value3,
+.box-value4 {
   font-weight: 600;
   font-size: 22px;
   white-space: nowrap;
@@ -31,6 +32,10 @@ body {
   position: absolute;
   top: 0;
   right: 8px;
+}
+.box-value4 {
+  font-size: 15px;
+  font-weight: 500;
 }
 #current-slot {
   position: absolute;
@@ -116,6 +121,12 @@ a.link:hover {
 }
 .flip {
   transform: scaleX(-1);
+}
+.table.row-hover .tbody .tr:hover,
+.table.row-hover .tbody tr:hover,
+.table.row-hover tbody .tr:hover,
+.table.row-hover tbody tr:hover {
+  background-color: rgba(119, 0, 179, 0.1);
 }
 .app-bar .app-bar-menu > li,
 .app-bar .app-bar-menu > li > a {

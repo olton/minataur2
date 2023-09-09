@@ -1,6 +1,6 @@
 mixin block-trans-table(tableId)
     div.scroll-table-container
-        table.table.data-table.row-border.striped.monospace.row-hover.mt-2.mb-2(id=tableId)
+        table.table.data-table.row-border.monospace.row-hover.mt-2.mb-2(id=tableId)
             thead
                 tr
                     th.text-center(style="width: 30px;")
@@ -78,7 +78,7 @@ mixin block-trans-table(tableId)
                 rows.push(tr)
 
                 if (row.status === 'failed') {
-                    tr = $("<tr>")
+                    tr = $("<tr>").addClass('bg-light')
                     tr.html(`
                         <td>
                             <span class="mif-keyboard-return flip"></span>
