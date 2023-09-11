@@ -1,12 +1,18 @@
 ;
 globalThis.transOrder = ""
-globalThis.transLimit = 50
+globalThis.transLimit = +Metro.utils.getURIParameter(null, 'size') || 50
 globalThis.transType = ['payment', 'delegation']
 globalThis.transStatus = ['applied', 'failed']
 globalThis.transSearch = ""
-globalThis.transPage = 1
+globalThis.transPage = +Metro.utils.getURIParameter(null, 'page') || 1
 globalThis.searchThreshold = 500
 globalThis.showError = false
+globalThis.updateInterval = null
+
+const clearUpdateInterval = () => {
+    clearTimeout(updateInterval)
+    updateInterval = null
+}
 
 const createTransRequest = () => {
     const isTransHash = transSearch.substring(0, 2) === "Ckp"
@@ -54,6 +60,7 @@ const updateTransTable = data => {
 function refreshTransTable(){
     if (globalThis.webSocket) {
         console.log(`Reload trans data`)
+        clearUpdateInterval()
         disableElements()
         request('user_transactions', createTransRequest())
     }
@@ -61,6 +68,7 @@ function refreshTransTable(){
 
 $("#pagination-top, #pagination-bottom").on("click", ".page-link", function(){
     const val = $(this).data("page")
+    if (transPage === val) return
     if (val === 'next') {
         transPage++
     } else if (val === 'prev') {
@@ -68,6 +76,7 @@ $("#pagination-top, #pagination-bottom").on("click", ".page-link", function(){
     } else {
         transPage = val
     }
+    history.pushState('', '', `/transactions?page=${transPage}&size=${transLimit}`)
     refreshTransTable()
 })
 

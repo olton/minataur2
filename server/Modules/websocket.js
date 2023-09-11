@@ -5,7 +5,7 @@ import {
     db_get_block_info, db_get_block_internal_commands,
     db_get_block_trans, db_get_block_zkapp_commands,
     db_get_blocks,
-    db_get_blocks_count, db_get_transactions, db_get_transactions_count,
+    db_get_blocks_count, db_get_trans_info, db_get_transactions, db_get_transactions_count,
     db_save_ip
 } from "./db.js";
 
@@ -92,6 +92,10 @@ export const create_websocket_server = (httpServer) => {
                     const recordsData = await db_get_transactions({...data})
                     const recordsCount = await db_get_transactions_count({...data})
                     response(ws, channel, {rows: recordsData, length: recordsCount})
+                    break
+                }
+                case "trans_info": {
+                    response(ws, channel, await db_get_trans_info(data.hash))
                     break
                 }
             }

@@ -281,3 +281,22 @@ export const db_get_transactions_count = async ({
 
     return (await query(sql, [Array.isArray(type) ? type : [type], Array.isArray(status) ? status : [status]])).rows[0].length
 }
+
+export const db_get_trans_info = async hash => {
+    const sql = `
+        select t.*, 
+               b.height,
+               b.version,
+               b.hash as block_hash,
+               b.timestamp as block_timestamp,
+               b.chain_status
+        from v_user_transactions t
+        left join v_block_info b on b.id = t.block_id
+        where b.chain_status = 'canonical' and t.hash = $1
+    `
+    const result = (await query(sql, [hash])).rows[0]
+
+    result.memo = decodeMemo(result.memo)
+
+    return result
+}

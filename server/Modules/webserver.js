@@ -36,7 +36,7 @@ const routes = () => {
         const hash = req.params.hash
 
         res.render('block', {
-            title: 'Block Info :: Minataur - The Fastest block explorer for Mina Blockchain',
+            title: 'Block Info :: ' + hash,
             appTitle: 'Block Info',
             client: JSON.stringify(client),
             hash,
@@ -55,7 +55,7 @@ const routes = () => {
         const hash = req.params.hash
 
         res.render('transaction', {
-            title: 'Transaction Info :: Minataur - The Fastest block explorer for Mina Blockchain',
+            title: 'Transaction Info :: ' + hash,
             appTitle: 'Transaction Info',
             client: JSON.stringify(client),
             hash,

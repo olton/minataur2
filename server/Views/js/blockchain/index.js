@@ -1,9 +1,9 @@
 ;
 globalThis.blocksOrder = ""
-globalThis.blocksLimit = 50
+globalThis.blocksLimit = +Metro.utils.getURIParameter(null, 'size') || 50
 globalThis.blocksChainStatus = ['pending', 'orphaned', 'canonical']
 globalThis.blocksSearch = ""
-globalThis.blocksPage = 1
+globalThis.blocksPage = +Metro.utils.getURIParameter(null, 'page') || 1
 globalThis.searchThreshold = 500
 
 const createBlockRequest = () => {
@@ -60,6 +60,7 @@ $("#pagination-top, #pagination-bottom").on("click", ".page-link", function(){
     } else {
         blocksPage = val
     }
+    history.pushState('', '', `/blockchain?page=${blocksPage}&size=${blocksLimit}`)
     refreshBlocksTable()
 })
 

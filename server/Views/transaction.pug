@@ -1,0 +1,145 @@
+include mixins/_top-back
+
+html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
+    include partials/_head
+
+    body.m4-cloak
+        include partials/_appbar
+
+        +page-top("Transaction Info")
+
+        section.container-fluid.mt-4
+            div.container
+                div
+                    div.row
+                        div.cell-md-6
+                            div.border.bd-default.p-2
+                                div.text-muted.pos-absolute(style="top: 4px; right: 4px; font-size: 28px;")
+                                    span.mif-barcode
+                                div.text-small.text-muted.text-upper Transaction Hash
+                                div.box-value2#trans-hash XXXXXXXXXX...XXXXXXXXXX
+                        div.cell-md-2
+                            div.border.bd-default.p-2
+                                div#trans-status-icon.text-muted.pos-absolute(style="top: 4px; right: 4px; font-size: 28px;")
+                                    span.mif-stop
+                                div.text-small.text-muted.text-upper Transaction Status
+                                div.box-value2#trans-status XXXXXXXX
+                        div.cell-md-2
+                            div.border.bd-default.p-2
+                                div#trans-type-icon.text-muted.pos-absolute(style="top: 4px; right: 4px; font-size: 28px;")
+                                    span.mif-broadcast
+                                div.text-small.text-muted.text-upper Transaction Type
+                                div.box-value2#trans-type XXXXXXXX
+                        div.cell-md-2
+                            div.border.bd-default.p-2
+                                div#trans-confirm-icon.text-muted.pos-absolute(style="top: 4px; right: 4px; font-size: 28px;")
+                                    span.mif-checkmark
+                                div.text-small.text-muted.text-upper Confirmation
+                                div.box-value2#trans-confirm 0
+
+        section.container-fluid
+            div.container
+                div.row
+                    div.cell-lg-4
+                        div.border.bd-default.p-2
+                            div#trans-sender-icon.text-muted.pos-absolute(style="top: 4px; right: 4px; font-size: 28px;")
+                                span.mif-upload
+                            div.text-small.text-muted.text-upper Transaction Sender
+                            div.box-value2#trans-sender XXXXXXXXXX...XXXXXXXXXX
+                            div#trans-sender-name noname
+
+                    div.cell-lg-4
+                        div.border.bd-default.p-2
+                            div#trans-receiver-icon.text-muted.pos-absolute(style="top: 4px; right: 4px; font-size: 28px;")
+                                span.mif-download
+                            div.text-small.text-muted.text-upper Transaction Receiver
+                            div.box-value2#trans-receiver XXXXXXXXXX...XXXXXXXXXX
+                            div#trans-receiver-name noname
+
+                    div.cell-lg-4
+                        div.border.bd-default.p-2
+                            div#trans-fee-payer-icon.text-muted.pos-absolute(style="top: 4px; right: 4px; font-size: 28px;")
+                                span.mif-coins
+                            div.text-small.text-muted.text-upper Fee Payer
+                            div.box-value2#trans-fee-payer XXXXXXXXXX...XXXXXXXXXX
+                            div#trans-fee-payer-name noname
+
+
+        section.container-fluid
+            div.container
+                div.row
+                    div.cell-lg-6
+                        div.d-flex.flex-column.flex-align-center.flex-justify-center.border.bd-default.p-10
+                            div.text-small.text-muted.text-upper AMOUNT
+                            div.h1.m-0.fg-darkViolet#trans-amount 0
+                            div.text-small.text-muted.text-upper MINA
+
+                    div.cell-lg-6
+                        div.d-flex.flex-column.flex-align-center.flex-justify-center.border.bd-default.p-10
+                            div.text-small.text-muted.text-upper FEE
+                            div.h1.m-0.fg-cyan#trans-fee 0
+                            div.text-small.text-muted.text-upper MINA
+
+        section.container-fluid
+            div.container
+                div.row
+                    div.cell-lg-12
+                        div.border.bd-default.p-2
+                            div.text-small.text-muted.text-upper MEMO
+                            div.text-leader#trans-memo
+
+        section.container-fluid
+            div.container
+                div.row
+                    div.cell-lg-12
+                        div.remark.alert.p-2
+                            div.text-leader
+                                span.mif-warning.mr-2
+                                span#trans-alert
+
+        section.container-fluid.mt-10
+            div.container
+                div
+                    h2.text-light Block Info
+                    div.row
+                        div.cell-md-2
+                            div.border.bd-default.p-2
+                                div#block-height-icon.text-muted.pos-absolute(style="top: 4px; right: 4px; font-size: 28px;")
+                                    span.mif-satellite
+                                div.text-small.text-muted.text-upper Block Height
+                                div.box-value2
+                                    span#block-height 0
+                                    span.reduce-4.ml-auto#block-version 0.0.0
+
+                        div.cell-md-2
+                            div.border.bd-default.p-2
+                                div#chain-status-icon.pos-absolute(style="top: 4px; right: 4px; font-size: 28px;")
+                                    span.mif-stop
+                                div.text-small.text-muted.text-upper Chain Status
+                                div.box-value2#chain-status XXXXXXXX
+
+                        div.cell-md-5
+                            div.border.bd-default.p-2
+                                div#block-hash-icon.text-muted.pos-absolute(style="top: 4px; right: 4px; font-size: 28px;")
+                                    span.mif-barcode
+                                div.text-small.text-muted.text-upper Block Hash
+                                div.box-value2#block-hash XXXXXXXXXX...XXXXXXXXXX
+
+                        div.cell-md-3
+                            div.border.bd-default.p-2
+                                div#block-date-icon.text-muted.pos-absolute(style="top: 4px; right: 4px; font-size: 28px;")
+                                    span.mif-calendar
+                                div.text-small.text-muted.text-upper Block Date
+                                div.box-value2#block-date DD, Mon YYYY hh:mm
+
+
+        include partials/_footer
+
+        script.
+            globalThis.transHash = "!{hash}"
+
+        include partials/_scripts
+
+        script
+            include js/transaction/wsc.js
+            include js/transaction/index.js

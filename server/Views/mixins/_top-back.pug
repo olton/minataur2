@@ -1,0 +1,14 @@
+mixin page-top(pageTitle, icon)
+    section.container-fluid
+        div.container
+            div.row
+                div.cell-md-6
+                    div.d-flex.flex-nowrap.flex-align-center.pt-4
+                        div
+                            a.c-pointer.h2.mr-4(onclick="history.back()")
+                                span.mif-arrow-left
+                            span.h1 #{pageTitle}
+                div.cell-md-6.d-flex.flex-align-center
+                    div.w-100.pt-6
+                        include ../partials/_search
+

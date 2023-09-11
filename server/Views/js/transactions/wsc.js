@@ -11,7 +11,8 @@ globalThis.wsController = (ws, res) => {
         case "user_transactions": {
             updateTransTable(data)
             enableElements()
-            setTimeout(() => {
+            updateInterval = setTimeout(() => {
+                clearUpdateInterval()
                 request("user_transactions", createTransRequest())
             }, 60000)
             break

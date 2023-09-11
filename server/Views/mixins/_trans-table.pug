@@ -20,6 +20,9 @@ mixin trans-table(tableId)
                     th.text-center(style="width: 30px;")
                         div Blocks
                         div.text-small Confirm
+                    th(style="width: 110px;")
+                        div Blocks
+                        div.text-small Timestamp
             tbody
                 tr
                     td.text-center(colspan="7")
@@ -34,7 +37,7 @@ mixin trans-table(tableId)
 
             if (data.length === 0) {
                 return [$("<tr>").html(`
-                    <td colspan="6" class="text-center">Nothing to show</td>
+                    <td colspan="7" class="text-center">Nothing to show</td>
                 `)]
             }
 
@@ -63,21 +66,23 @@ mixin trans-table(tableId)
                         <div class="${row.status === 'pending' ? 'bg-cyan' : row.status === 'applied' ? 'bg-green' : 'bg-red'} fg-white reduce-3 text-upper">${row.status}</div>
                     </td>
                     <td>
-                        <a class="link enlarge-1" href="/transaction/${row.hash}">${shorten(row.hash, 10)}</a>
-                        <span title="Copy hash to clipboard" class="reduce-1 mif-copy copy-data-to-clipboard c-pointer" data-value="${row.hash}"></span>
+                        <div class="d-flex flex-row flex-nowrap flex-align-center">
+                            <a class="link enlarge-1" href="/transaction/${row.hash}">${shorten(row.hash, 10)}</a>
+                            <span title="Copy hash to clipboard" class="ml-1 reduce-1 mif-copy copy-data-to-clipboard c-pointer" data-value="${row.hash}"></span>
+                        </div>
                         <div class="text-muted">${row.memo}</div>
                     </td>
                     <td>
-                        <div class="row">
+                        <div class="d-flex flex-row flex-nowrap flex-align-center">
                             <div class="mr-2">
-                                <span class="ml-2 mt-2 mif-move-down mif-2x"></span>
+                                <span class="ml-2 mif-move-down mif-2x"></span>
                             </div>
                             <div>
-                                <div>
+                                <div class="d-flex flex-row flex-nowrap flex-align-center">
                                     <a data-role="hint" data-hint-text="${row.sender_name}" class="link" href="/address/${row.sender_key}">${shorten(row.sender_key, 12)}</a>
                                     <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${row.sender_key}"></span>
                                 </div>
-                                <div>
+                                <div class="d-flex flex-row flex-nowrap flex-align-center">
                                     <a data-role="hint" data-hint-text="${row.receiver_name}" class="link" href="/address/${row.receiver_key}">${shorten(row.receiver_key, 12)}</a>
                                     <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${row.receiver_key}"></span>
                                 </div>
@@ -87,10 +92,13 @@ mixin trans-table(tableId)
                     <td>${row.nonce}</td>
                     <td class="text-right">
                         <div class="">${normMina(row.amount)}</div>
-                        <div class="text-muted reduce-2">${normMina(row.fee)}</div>
+                        <div class="text-muted reduce-1">${normMina(row.fee)}</div>
                     </td>
                     <td class="text-center">
                         <div>${row.confirm}</div>
+                    </td>
+                    <td>
+                        <span class="reduce-1">${datetime(+row.timestamp).format(config.format.datetime)}</span>
                     </td>
                 `)
 
@@ -102,7 +110,7 @@ mixin trans-table(tableId)
                         <td>
                             <span class="mif-keyboard-return flip"></span>
                         </td>
-                        <td colspan="5" class="fg-red">${row.failure_reason}</td>
+                        <td colspan="6" class="fg-red">${row.failure_reason}</td>
                     `)
                     rows.push(tr)
                 }
