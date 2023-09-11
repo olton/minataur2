@@ -1,8 +1,6 @@
 ;
 globalThis.transOrder = ""
 globalThis.transLimit = +Metro.utils.getURIParameter(null, 'size') || 50
-globalThis.transType = ['payment', 'delegation']
-globalThis.transStatus = ['applied', 'failed']
 globalThis.transSearch = ""
 globalThis.transPage = +Metro.utils.getURIParameter(null, 'page') || 1
 globalThis.searchThreshold = 500
@@ -15,18 +13,25 @@ const clearUpdateInterval = () => {
 }
 
 const createTransRequest = () => {
-    const isTransHash = transSearch.substring(0, 2) === "Ckp"
+    const isTransHash = transSearch.substring(0, 2) === "5J"
     const isBlockHash = transSearch.substring(0, 2) === "3N"
     const isBlockNumb = !isNaN(+transSearch)
 
+    const status = []
+    if ($("#trans-status-applied").is(":checked")) status.push('applied')
+    if ($("#trans-status-failed").is(":checked")) status.push('failed')
+
+    const type = []
+    if ($("#trans-type-payment").is(":checked")) type.push('payment')
+    if ($("#trans-type-delegation").is(":checked")) type.push('delegation')
+
     return {
-        type: transType,
-        status: transStatus,
+        type,
+        status,
         limit: transLimit,
         offset: transLimit * (transPage - 1),
         search: transSearch ? {
             block: isBlockNumb ? +transSearch : null,
-            block_hash: isBlockHash ? transSearch : null,
             hash: isTransHash ? transSearch : null,
             participant: !isBlockNumb && !isTransHash && !isBlockHash ? transSearch : null
         } : null
@@ -95,22 +100,25 @@ function transApplyRowsCount(selected){
     refreshTransTable()
 }
 
-function applyFilter(el, state) {
-    const [filter, value] = state.split(":")
-
-    if (!el.checked) {
-        if (filter === 'type') {
-            Metro.utils.arrayDelete(transType, value)
-        } else {
-            Metro.utils.arrayDelete(transStatus, value)
-        }
-    } else {
-        if (filter === 'type') {
-            if (!transType.includes(state)) transType.push(value)
-        } else {
-            if (!transStatus.includes(state)) transStatus.push(value)
-        }
-    }
-
+$("#trans-status-applied, #trans-status-failed, #trans-type-payment, #trans-type-delegation").on("click", () => {
     refreshTransTable()
+})
+
+let trans_search_input_interval = false
+
+const clearTransSearchInterval = () => {
+    clearInterval(trans_search_input_interval)
+    trans_search_input_interval = false
 }
+
+$("#trans-search").on(Metro.events.inputchange, function(){
+    transSearch = clearText(this.value.trim())
+
+    clearTransSearchInterval()
+
+    if (!trans_search_input_interval) trans_search_input_interval = setTimeout(function(){
+        clearTransSearchInterval()
+        transPage = 1
+        refreshTransTable()
+    }, searchThreshold)
+})

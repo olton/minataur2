@@ -15,19 +15,16 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                     div.cell-md-3
                         span.ml-1.text-muted.reduce-4.text-bold TRANSACTION TYPE
                         div.mt-1-minus
-                            input(type="checkbox" checked data-cls-check="bg-cyan no-border" data-role="checkbox" data-caption="<span>Payment</span>" onchange="applyFilter(this, 'type:payment')")
-                            input(type="checkbox" checked data-cls-check="bg-pink no-border" data-role="checkbox" data-caption="<span>Delegation</span>" onchange="applyFilter(this, 'type:delegation')")
+                            input#trans-type-payment(type="checkbox" checked data-cls-check="bg-cyan no-border" data-role="checkbox" data-caption="<span>Payment</span>")
+                            input#trans-type-delegation(type="checkbox" checked data-cls-check="bg-pink no-border" data-role="checkbox" data-caption="<span>Delegation</span>")
 
                     div.cell-md-3
                         span.ml-1.text-muted.reduce-4.text-bold TRANSACTION STATUS
                         div.mt-1-minus
-                            input(type="checkbox" checked data-cls-check="bg-green no-border" data-role="checkbox" data-caption="<span>Applied</span>" onchange="applyFilter(this, 'status:applied')")
-                            input(type="checkbox" checked data-cls-check="bg-red no-border" data-role="checkbox" data-caption="<span>Failed</span>" onchange="applyFilter(this, 'status:failed')")
+                            input#trans-status-applied(type="checkbox" checked data-cls-check="bg-green no-border" data-role="checkbox" data-caption="<span>Applied</span>")
+                            input#trans-status-failed(type="checkbox" checked data-cls-check="bg-red no-border" data-role="checkbox" data-caption="<span>Failed</span>")
 
                     div.cell-md-3.text-center
-                        span.ml-1.text-muted.reduce-4.text-bold TRANSACTIONS FOUND
-                        div
-                            span.ml-1.text-bold(style="font-size: 24px; line-height: 1")#found-trans 0
 
                     div.cell-md-3
                         div.text-left-fs.text-right-md
@@ -37,7 +34,7 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
 
                 div.row.mt-2
                     div.cell-md-9
-                        input#transactions-search(
+                        input#trans-search(
                             data-role="input"
                             data-prepend="Search: "
                             placeholder="Enter block number, transaction participant key or name, or transaction hash"
@@ -51,9 +48,15 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                             option(value="100") 100
 
 
-                div.mt-2.mb-2#pagination-top
+                div.row
+                    div.cell-lg-6
+                        div.mt-2#pagination-top
+                    div.cell-lg-6.text-right-lg
+                        span.ml-1.text-muted.reduce-4.text-bold RECORDS FOUND
+                        div
+                            span.ml-1.text-bold(style="font-size: 24px; line-height: 1")#found-trans 0
 
-                div.scroll-table-container.border.bd-default.mt-2
+                div.scroll-table-container.border.bd-default
                     +trans-table("trans-table")
 
                 div.mt-4#pagination-bottom

@@ -1,14 +1,18 @@
 ;
 globalThis.blocksOrder = ""
 globalThis.blocksLimit = +Metro.utils.getURIParameter(null, 'size') || 50
-globalThis.blocksChainStatus = ['pending', 'orphaned', 'canonical']
 globalThis.blocksSearch = ""
 globalThis.blocksPage = +Metro.utils.getURIParameter(null, 'page') || 1
 globalThis.searchThreshold = 500
 
 const createBlockRequest = () => {
+    const status = []
+    if ($("#block-status-pending").is(":checked")) status.push('pending')
+    if ($("#block-status-canonical").is(":checked")) status.push('canonical')
+    if ($("#block-status-orphaned").is(":checked")) status.push('orphaned')
+
     return {
-        type: blocksChainStatus,
+        type: status,
         limit: blocksLimit,
         offset: blocksLimit * (blocksPage - 1),
         search: blocksSearch ? {
@@ -79,14 +83,9 @@ function blocksApplyRowsCount(selected){
     refreshBlocksTable()
 }
 
-function blocksApplyFilter(el, state) {
-    if (!el.checked) {
-        Metro.utils.arrayDelete(blocksChainStatus, state)
-    } else {
-        if (!blocksChainStatus.includes(state)) blocksChainStatus.push(state)
-    }
+$("#block-status-pending, #block-status-canonical, #block-status-orphaned").on("click", () => {
     refreshBlocksTable()
-}
+})
 
 let block_search_input_interval = false
 

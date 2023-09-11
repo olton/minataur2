@@ -68,7 +68,7 @@ script.
                         <a class="link" href="/address/${row.creator_key}">${shorten(row.creator_key, 12)}</a>
                         <span title="Copy address to clipboard" class="ml-1 reduce-1 mif-copy copy-data-to-clipboard c-pointer" data-value="${row.creator_key}"></span>
                     </div>
-                    <div class="text-muted text-small fg-violet">${row.creator_name || ''}</div>
+                    <div class="text-muted text-small fg-violet">${row.creator_name || 'noname'}</div>
                 </td>
                 <td class="text-center">
                     <span>${normMina(row.coinbase)}</span>

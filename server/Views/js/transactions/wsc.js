@@ -5,6 +5,7 @@ globalThis.wsController = (ws, res) => {
         case "welcome": {
             $(".live").show((el)=>$(el).css("display", "flex"))
             log(`Welcome to Minataur Server!`)
+            console.log(createTransRequest())
             request("user_transactions", createTransRequest())
             break
         }

@@ -222,7 +222,6 @@ export const db_get_transactions = async ({
         and command_type = ANY($1::user_command_type[])
         and status = ANY($2::transaction_status[])
         %BLOCK_HEIGHT%
-        %BLOCK_HASH%
         %TRANS_PARTICIPANT%
         %TRANS_HASH%
         order by height desc, timestamp desc, nonce desc
@@ -230,14 +229,13 @@ export const db_get_transactions = async ({
     `
 
     sql = sql.replace("%BLOCK_HEIGHT%", search && search.block ? `and height = ${search.block}` : "")
-    sql = sql.replace("%BLOCK_HASH%", search && search.block_hash ? `and state_hash = '${search.block_hash}'` : "")
     sql = sql.replace("%TRANS_HASH%", search && search.hash ? `and hash = '${search.hash}'` : "")
     sql = sql.replace("%TRANS_PARTICIPANT%", search && search.participant ? `
     and (
-        trans_owner = '${search.participant}'
-        or lower(trans_owner_name) like '%${search.participant.toLowerCase()}%'
-        or trans_receiver = '${search.participant}'
-        or lower(trans_receiver_name) like '%${search.participant.toLowerCase()}%'
+        sender_key = '${search.participant}'
+        or lower(sender_name) like '%${search.participant.toLowerCase()}%'
+        or receiver_key = '${search.participant}'
+        or lower(receiver_name) like '%${search.participant.toLowerCase()}%'
     )
     ` : "")
 
@@ -262,20 +260,18 @@ export const db_get_transactions_count = async ({
         and command_type = ANY($1::user_command_type[])
         and status = ANY($2::transaction_status[])
         %BLOCK_HEIGHT%
-        %BLOCK_HASH%
         %TRANS_PARTICIPANT%
         %TRANS_HASH%
     `
 
     sql = sql.replace("%BLOCK_HEIGHT%", search && search.block ? `and height = ${search.block}` : "")
-    sql = sql.replace("%BLOCK_HASH%", search && search.block_hash ? `and state_hash = '${search.block_hash}'` : "")
     sql = sql.replace("%TRANS_HASH%", search && search.hash ? `and hash = '${search.hash}'` : "")
     sql = sql.replace("%TRANS_PARTICIPANT%", search && search.participant ? `
     and (
-        trans_owner = '${search.participant}'
-        or lower(trans_owner_name) like '%${search.participant.toLowerCase()}%'
-        or trans_receiver = '${search.participant}'
-        or lower(trans_receiver_name) like '%${search.participant.toLowerCase()}%'
+        sender_key = '${search.participant}'
+        or lower(sender_name) like '%${search.participant.toLowerCase()}%'
+        or receiver_key = '${search.participant}'
+        or lower(receiver_name) like '%${search.participant.toLowerCase()}%'
     )
     ` : "")
 
