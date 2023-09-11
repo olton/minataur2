@@ -30,7 +30,7 @@ const updateTransData = data => {
     $("#trans-memo").html(`${memo}`)
     $("#trans-alert").html(`${failure_reason.replaceAll('_', ' ')}`)
     $("#trans-status").html(`${status}`)
-    $("#trans-confirm").html(`${confirm}`)
+    $("#trans-confirm").html(`${confirm} <span class="reduce-4 ml-auto">blocks</span>`)
 
     const chainStatus = $("#chain-status-icon").removeClass("fg-red fg-green fg-cyan")
     let chainStatusClass = "fg-cyan"
@@ -53,6 +53,7 @@ const updateTransData = data => {
     $("#trans-status").addClass(transStatusClass)
 
 
+    $("#trans-alert").parents(".container-fluid").show()
     if (status !== 'failed') {
         $("#trans-alert").parents(".container-fluid").hide()
     }
