@@ -11,6 +11,24 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
 
         section.container-fluid.mt-4
             div.container
+                div.row
+                    div.cell-md-3
+                        div(data-role="panel" data-title-caption="Trans In Block" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light")
+                            div#chart-trans-in-block
+                    div.cell-md-3
+                        div(data-role="panel" data-title-caption="Status" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light")
+                            div#chart-trans-status
+                    div.cell-md-3
+                        div(data-role="panel" data-title-caption="Amount" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light")
+                            div#chart-trans-amount
+                    div.cell-md-3
+                        div(data-role="panel" data-title-caption="Fee" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light")
+                            div#chart-trans-fee
+
+
+
+        section.container-fluid.mt-4
+            div.container
                 div.row.flex-align-start.border.bd-default.ml-0.mr-0
                     div.cell-md-3
                         span.ml-1.text-muted.reduce-4.text-bold TRANSACTION TYPE
@@ -67,7 +85,7 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
         include partials/_scripts
 
         script
-            include vendor/chart/chart.min.js
+            include vendor/chart/chart.js
 
         script
             include js/transactions/wsc.js
