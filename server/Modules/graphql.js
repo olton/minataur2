@@ -19,7 +19,7 @@ const fetchGraphQL = async (query, variables = {}) => {
 
         return result.ok ? await result.json() : null
     } catch (e) {
-        log(`The Request to GraphQL war aborted! ${e.message}`, 'error', e.stack)
+        log(`The Request to GraphQL was aborted! ${e.message}`, 'error', e.stack)
         return null
     }
 }

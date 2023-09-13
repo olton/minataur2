@@ -86,7 +86,7 @@ const updateChartFees = data => {
         },
         onTooltipShow: (data) => {
             const [block, transactionsCount] = data
-            return `<span>Block: ${block}, Fee: ${transactionsCount}</span>`
+            return `<span>Fee: ${transactionsCount}</span>`
         },
         onDrawLabelY: (val) => {
             return (val / 10**9).toFixed(4)
@@ -121,7 +121,7 @@ const updateChartAmount = data => {
         },
         onTooltipShow: (data) => {
             const [block, transactionsCount] = data
-            return `<span>Block: ${block}, Amount: ${transactionsCount}</span>`
+            return `<span>Amount: ${transactionsCount}</span>`
         },
         onDrawLabelY: (val) => {
             return (val / 10**9).toFixed(4)

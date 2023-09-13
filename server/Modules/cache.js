@@ -63,5 +63,5 @@ export const cache_price_info = async () => {
 
 export const cache_transaction_in_pool = async () => {
     cache.pool = await ql_get_transaction_in_pool()
-    setTimeout(ql_get_transaction_in_pool, parseTime("30s"))
+    setTimeout(cache_transaction_in_pool, parseTime("30s"))
 }

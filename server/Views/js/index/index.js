@@ -69,6 +69,7 @@ const updatePrice = (data) => {
 }
 
 const updatePool = data => {
+    console.log(data)
     $("#pool-size").html(num2fmt(data.length))
 }
 
