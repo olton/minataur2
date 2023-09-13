@@ -37,7 +37,7 @@ mixin blocks-table(tableId)
                         span ZKAPP
                         div.text-small Trans
 
-                    th(style="width: 140px")
+                    th(style="width: 150px")
                         soan Hash
                         div.text-small Time
 
@@ -93,7 +93,7 @@ script.
                     <span>${row.zkapp_trans_count}</span>
                 </td>
                 <td>
-                    <a class="link" href="/block/${row.hash}">${shorten(row.hash, 5)}</a>
+                    <a class="link" href="/block/${row.hash}">${shorten(row.hash, 6)}</a>
                     <span title="Copy hash to clipboard" class="reduce-1 mif-copy copy-data-to-clipboard c-pointer" data-value="${row.hash}"></span>
                     <div class="text-muted text-small">${datetime(+row.timestamp).format(config.format.datetime)}</div>
                 </td>

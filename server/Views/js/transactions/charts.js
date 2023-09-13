@@ -137,7 +137,6 @@ const updateChartStatus = data => {
         if (r.status === 'failed') failed++
         index++
     }
-    console.log(applied, failed)
     chart.barChart("#chart-trans-status", [applied, failed], {
         height: 100,
         bars: ["Applied", "Failed"],
