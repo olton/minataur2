@@ -1,12 +1,19 @@
-include mixins/_top-back
-
 html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
     include partials/_head
 
     body.m4-cloak
         include partials/_appbar
 
-        +page-top("Transaction Info")
+        section.container-fluid
+            div.container
+                div.row
+                    div.cell-md-6
+                        div.d-flex.flex-nowrap.flex-align-center.pt-4
+                            div
+                                a.c-pointer.h2.mr-4(onclick="history.back()")
+                                    span.mif-arrow-left
+                                span.h1 Transaction Info
+
 
         section.container-fluid.mt-4
             div.container

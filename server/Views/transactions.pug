@@ -1,4 +1,3 @@
-include mixins/_top
 include mixins/_trans-table
 
 html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
@@ -7,7 +6,14 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
     body.m4-cloak
         include partials/_appbar
 
-        +page-top("User Transactions")
+        section.container-fluid
+            div.container
+                div.row
+                    div.cell-md-6
+                        div.d-flex.flex-nowrap.flex-align-center.pt-4
+                            div
+                                span.h1 Transactions
+
 
         section.container-fluid.mt-4
             div.container

@@ -136,6 +136,9 @@ a.link:hover {
 .d-menu li:hover {
   background-color: rgba(119, 0, 179, 0.1) !important;
 }
+.d-menu .icon {
+  font-size: 16px!important;
+}
 .app-bar .app-bar-menu > li,
 .app-bar .app-bar-menu > li > a {
   line-height: 32px;

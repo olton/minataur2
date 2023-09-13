@@ -11,14 +11,30 @@ section.container-fluid.pos-fixed.fixed-top.z-top.bg-darkViolet.fg-white
             li
                 a(href="/blockchain") Blockchain
             li
-                a(href="/transactions") Transactions
-            li
+                a.dropdown-toggle.marker-light(href="#") Transactions
+                ul.d-menu(data-role="dropdown")
+                    li
+                        a(href="/transactions")
+                            span.icon.mif-settings-ethernet
+                            span Transactions
+                    li.disabled
+                        a(href="/internal")
+                            span.icon.mif-cogs
+                            span Internal Commands
+                    li.divider
+                    li.disabled
+                        a(href="/pool")
+                            span.icon.mif-broadcast
+                            span Transaction Pool
+
+
+            li.disabled
                 a(href="/zkapps") zkApps
-            li
-                a(href="/addresses") Addresses
-            li
+            li.disabled
+                a(href="/accounts") Accounts
+            li.disabled
                 a(href="/uptime") Uptime
-            li
+            li.disabled
                 a(href="#").live
                     span.reduce-2 Live
                     span.mif-feed.ml-1
