@@ -165,5 +165,6 @@ export const ql_get_pool = ({
             return row.id.includes(search) || row.hash.includes(search) || row.from.includes(search) || row.to.includes(search)
         })
     }
-    return pool.slice(offset, limit)
+    const length = pool.length
+    return {rows: pool.slice(offset, limit), length}
 }

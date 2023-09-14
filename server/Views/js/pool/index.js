@@ -40,7 +40,7 @@ const updateTransTable = data => {
 
     $("#found-trans").html(num2fmt(data.length))
 
-    const rows = drawTransTable(data)
+    const rows = drawTransTable(data.rows)
     rows.map( r => target.append(r) )
 }
 
