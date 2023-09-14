@@ -8,6 +8,7 @@ import {
     db_get_blocks_count, db_get_trans_info, db_get_transactions, db_get_transactions_count,
     db_save_ip
 } from "./db.js";
+import {ql_get_transaction_in_pool} from "./graphql.js";
 
 export const create_websocket_server = (httpServer) => {
     globalThis.wss = new WebSocketServer({ server: httpServer })
@@ -64,6 +65,10 @@ export const create_websocket_server = (httpServer) => {
                 }
                 case "pool": {
                     response(ws, channel, cache.pool)
+                    break
+                }
+                case "transactions_pool": {
+                    response(ws, channel, cache.pool.slice(data.offset, data.limit))
                     break
                 }
                 case "blocks": {

@@ -120,7 +120,6 @@ export const ql_get_transaction_in_pool = async (address) => {
 
         result.map((r) => {
             r.memo = decodeMemo(r.memo)
-            r.scam = checkMemoForScam(r.memo)
         })
 
         return result

@@ -1,0 +1,108 @@
+mixin pool-table(tableId)
+    div.scroll-table-container
+        table.table.data-table.row-border.monospace.row-hover.mt-2.mb-2(id=tableId)
+            thead
+                tr
+                    th.text-center(style="width: 30px;")
+                        div Trans
+                        div.text-small Type
+
+                    th(style="width: 220px;")
+                        div Trans ID
+
+                    th(style="width: 220px;")
+                        div Hash
+                        div.text-small Memo
+
+                    th
+                        div Transaction Sent
+                        div.text-small from/to
+
+                    th.text-center(style="width: 30px;")
+                        div Nonce
+
+                    th.text-right(style="width: 100px;")
+                        div Amount
+                        div.text-small Fee
+            tbody
+                tr
+                    td.text-center(colspan="7")
+                        div.d-flex.flex-align-center.flex-justify-center
+                            div(data-role="activity" data-type="bars" data-style="color")
+
+    script.
+        ;const drawTransTable = data => {
+            const rows = []
+
+            if (data.length === 0) {
+                return [$("<tr>").html(`
+                    <td colspan="7" class="text-center">Nothing to show</td>
+                `)]
+            }
+
+            let index = 1
+            for (let row of data) {
+                let tr
+
+                tr = $("<tr>")
+
+                tr.html(`
+                    <td class="text-center">
+                        <div class="${row.kind === 'PAYMENT' ? 'bg-blue' : 'bg-pink'} fg-white reduce-3 text-upper pl-1 pr-1">${row.kind}</div>
+                        <div class="bg-orange fg-white reduce-3 text-upper">PENDING</div>
+                    </td>
+                    <td>
+                        <div class="d-flex flex-row flex-nowrap flex-align-center">
+                            ${shorten(row.id, 10)}
+                            <span title="Copy hash to clipboard" class="ml-1 reduce-1 mif-copy copy-data-to-clipboard c-pointer" data-value="${row.id}"></span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="d-flex flex-row flex-nowrap flex-align-center">
+                            ${shorten(row.hash, 10)}
+                            <span title="Copy hash to clipboard" class="ml-1 reduce-1 mif-copy copy-data-to-clipboard c-pointer" data-value="${row.hash}"></span>
+                        </div>
+                        <div class="text-muted">${row.memo}</div>
+                    </td>
+                    <td>
+                        <div class="d-flex flex-row flex-nowrap flex-align-center">
+                            <div class="mr-2">
+                                <span class="ml-2 mif-move-down mif-2x"></span>
+                            </div>
+                            <div>
+                                <div class="d-flex flex-row flex-nowrap flex-align-center">
+                                    <a class="link" href="/address/${row.from}">${shorten(row.from, 12)}</a>
+                                    <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${row.from}"></span>
+                                </div>
+                                <div class="d-flex flex-row flex-nowrap flex-align-center">
+                                    <a class="link" href="/address/${row.to}">${shorten(row.to, 12)}</a>
+                                    <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${row.to}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${row.nonce}</td>
+                    <td class="text-right">
+                        <div class="">${normMina(row.amount)}</div>
+                        <div class="text-muted reduce-1">${normMina(row.fee)}</div>
+                    </td>
+                `)
+
+                rows.push(tr)
+
+                if (showError && row.status === 'failed') {
+                    tr = $("<tr>").addClass('bg-light')
+                    tr.html(`
+                        <td>
+                            <span class="mif-keyboard-return flip"></span>
+                        </td>
+                        <td colspan="4" class="fg-red">${row.failureReason}</td>
+                    `)
+                    rows.push(tr)
+                }
+
+                index++
+            }
+
+            return rows
+        }

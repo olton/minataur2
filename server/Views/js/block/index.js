@@ -97,7 +97,7 @@ const updateBlockInfo = data => {
     $("#vrf-output").html(shorten(vrf_output, 14) + `<span class="mif-copy copy-data-to-clipboard ml-2" data-value="${vrf_output}"></span>`)
     $("#snarked-ledger-hash").html(shorten(snarked_ledger_hash, 14) + `<span class="mif-copy copy-data-to-clipboard ml-2" data-value="${snarked_ledger_hash}"></span>`)
     $("#parent-hash").html(`<a href="/block/${parent_hash}">${shorten(parent_hash, 10)}</a> <span title="Copy hash to clipboard" data-value="${parent_hash}" class="ml-2 mif-copy copy-data-to-clipboard c-pointer"></span>`)
-    $("#blockchain-distance").html(distance + `<span class="ml-1 reduce-4 text-muted">blocks</span>`)
+    $("#blockchain-distance").html(distance + `<span class="ml-1 reduce-4 text-muted">block(s)</span>`)
 
     const chainStatus = $("#chain-status-icon").removeClass("fg-red fg-green fg-cyan")
     let chainStatusClass = "fg-cyan"
