@@ -31,6 +31,10 @@ export const create_websocket_server = (httpServer) => {
                     response(ws, channel, "pong")
                     break
                 }
+                case "runtime": {
+                    response(ws, channel, cache.runtime)
+                    break
+                }
                 case "epoch": {
                     response(ws, channel, cache.epoch)
                     break

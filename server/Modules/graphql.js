@@ -24,6 +24,19 @@ const fetchGraphQL = async (query, variables = {}) => {
     }
 }
 
+const qRuntime = `
+query {
+  version
+  genesisConstants {
+    genesisTimestamp
+    coinbase
+    accountCreationFee
+  }
+  runtimeConfig
+  fork_config
+}
+`
+
 const qBalance = `
 query ($publicKey: String!) {
   account(publicKey: $publicKey) {
@@ -84,9 +97,23 @@ query ($publicKey: String!) {
 }
 `;
 
-export const ql_get_address_balance = async (address) => {
-    let result = await fetchGraphQL(qBalance, {publicKey: address})
+export const ql_get_runtime = async () => {
     try {
+        let result = await fetchGraphQL(qRuntime)
+        if (!result.data) {
+            new Error(`No runtime data!`)
+        }
+        result.data.runtimeConfig.ledger.accounts = null
+        result.data.fork_config.ledger.accounts = null
+        return result.data
+    } catch (e) {
+        return null
+    }
+}
+
+export const ql_get_address_balance = async (address) => {
+    try {
+        let result = await fetchGraphQL(qBalance, {publicKey: address})
         return result.data.account.balance
     } catch (e) {
         return {
@@ -102,8 +129,8 @@ export const ql_get_address_balance = async (address) => {
 }
 
 export const ql_check_payment_status = async (id) => {
-    let result = await fetchGraphQL(qPaymentStatus, {payment: id})
     try {
+        let result = await fetchGraphQL(qPaymentStatus, {payment: id})
         return result.data ? result.data.transactionStatus : false
     } catch (e) {
         return false
@@ -111,10 +138,9 @@ export const ql_check_payment_status = async (id) => {
 }
 
 export const ql_get_transaction_in_pool = async (address) => {
-    let sql = address ? qTransactionInPoolForAddress : qTransactionInPool
-    let result = await fetchGraphQL(sql, {publicKey: address})
-
     try {
+        let sql = address ? qTransactionInPoolForAddress : qTransactionInPool
+        let result = await fetchGraphQL(sql, {publicKey: address})
 
         result = result.data.pooledUserCommands
 

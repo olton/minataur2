@@ -5,6 +5,7 @@ globalThis.wsController = (ws, res) => {
         case "welcome": {
             $(".live").show((el)=>$(el).css("display", "flex"))
             log(`Welcome to Minataur Server!`)
+            request("runtime")
             request("epoch")
             request("dispute")
             request("canonical")
@@ -14,6 +15,11 @@ globalThis.wsController = (ws, res) => {
             request("pool")
             request("blocks_crt")
             request("last_canonical_block")
+            break
+        }
+        case "runtime": {
+            updateRuntime(data)
+            if (!data) setTimeout(request, 60000, "runtime")
             break
         }
         case "epoch": {

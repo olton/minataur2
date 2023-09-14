@@ -25,7 +25,7 @@ SELECT pk.id                                                           AS accoun
        COALESCE(bp.blocks_produced, 0::bigint)                         AS blocks_produced,
        act."timestamp"
 FROM public_keys pk
-         LEFT JOIN providers pr ON pr.public_key_id = pk.id
+         LEFT JOIN whois pr ON pr.public_key_id = pk.id
          LEFT JOIN account_identifiers ai ON ai.public_key_id = pk.id
          LEFT JOIN blocks_producing bp ON bp.creator_id = pk.id
          LEFT JOIN accounts_create_time act ON act.public_key_id = pk.id;
@@ -118,12 +118,12 @@ SELECT b.id,
          FROM blocks)) - b.height                                                                          AS distance
 FROM blocks b
          LEFT JOIN public_keys pk ON pk.id = b.creator_id
-         LEFT JOIN providers p ON p.public_key_id = b.creator_id
+         LEFT JOIN whois p ON p.public_key_id = b.creator_id
          LEFT JOIN public_keys pk2 ON pk2.id = b.block_winner_id
-         LEFT JOIN providers p2 ON p2.public_key_id = b.block_winner_id
+         LEFT JOIN whois p2 ON p2.public_key_id = b.block_winner_id
          LEFT JOIN coinbase_receiver cb ON cb.block_id = b.id
          LEFT JOIN public_keys pk3 ON pk3.id = cb.receiver_id
-         LEFT JOIN providers p3 ON p3.public_key_id = cb.receiver_id
+         LEFT JOIN whois p3 ON p3.public_key_id = cb.receiver_id
          LEFT JOIN protocol_versions pv ON pv.id = b.protocol_version_id
          LEFT JOIN snarked_ledger_hashes sn ON sn.id = b.snarked_ledger_hash_id
          LEFT JOIN epoch_data ep1 ON ep1.id = b.staking_epoch_data_id
@@ -254,7 +254,7 @@ SELECT b.id,
         FROM blocks b1
         WHERE b1.height = b.height)                                                                        AS block_participants
 FROM blocks b
-         LEFT JOIN providers p ON p.public_key_id = b.creator_id
+         LEFT JOIN whois p ON p.public_key_id = b.creator_id
          LEFT JOIN public_keys pk ON pk.id = b.creator_id;
 
 alter table public.v_blocks
@@ -353,7 +353,7 @@ FROM internal_commands ic
          LEFT JOIN blocks_internal_commands bic ON bic.internal_command_id = ic.id
          LEFT JOIN blocks b ON b.id = bic.block_id
          LEFT JOIN public_keys pk ON pk.id = ic.receiver_id
-         LEFT JOIN providers pr ON pr.public_key_id = ic.receiver_id;
+         LEFT JOIN whois pr ON pr.public_key_id = ic.receiver_id;
 
 alter table public.v_internal_commands
     owner to mina;
@@ -423,11 +423,11 @@ FROM user_commands uc
          LEFT JOIN blocks_user_commands buc ON buc.user_command_id = uc.id
          LEFT JOIN blocks b ON buc.block_id = b.id
          LEFT JOIN public_keys pk1 ON pk1.id = uc.source_id
-         LEFT JOIN providers pr1 ON pr1.public_key_id = uc.source_id
+         LEFT JOIN whois pr1 ON pr1.public_key_id = uc.source_id
          LEFT JOIN public_keys pk2 ON pk2.id = uc.receiver_id
-         LEFT JOIN providers pr2 ON pr2.public_key_id = uc.receiver_id
+         LEFT JOIN whois pr2 ON pr2.public_key_id = uc.receiver_id
          LEFT JOIN public_keys pk3 ON pk3.id = uc.fee_payer_id
-         LEFT JOIN providers pr3 ON pr3.public_key_id = uc.fee_payer_id;
+         LEFT JOIN whois pr3 ON pr3.public_key_id = uc.fee_payer_id;
 
 alter table public.v_user_transactions
     owner to mina;
@@ -456,7 +456,7 @@ FROM zkapp_commands zc
          LEFT JOIN blocks b ON b.id = bzc.block_id
          LEFT JOIN zkapp_fee_payer_body pb ON pb.id = zc.zkapp_fee_payer_body_id
          LEFT JOIN public_keys pk ON pk.id = pb.public_key_id
-         LEFT JOIN providers pr ON pr.public_key_id = pb.public_key_id;
+         LEFT JOIN whois pr ON pr.public_key_id = pb.public_key_id;
 
 alter table public.v_zkapp_commands
     owner to mina;

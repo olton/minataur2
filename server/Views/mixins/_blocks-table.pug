@@ -54,6 +54,7 @@ script.
 
         for (let row of data) {
             let tr = $("<tr>")
+            const timelapse = datetime(+row.timestamp).timeLapse()
 
             tr.html(`
                 <td>
@@ -61,7 +62,7 @@ script.
                 </td>
                 <td>
                     <a class="link" href="/block/${row.hash}">${row.height}</a>
-                    <div class="text-muted text-small">${datetime(+row.timestamp).timeLapse()}</div>
+                    <div class="text-muted text-small">${timelapse === 'less a hour' ? '< hour' : timelapse}</div>
                 </td>
                 <td>
                     <div class="d-flex flex-row flex-nowrap flex-align-center">

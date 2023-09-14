@@ -7,7 +7,7 @@ import {
     cache_canonical_chain,
     cache_dispute,
     cache_epoch, cache_last_canonical_block,
-    cache_price_info,
+    cache_price_info, cache_runtime,
     cache_transaction_in_pool
 } from "./cache.js";
 import {listen_notifies} from "./db.js";
@@ -31,7 +31,8 @@ const init = () => {
     globalThis.cache = new Proxy({
         price: null,
         pool: [],
-        lastBlock: null
+        lastBlock: null,
+        runtime: null,
     }, {
         set(target, p, value, receiver) {
             target[p] = value
@@ -47,6 +48,7 @@ export const run = () => {
     create_web_server()
     create_api_server()
 
+    cache_runtime()
     cache_price_info()
     cache_epoch()
     cache_dispute()

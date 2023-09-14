@@ -1,4 +1,13 @@
 ;
+
+const updateRuntime = data => {
+    console.log(data)
+    $("#version").html(shorten(data.version, 7) + `<span class="ml-auto text-muted reduce-2">${data.runtimeConfig.ledger.name}</span>`)
+    $("#genesis-timestamp").html(datetime(data.genesisConstants.genesisTimestamp).format(config.format.datetime))
+    $("#coinbase").html(normMina(data.genesisConstants.coinbase))
+    $("#supercharge").html(normMina(data.genesisConstants.coinbase * data.runtimeConfig.proof.supercharged_coinbase_factor))
+}
+
 const updateEpoch = ({active_producers, block_time, epoch_blocks, height, epoch_since_genesis, epoch_since_hard_fork, epoch_start_block, current_slot, global_slot_since_genesis, global_slot_since_hard_fork}) => {
     const epochTimer = $("#epoch-timer")
     const epochEnd = datetime(HARD_FORK_START).addSecond(EPOCH_DURATION/1000 * (+epoch_since_hard_fork + 1))
@@ -69,7 +78,6 @@ const updatePrice = (data) => {
 }
 
 const updatePool = data => {
-    console.log(data)
     $("#pool-size").html(num2fmt(data.length))
 }
 
