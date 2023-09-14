@@ -16,25 +16,12 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
 
         section.container-fluid.mt-4
             div.container
-                div.row.flex-align-start.border.bd-default.ml-0.mr-0
-                    div.cell-md-9
-                        span.ml-1.text-muted.reduce-4.text-bold TRANSACTION TYPE
-                        div.mt-1-minus
-                            input#trans-type-payment(type="checkbox" checked data-cls-check="bg-cyan no-border" data-role="checkbox" data-caption="<span>Payment</span>")
-                            input#trans-type-delegation(type="checkbox" checked data-cls-check="bg-pink no-border" data-role="checkbox" data-caption="<span>Delegation</span>")
-
-                    div.cell-md-3
-                        div.text-left-fs.text-right-md
-                            button.mt-3.button.success.small(onclick="refreshTransTable()")
-                                span RELOAD DATA
-                                span.mif-refresh
-
                 div.row.mt-2
                     div.cell-md-9
                         input#trans-search(
                             data-role="input"
                             data-prepend="Search: "
-                            placeholder="Enter block number, transaction participant key or name, or transaction hash"
+                            placeholder="Enter transaction participant key, or transaction hash"
                             data-search-button="false"
                         )
 

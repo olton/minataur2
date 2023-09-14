@@ -153,3 +153,17 @@ export const ql_get_transaction_in_pool = async (address) => {
         return []
     }
 }
+
+export const ql_get_pool = ({
+    limit,
+    offset,
+    search
+}) => {
+    let pool = cache.pool
+    if (search) {
+        pool = pool.filter( (row) => {
+            return row.id.includes(search) || row.hash.includes(search) || row.from.includes(search) || row.to.includes(search)
+        })
+    }
+    return pool.slice(offset, limit)
+}
