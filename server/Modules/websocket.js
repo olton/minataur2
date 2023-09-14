@@ -1,20 +1,18 @@
-import {debug} from "../Helpers/log.js";
 import WebSocket, {WebSocketServer} from "ws";
 import {
-    CHAIN_STATUS,
     db_get_block_info, db_get_block_internal_commands,
     db_get_block_trans, db_get_block_zkapp_commands,
     db_get_blocks,
     db_get_blocks_count, db_get_trans_info, db_get_transactions, db_get_transactions_count,
     db_save_ip
 } from "./db.js";
-import {ql_get_pool, ql_get_transaction_in_pool} from "./graphql.js";
+import {ql_get_pool} from "./graphql.js";
 
 export const create_websocket_server = (httpServer) => {
     globalThis.wss = new WebSocketServer({ server: httpServer })
 
     wss.on('connection', (ws, req) => {
-        const ip = req.socket.remoteAddress
+        const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress
 
         db_save_ip(ip)
 
