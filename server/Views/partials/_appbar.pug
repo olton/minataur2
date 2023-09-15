@@ -16,7 +16,7 @@ section.container-fluid.pos-fixed.fixed-top.z-top.bg-darkViolet.fg-white
                     li
                         a(href="/transactions")
                             span.icon.mif-settings-ethernet
-                            span Transactions
+                            span User Transactions
                     li.disabled
                         a(href="/internal")
                             span.icon.mif-cogs
@@ -34,6 +34,14 @@ section.container-fluid.pos-fixed.fixed-top.z-top.bg-darkViolet.fg-white
                 a(href="/accounts") Accounts
             li.disabled
                 a(href="/uptime") Uptime
+            li
+                a.dropdown-toggle.marker-light(href="#") Network
+                ul.d-menu(data-role="dropdown")
+                    li
+                        a(href="/config")
+                            span.icon.mif-cog
+                            span Config
+
             li.disabled
                 a(href="#").live
                     span.reduce-2 Live

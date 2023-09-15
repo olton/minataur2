@@ -68,9 +68,5 @@ export const cache_transaction_in_pool = async () => {
 
 export const cache_runtime = async () => {
     cache.runtime = await ql_get_runtime()
-    setTimeout(() => {
-        if (cache.runtime == null) {
-            cache_runtime()
-        }
-    }, parseTime("30s"))
+    setTimeout(cache_runtime, parseTime('1m'))
 }

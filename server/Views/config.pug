@@ -1,0 +1,102 @@
+html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
+    include partials/_head
+
+    body.m4-cloak
+        include partials/_appbar
+
+        section.container-fluid
+            div.container
+                div.row
+                    div.cell-md-6
+                        div.d-flex.flex-nowrap.flex-align-center.pt-4
+                            div
+                                span.h1 Network Config
+
+        section.container-fluid.mt-4
+            div.container
+                div.border.bd-default.p-2
+                    div.text-muted.text-upper.text-small MINA VERSION
+                    div.box-value2#version
+
+                div.row
+                    div.cell-md-4
+                        div.border.bd-default.p-2
+                            div.text-muted.text-upper.text-small GENESIS TIME
+                            div.box-value2#genesis-time 0
+                    div.cell-md-4
+                        div.border.bd-default.p-2
+                            div.text-muted.text-upper.text-small COINBASE
+                            div.box-value2#coinbase 0
+                    div.cell-md-4
+                        div.border.bd-default.p-2
+                            div.text-muted.text-upper.text-small ACCOUNT CREATION FEE
+                            div.box-value2#account-creation-fee 0
+
+        section.container-fluid.mt-4
+            div.container
+                div.border.bd-default.p-2
+                    h4.mb-1.text-light Runtime Config
+                    hr
+                    div.text-bold.ml-2 Ledger
+                    table.table.row-border.compact.row-hover
+                        tr
+                            td.reduce-3 NAME
+                            td: div.box-value4.flex-justify-end#runtime-ledger-name XXXXXXX
+                        tr
+                            td.reduce-3 HASH
+                            td: div.box-value4.flex-justify-end#runtime-ledger-hash XXXXXXX...XXXXXXX
+
+                    div.text-bold.ml-2 Genesis
+                    table.table.row-border.compact.row-hover
+                        tr
+                            td.reduce-3 DELTA
+                            td: div.box-value4.flex-justify-end#runtime-genesis-delta 0
+                        tr
+                            td.reduce-3 TIMESTAMP
+                            td: div.box-value4.flex-justify-end#runtime-genesis-timestamp XXXXXXX
+                        tr
+                            td.reduce-3 K
+                            td: div.box-value4.flex-justify-end#runtime-genesis-k 0
+                        tr
+                            td.reduce-3 SLOTS PER EPOCH
+                            td: div.box-value4.flex-justify-end#runtime-genesis-slots-per-epoch 0
+                        tr
+                            td.reduce-3 SLOTS PER SUB WINDOW
+                            td: div.box-value4.flex-justify-end#runtime-genesis-slots-per-sub-window 0
+
+                    div.text-bold.ml-2 Proof
+                    table.table.row-border.compact.row-hover
+                        tr
+                            td.reduce-3 ACCOUNT CREATION FEE
+                            td: div.box-value4.flex-justify-end#runtime-proof-account-creation-fee 0
+                        tr
+                            td.reduce-3 WINDOW DURATION
+                            td: div.box-value4.flex-justify-end#runtime-proof-block-window-duration 0
+                        tr
+                            td.reduce-3 COINBASE AMOUNT
+                            td: div.box-value4.flex-justify-end#runtime-proof-coinbase-amount 0
+                        tr
+                            td.reduce-3 LEDGER DEPTH
+                            td: div.box-value4.flex-justify-end#runtime-proof-ledger-depth 0
+                        tr
+                            td.reduce-3 LEVEL
+                            td: div.box-value4.flex-justify-end#runtime-proof-level 0
+                        tr
+                            td.reduce-3 SUB WINDOWS PER WINDOW
+                            td: div.box-value4.flex-justify-end#runtime-proof-sub-windows-per-window 0
+                        tr
+                            td.reduce-3 SUPERCHARGED FACTOR
+                            td: div.box-value4.flex-justify-end#runtime-proof-supercharged-factor 0
+                        tr
+                            td.reduce-3 WORK DELAY
+                            td: div.box-value4.flex-justify-end#runtime-proof-work-delay 0
+
+
+        include partials/_footer
+
+        include partials/_scripts
+
+        script
+            include js/config/wsc.js
+            include js/config/index.js
+
