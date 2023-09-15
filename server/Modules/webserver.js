@@ -32,6 +32,14 @@ const routes = () => {
         })
     })
 
+    app.get('/peers', async (req, res) => {
+        res.render('peers', {
+            title: 'Blockchain Peers :: Minataur - The Fastest block explorer for Mina Blockchain',
+            appTitle: 'Blockchain Peers',
+            client: JSON.stringify(client)
+        })
+    })
+
     app.get('/blockchain', async (req, res) => {
         res.render('blockchain', {
             title: 'Blockchain :: Minataur - The Fastest block explorer for Mina Blockchain',

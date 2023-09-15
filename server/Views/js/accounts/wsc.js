@@ -1,3 +1,5 @@
+;
+globalThis.requestSent = false
 globalThis.wsController = (ws, res) => {
     const {channel, data} = res
 

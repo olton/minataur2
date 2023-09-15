@@ -1,0 +1,57 @@
+mixin peers-table(tableId)
+    div.scroll-table-container
+        table.table.data-table.row-border.monospace.row-hover.mt-2.mb-2(id=tableId)
+            thead
+                tr
+                    th.text-center: div #
+                    th: div Peer ID
+                    th: div Host
+                    th: div Port
+                    th(style="width: 30px;")
+                        div Available
+            tbody
+                tr
+                    td.text-center(colspan="5")
+                        div.d-flex.flex-align-center.flex-justify-center
+                            div(data-role="activity" data-type="bars" data-style="color")
+
+    script.
+        ;const drawPeersTable = data => {
+            const rows = []
+
+            if (data.length === 0) {
+                return [$("<tr>").html(`
+                    <td colspan="5" class="text-center">Nothing to show</td>
+                `)]
+            }
+
+            let index = 1
+            for (let row of data) {
+                let tr = $("<tr>")
+
+                tr.html(`
+                    <td class="text-center">
+                        <div class="">${index}</div>
+                    </td>
+                    <td>
+                        <span>${shorten(row.peerId, 12)}</span>
+                        <span class="mif-copy copy-data-to-clipboard c-pointer ml-2" data-value="${row.peerId}"></span>
+                    </td>
+                    <td class="">
+                        <div class="">${row.host}</div>
+                    </td>
+                    <td class="">
+                        <div class="">${row.libp2pPort}</div>
+                    </td>
+                    <td class="text-center">
+                        <span class="mif-stop ${row.available ? 'fg-green' : 'fg-red'}"></span>
+                    </td>
+                `)
+
+                rows.push(tr)
+
+                index++
+            }
+
+            return rows
+        }

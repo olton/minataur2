@@ -97,6 +97,28 @@ query ($publicKey: String!) {
 }
 `;
 
+const qPeers = `
+query MyQuery {
+  getPeers {
+    host
+    libp2pPort
+    peerId
+  }
+}
+`;
+
+export const ql_get_peers = async () => {
+    try {
+        let result = await fetchGraphQL(qPeers)
+        if (!result.data) {
+            new Error(`No peers!`)
+        }
+        return result.data
+    } catch (e) {
+        return null
+    }
+}
+
 export const ql_get_runtime = async () => {
     try {
         let result = await fetchGraphQL(qRuntime)
@@ -110,6 +132,8 @@ export const ql_get_runtime = async () => {
         return null
     }
 }
+
+
 
 export const ql_get_address_balance = async (address) => {
     try {

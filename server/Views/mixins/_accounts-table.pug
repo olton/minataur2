@@ -52,11 +52,11 @@ mixin accounts-table(tableId)
                         <div class="text-muted">${row.account_name}</div>
                     </td>
                     <td class="">
-                        <span class="enlarge-2">${(mina)}</span>
+                        <span class="enlarge-2 ${mina === "0" ? 'text-muted' : ''}">${num2fmt(mina, ",")}</span>
                         <span class="text-muted reduce-1 ml-2-minus">${dec ? '.'+dec : ''}</span>
                     </td>
                     <td>
-                        <div class="">${row.timestamp ? datetime(+row.timestamp).format(config.format.datetime) : 'UNKNOWN'}</div>
+                        <div class="">${row.timestamp ? datetime(+row.timestamp).format(config.format.datetime) : '<span class="text-muted">UNKNOWN</span>'}</div>
                     </td>
                 `)
 

@@ -116,6 +116,10 @@ export const create_websocket_server = (httpServer) => {
                 case "account_info": {
                     break
                 }
+                case "peers": {
+                    response(ws, channel, cache.peers)
+                    break
+                }
             }
         })
     })
