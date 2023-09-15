@@ -78,6 +78,25 @@ const routes = () => {
         })
     })
 
+    app.get('/accounts', async (req, res) => {
+        res.render('accounts', {
+            title: 'Accounts :: Minataur - The Fastest block explorer for Mina Blockchain',
+            appTitle: 'Accounts',
+            client: JSON.stringify(client)
+        })
+    })
+
+    app.get('/account/:hash', async (req, res) => {
+        const hash = req.params.hash
+
+        res.render('account', {
+            title: 'Account Info :: ' + hash,
+            appTitle: 'Account Info',
+            client: JSON.stringify(client),
+            hash,
+        })
+    })
+
 }
 
 export const create_web_server  = () => {

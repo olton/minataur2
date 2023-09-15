@@ -1,5 +1,7 @@
 import WebSocket, {WebSocketServer} from "ws";
 import {
+    db_get_accounts,
+    db_get_accounts_count,
     db_get_block_info, db_get_block_internal_commands,
     db_get_block_trans, db_get_block_zkapp_commands,
     db_get_blocks,
@@ -103,6 +105,15 @@ export const create_websocket_server = (httpServer) => {
                 }
                 case "trans_info": {
                     response(ws, channel, await db_get_trans_info(data.hash))
+                    break
+                }
+                case "accounts": {
+                    const recordsCount = await db_get_accounts_count({...data})
+                    const recordsData = await db_get_accounts({...data})
+                    response(ws, channel, {rows: recordsData, length: recordsCount})
+                    break
+                }
+                case "account_info": {
                     break
                 }
             }

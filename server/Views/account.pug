@@ -1,0 +1,30 @@
+html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
+    include partials/_head
+
+    body.m4-cloak
+        include partials/_appbar
+
+        section.container-fluid
+            div.container
+                div.row
+                    div.cell-md-6
+                        div.d-flex.flex-nowrap.flex-align-center.pt-4
+                            div
+                                a.c-pointer.h2.mr-4(onclick="history.back()")
+                                    span.mif-arrow-left
+                                span.h1 Account Info
+
+
+        section.container-fluid
+            div.container
+
+        include partials/_footer
+
+        script.
+            globalThis.accountHash = "!{hash}"
+
+        include partials/_scripts
+
+        script
+            include js/account/wsc.js
+            include js/account/index.js

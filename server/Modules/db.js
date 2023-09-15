@@ -296,3 +296,44 @@ export const db_get_trans_info = async hash => {
 
     return result
 }
+
+export const db_get_accounts = async ({
+    limit,
+    offset,
+    search
+}) => {
+    let sql = `
+        select *
+        from v_accounts
+        where 1=1
+        %ACCOUNT%
+        order by account_name
+        limit $1 offset $2
+    `
+    sql = sql.replace("%ACCOUNT%", search ? `
+    and (
+        account_key = '${search}'
+        or lower(account_name) like '%${search}%'
+    )
+    ` : "")
+    return (await query(sql, [limit, offset])).rows
+}
+
+export const db_get_accounts_count = async ({
+    search
+}) => {
+    let sql = `
+        select count(*) as length
+        from v_accounts
+        where 1=1
+        %ACCOUNT%
+    `
+    sql = sql.replace("%ACCOUNT%", search ? `
+    and (
+        account_key = '${search}'
+        or lower(account_name) like '%${search}%'
+    )
+    ` : "")
+    return (await query(sql)).rows[0].length
+}
+

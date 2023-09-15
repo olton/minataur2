@@ -1,0 +1,55 @@
+include mixins/_accounts-table
+
+html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
+    include partials/_head
+
+    body.m4-cloak
+        include partials/_appbar
+
+        section.container-fluid
+            div.container
+                div.row
+                    div.cell-md-6
+                        div.d-flex.flex-nowrap.flex-align-center.pt-4
+                            div
+                                span.h1 Accounts
+
+        section.container-fluid
+            div.container
+                div.row.mt-2
+                    div.cell-md-9
+                        input#accounts-search(
+                            data-role="input"
+                            data-prepend="Search: "
+                            placeholder="Enter block number, producer key or name, or block hash"
+                            data-search-button="false"
+                        )
+
+                    div.cell-md-3
+                        select#accounts-table-rows(data-role="select" data-filter="false" data-prepend="Show rows: " data-on-change="changeRowsCount")
+                            option(value="20") 20
+                            option(value="50" selected) 50
+                            option(value="100") 100
+
+                div.row
+                    div.cell-lg-6
+                        div.mt-2#pagination-top
+                    div.cell-lg-6.text-right-lg
+                        span.ml-1.text-muted.reduce-4.text-bold RECORDS FOUND
+                        div
+                            span.ml-1.text-bold(style="font-size: 24px; line-height: 1")#found-blocks 0
+
+
+                div.scroll-table-container.border.bd-default
+                    +accounts-table("accounts-table")
+
+                div.mt-4#pagination-bottom
+
+        include partials/_footer
+
+        include partials/_scripts
+
+        script
+            include js/accounts/wsc.js
+            include js/accounts/index.js
+

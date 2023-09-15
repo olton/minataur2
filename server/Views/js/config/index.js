@@ -7,7 +7,7 @@ const updateRuntime = data => {
     $("#account-creation-fee").html(normMina(data.genesisConstants.accountCreationFee) + '<span class="ml-2 reduce-4">mina</span>')
 
     $("#runtime-ledger-name").html(data.runtimeConfig.ledger.name)
-    $("#runtime-ledger-hash").html(shorten(data.runtimeConfig.ledger.hash, 10))
+    $("#runtime-ledger-hash").html(shorten(data.runtimeConfig.ledger.hash, 10) + `<span class="mif-copy copy-data-to-clipboard c-pointer ml-2" data-value="${data.runtimeConfig.ledger.hash}"></span>`)
 
     $("#runtime-genesis-delta").html(data.runtimeConfig.genesis.delta)
     $("#runtime-genesis-timestamp").html(datetime(data.runtimeConfig.genesis.genesis_state_timestamp).format(config.format.datetime))
@@ -21,6 +21,6 @@ const updateRuntime = data => {
     $("#runtime-proof-ledger-depth").html(data.runtimeConfig.proof.ledger_depth)
     $("#runtime-proof-level").html(data.runtimeConfig.proof.level)
     $("#runtime-proof-sub-windows-per-window").html(data.runtimeConfig.proof.sub_windows_per_window)
-    $("#runtime-proof-supercharged-factor").html(`${data.runtimeConfig.proof.coinbase_amount} x ${data.runtimeConfig.proof.supercharged_coinbase_factor}`)
+    $("#runtime-proof-supercharged-factor").html(`${data.runtimeConfig.proof.coinbase_amount} x ${data.runtimeConfig.proof.supercharged_coinbase_factor} = ${data.runtimeConfig.proof.coinbase_amount * data.runtimeConfig.proof.supercharged_coinbase_factor}`+ '<span class="ml-2 reduce-2">mina</span>')
     $("#runtime-proof-work-delay").html(data.runtimeConfig.proof.work_delay)
 }
