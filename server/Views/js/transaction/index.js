@@ -1,7 +1,6 @@
 ;
 
 const updateTransData = data => {
-    log(data)
     let {
         hash, command_type,
         amount, fee, memo, status, failure_reason, confirm,
@@ -31,6 +30,8 @@ const updateTransData = data => {
     $("#trans-alert").html(`${failure_reason.replaceAll('_', ' ')}`)
     $("#trans-status").html(`${status}`)
     $("#trans-confirm").html(`${confirm} <span class="reduce-4 ml-auto">blocks</span>`)
+    $("#trans-amount-usd").html(`${(normMina(amount) * globalThis.price.current_price).toFixed(4)} <span class="text-muted reduce-2">USD</span>`)
+    $("#trans-fee-usd").html(`${(normMina(fee) * globalThis.price.current_price).toFixed(4)} <span class="text-muted reduce-2">USD</span>`)
 
     const chainStatus = $("#chain-status-icon").removeClass("fg-red fg-green fg-cyan")
     let chainStatusClass = "fg-cyan"
@@ -57,4 +58,14 @@ const updateTransData = data => {
     if (status !== 'failed') {
         $("#trans-alert").parents(".container-fluid").hide()
     }
+
+    $("#qrcode").clear()
+    new QRCode("qrcode", {
+        text: window.location.href,
+        width: 64,
+        height: 64,
+        colorDark : "#000000",
+        colorLight : "#ffffff",
+        correctLevel : QRCode.CorrectLevel.L
+    })
 }

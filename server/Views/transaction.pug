@@ -7,12 +7,13 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
         section.container-fluid
             div.container
                 div.row
-                    div.cell-md-6
+                    div.cell-md-12
                         div.d-flex.flex-nowrap.flex-align-center.pt-4
                             div
                                 a.c-pointer.h2.mr-4(onclick="history.back()")
                                     span.mif-arrow-left
-                                span.h1 Transaction Info
+                                span.h1 Transaction
+                            div.ml-auto#qrcode
 
 
         section.container-fluid.mt-4
@@ -34,14 +35,14 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                         div.cell-md-2
                             div.border.bd-default.p-2
                                 div#trans-type-icon.text-muted.pos-absolute(style="top: 4px; right: 4px; font-size: 28px;")
-                                    span.mif-broadcast
+                                    span.mif-tags
                                 div.text-small.text-muted.text-upper Transaction Type
                                 div.box-value2#trans-type XXXXXXXX
                         div.cell-md-2
                             div.border.bd-default.p-2
                                 div#trans-confirm-icon.text-muted.pos-absolute(style="top: 4px; right: 4px; font-size: 28px;")
                                     span.mif-checkmark
-                                div.text-small.text-muted.text-upper Confirmation
+                                div.text-small.text-muted.text-upper Confirmations
                                 div.box-value2#trans-confirm 0
 
         section.container-fluid
@@ -51,7 +52,7 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                         div.border.bd-default.p-2
                             div#trans-sender-icon.text-muted.pos-absolute(style="top: 4px; right: 4px; font-size: 28px;")
                                 span.mif-upload
-                            div.text-small.text-muted.text-upper Transaction Sender
+                            div.text-small.text-muted.text-upper Sender
                             div.box-value2#trans-sender XXXXXXXXXX...XXXXXXXXXX
                             div#trans-sender-name noname
 
@@ -59,7 +60,7 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                         div.border.bd-default.p-2
                             div#trans-receiver-icon.text-muted.pos-absolute(style="top: 4px; right: 4px; font-size: 28px;")
                                 span.mif-download
-                            div.text-small.text-muted.text-upper Transaction Receiver
+                            div.text-small.text-muted.text-upper Receiver
                             div.box-value2#trans-receiver XXXXXXXXXX...XXXXXXXXXX
                             div#trans-receiver-name noname
 
@@ -80,12 +81,14 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                             div.text-small.text-muted.text-upper AMOUNT
                             div.h1.monospace.m-0.fg-darkViolet#trans-amount 0
                             div.text-small.text-muted.text-upper MINA
+                            div.text-leader2#trans-amount-usd 0
 
                     div.cell-lg-6
                         div.d-flex.flex-column.flex-align-center.flex-justify-center.border.bd-default.p-10
                             div.text-small.text-muted.text-upper FEE
                             div.h1.monospace.m-0.fg-cyan#trans-fee 0
                             div.text-small.text-muted.text-upper MINA
+                            div.text-leader2#trans-fee-usd 0
 
         section.container-fluid
             div.container
@@ -146,6 +149,9 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
             globalThis.transHash = "!{hash}"
 
         include partials/_scripts
+
+        script
+            include vendor/qrcode/qrcode.min.js
 
         script
             include js/transaction/wsc.js

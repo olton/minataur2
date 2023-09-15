@@ -58,7 +58,8 @@ const updateBlockInfo = data => {
         vrf_output,
         snarked_ledger_hash,
         parent_hash,
-        distance
+        distance,
+        block_total_currency
     } = data
 
     $("#block-height").html(num2fmt(height))
@@ -88,16 +89,17 @@ const updateBlockInfo = data => {
     $("#staking-epoch-seed").html(shorten(staking_epoch_seed, 10) + `<span class="mif-copy copy-data-to-clipboard ml-2" data-value="${staking_epoch_seed}"></span>`)
     $("#staking-epoch-start-checkpoint").html(shorten(staking_epoch_start_checkpoint, 10) + `<span class="mif-copy copy-data-to-clipboard ml-2" data-value="${staking_epoch_start_checkpoint}"></span>`)
     $("#staking-epoch-lock-checkpoint").html(shorten(staking_epoch_lock_checkpoint, 10) + `<span class="mif-copy copy-data-to-clipboard ml-2" data-value="${staking_epoch_lock_checkpoint}"></span>`)
-    $("#staking-epoch-total-currency").html(num2fmt(normMina(staking_epoch_total_currency).toFixed(0)) + `<small class="ml-2 text-muted">mina</small>`)
+    $("#staking-epoch-total-currency").html(num2fmt(normMina(staking_epoch_total_currency).toFixed(0), ",") + `<small class="ml-2 text-muted">mina</small>`)
     $("#next-epoch-length").html(num2fmt(next_epoch_length))
     $("#next-epoch-seed").html(shorten(next_epoch_seed, 10) + `<span class="mif-copy copy-data-to-clipboard ml-2" data-value="${next_epoch_seed}"></span>`)
     $("#next-epoch-start-checkpoint").html(shorten(next_epoch_start_checkpoint, 10) + `<span class="mif-copy copy-data-to-clipboard ml-2" data-value="${next_epoch_start_checkpoint}"></span>`)
     $("#next-epoch-lock-checkpoint").html(shorten(next_epoch_lock_checkpoint, 10) + `<span class="mif-copy copy-data-to-clipboard ml-2" data-value="${next_epoch_lock_checkpoint}"></span>`)
-    $("#next-epoch-total-currency").html(num2fmt(normMina(next_epoch_total_currency).toFixed(0)) + `<small class="ml-2 text-muted">mina</small>`)
+    $("#next-epoch-total-currency").html(num2fmt(normMina(next_epoch_total_currency).toFixed(0), ",") + `<small class="ml-2 text-muted">mina</small>`)
     $("#vrf-output").html(shorten(vrf_output, 14) + `<span class="mif-copy copy-data-to-clipboard ml-2" data-value="${vrf_output}"></span>`)
     $("#snarked-ledger-hash").html(shorten(snarked_ledger_hash, 14) + `<span class="mif-copy copy-data-to-clipboard ml-2" data-value="${snarked_ledger_hash}"></span>`)
-    $("#parent-hash").html(`<a href="/block/${parent_hash}">${shorten(parent_hash, 10)}</a> <span title="Copy hash to clipboard" data-value="${parent_hash}" class="ml-2 mif-copy copy-data-to-clipboard c-pointer"></span>`)
+    $("#parent-hash").html(`<a href="/block/${parent_hash}">${shorten(parent_hash, 10)}</a> <span title="Copy hash to clipboard" data-value="${parent_hash}" class="mif-copy copy-data-to-clipboard c-pointer"></span>`)
     $("#blockchain-distance").html(distance + `<span class="ml-1 reduce-4 text-muted">block(s)</span>`)
+    $("#blockchain-total-currency").html(num2fmt(normMina(block_total_currency), ",") + ` <span class="text-muted reduce-2">mina</span>`)
 
     const chainStatus = $("#chain-status-icon").removeClass("fg-red fg-green fg-cyan")
     let chainStatusClass = "fg-cyan"
@@ -107,4 +109,14 @@ const updateBlockInfo = data => {
         chainStatusClass = "fg-red"
     }
     chainStatus.addClass(chainStatusClass)
+
+    $("#qrcode").clear()
+    new QRCode("qrcode", {
+        text: window.location.href,
+        width: 64,
+        height: 64,
+        colorDark : "#000000",
+        colorLight : "#ffffff",
+        correctLevel : QRCode.CorrectLevel.L
+    })
 }

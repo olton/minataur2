@@ -5,15 +5,20 @@ globalThis.wsController = (ws, res) => {
         case "welcome": {
             $(".live").show((el)=>$(el).css("display", "flex"))
             log(`Welcome to Minataur Server!`)
-            request("trans_info", {hash: transHash})
+            request("price")
             break
         }
         case "new_block": {
-            request("trans_info", {hash: transHash})
+            request("price")
             break
         }
         case "trans_info": {
             updateTransData(data)
+            break
+        }
+        case "price": {
+            globalThis.price = data
+            request("trans_info", {hash: transHash})
             break
         }
     }

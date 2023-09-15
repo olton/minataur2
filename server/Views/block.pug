@@ -11,26 +11,13 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
         section.container-fluid
             div.container
                 div.row
-                    div.cell-md-6
+                    div.cell-md-12
                         div.d-flex.flex-nowrap.flex-align-center.pt-4
                             div
                                 a.c-pointer.h2.mr-4(onclick="history.back()")
                                     span.mif-arrow-left
                                 span.h1 Block Info
-                    div.cell-md-6.pt-5
-                        div.row
-                            div.cell-9
-                                div.border.bd-default.p-2
-                                    div.text-small.text-muted.text-upper Parent Block
-                                    div.box-value2
-                                        span#parent-hash XXXXXX
-                            div.cell-3
-                                div.border.bd-default.p-2
-                                    div.text-small.text-muted.text-upper Distance
-                                    div.box-value2
-                                        span#blockchain-distance 0
-
-
+                            div.ml-auto#qrcode
 
         section.container-fluid.mt-4
             div.container
@@ -65,6 +52,31 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                                     span.mif-calendar
                                 div.text-small.text-muted.text-upper Block Date
                                 div.box-value2#block-date DD, Mon YYYY hh:mm
+
+                div
+                    div.row
+                        div.cell-md-6
+                            div.border.bd-default.p-2
+                                div.text-muted.pos-absolute(style="top: 4px; right: 4px; font-size: 28px;")
+                                    span.mif-backward
+                                div.text-small.text-muted.text-upper Parent Block
+                                div.box-value2
+                                    span#parent-hash XXXXXX
+                        div.cell-md-4
+                            div.border.bd-default.p-2
+                                div.text-muted.pos-absolute(style="top: 4px; right: 4px; font-size: 28px;")
+                                    span.mif-coins
+                                div.text-small.text-muted.text-upper Block Total Currency
+                                div.box-value2
+                                    span#blockchain-total-currency 0
+                        div.cell-md-2
+                            div.border.bd-default.p-2
+                                div.text-muted.pos-absolute(style="top: 4px; right: 4px; font-size: 28px;")
+                                    span.mif-arrow-up
+                                div.text-small.text-muted.text-upper Distance
+                                div.box-value2
+                                    span#blockchain-distance 0
+
 
         section.container-fluid.mt-4
             div.container
@@ -270,6 +282,9 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
             globalThis.blockHash = "!{hash}"
 
         include partials/_scripts
+
+        script
+            include vendor/qrcode/qrcode.min.js
 
         script
             include js/block/wsc.js
