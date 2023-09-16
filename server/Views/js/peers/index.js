@@ -1,5 +1,6 @@
 ;
 const updatePeers = (data) => {
+    console.log(data)
     const location = {}
 
     for(let l of data.location) {

@@ -6,6 +6,7 @@ mixin peers-table(tableId)
                     th.text-center: div #
                     th: div Peer ID
                     th: div Location
+                    th: div Organization
                     th: div Host
                     th: div Port
                     th(style="width: 30px;")
@@ -40,6 +41,9 @@ mixin peers-table(tableId)
                     </td>
                     <td class="">
                         <div class="">${loc[row.host].country}</div>
+                    </td>
+                    <td class="">
+                        <div class="">${loc[row.host].org}</div>
                     </td>
                     <td class="">
                         <div class="">${row.host}</div>
