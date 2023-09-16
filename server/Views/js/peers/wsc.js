@@ -9,8 +9,12 @@ globalThis.wsController = (ws, res) => {
             break
         }
         case "peers": {
-            updatePeers(data)
-            setTimeout(request, 60000, "peers")
+            if (data) {
+                updatePeers(data)
+                setTimeout(request, 60000, "peers")
+            } else {
+                setTimeout(request, 10000, "peers")
+            }
         }
     }
 }

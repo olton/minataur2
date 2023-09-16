@@ -1,7 +1,16 @@
 include mixins/_peers-table
 
 html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
-    include partials/_head
+    head
+        meta(charset="utf-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no")
+        link(rel='stylesheet', href='https://cdn.metroui.org.ua/v4-dev/css/metro-all.min.css')
+        link(rel='stylesheet', href='/css/index.css')
+        link(rel='stylesheet', href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css' integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="")
+
+        //include favicon
+
+        title= title
 
     body.m4-cloak
         include partials/_appbar
@@ -21,14 +30,21 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
 
         section.container-fluid
             div.container
+                div#map(style="height: 400px;")
+
+        section.container-fluid
+            div.container
                 +peers-table("peers-table")
 
         include partials/_footer
 
         include partials/_scripts
 
+        script(src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="")
+
         script
             include js/peers/wsc.js
             include js/peers/index.js
+            include js/peers/map.js
 
 

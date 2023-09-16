@@ -5,6 +5,7 @@ mixin peers-table(tableId)
                 tr
                     th.text-center: div #
                     th: div Peer ID
+                    th: div Location
                     th: div Host
                     th: div Port
                     th(style="width: 30px;")
@@ -16,7 +17,7 @@ mixin peers-table(tableId)
                             div(data-role="activity" data-type="bars" data-style="color")
 
     script.
-        ;const drawPeersTable = data => {
+        ;const drawPeersTable = (data, loc = []) => {
             const rows = []
 
             if (data.length === 0) {
@@ -36,6 +37,9 @@ mixin peers-table(tableId)
                     <td>
                         <span>${shorten(row.peerId, 12)}</span>
                         <span class="mif-copy copy-data-to-clipboard c-pointer ml-2" data-value="${row.peerId}"></span>
+                    </td>
+                    <td class="">
+                        <div class="">${loc[row.host].country}</div>
                     </td>
                     <td class="">
                         <div class="">${row.host}</div>
