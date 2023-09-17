@@ -33,7 +33,6 @@ query {
     accountCreationFee
   }
   runtimeConfig
-  fork_config
 }
 `
 
@@ -126,7 +125,6 @@ export const ql_get_runtime = async () => {
             new Error(`No runtime data!`)
         }
         result.data.runtimeConfig.ledger.accounts = null
-        result.data.fork_config.ledger.accounts = null
         return result.data
     } catch (e) {
         return null

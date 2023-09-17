@@ -288,7 +288,7 @@ export const db_get_trans_info = async hash => {
                b.chain_status
         from v_user_transactions t
         left join v_block_info b on b.id = t.block_id
-        where b.chain_status = 'canonical' and t.hash = $1
+        where t.hash = $1
     `
     const result = (await query(sql, [hash])).rows[0]
 
@@ -307,13 +307,13 @@ export const db_get_accounts = async ({
         from v_accounts
         where 1=1
         %ACCOUNT%
-        order by account_name
+        order by name
         limit $1 offset $2
     `
     sql = sql.replace("%ACCOUNT%", search ? `
     and (
-        account_key = '${search}'
-        or lower(account_name) like '%${search}%'
+        key = '${search}'
+        or lower(name) like '%${search}%'
     )
     ` : "")
     return (await query(sql, [limit, offset])).rows
@@ -330,8 +330,8 @@ export const db_get_accounts_count = async ({
     `
     sql = sql.replace("%ACCOUNT%", search ? `
     and (
-        account_key = '${search}'
-        or lower(account_name) like '%${search}%'
+        key = '${search}'
+        or lower(name) like '%${search}%'
     )
     ` : "")
     return (await query(sql)).rows[0].length

@@ -8,7 +8,7 @@ globalThis.wsController = (ws, res) => {
             request("account_info", {hash: accountHash})
             break
         }
-        case "accounts": {
+        case "account_info": {
             updateAccount(data)
             setTimeout(() => {
                 request("account_info", {hash: accountHash})

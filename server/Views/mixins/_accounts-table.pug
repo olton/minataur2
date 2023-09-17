@@ -10,9 +10,13 @@ mixin accounts-table(tableId)
                         div Account Key
                         div.text-small Name
 
-                    th(style="width: 220px;")
+                    th.text-right(style="width: 220px;")
                         div Balance
                         div.text-small MINA
+
+                    th.text-right(style="width: 220px;")
+                        div Balance
+                        div.text-small USD
 
                     th(style="width: 130px;")
                         div Account
@@ -36,24 +40,33 @@ mixin accounts-table(tableId)
             let index = 1
             for (let row of data) {
                 let tr
-                const [mina, dec] = (normMina(row.balance)+"").split(".")
+                const [mina, mina_dec = "0000"] = (normMina(row.balance)+"").split(".")
+                const [doll, doll_dec = "0000"] = ((row.balance / 10**9) * globalThis.price.current_price).toFixed(4).split(".")
 
                 tr = $("<tr>")
 
                 tr.html(`
                     <td class="text-center">
-                        <div class="${row.blocks_produced > 0 ? 'bg-blue' : ''} fg-white reduce-3 text-upper pl-1 pr-1">${row.blocks_produced > 0 ? 'VALIDATOR' : ''}</div>
+                        <div class="${row.blocks_produced > 0 ? 'bg-blue' : ''} fg-white reduce-3 text-upper pl-1 pr-1">${row.blocks_produced > 0 ? 'BLOCK PRODUCER' : ''}</div>
                     </td>
                     <td>
                         <div class="d-flex flex-row flex-nowrap flex-align-center">
-                            <a class="link" href="/account/${row.account_key}">${shorten(row.account_key, 14)}</a>
-                            <span title="Copy hash to clipboard" class="ml-1 reduce-1 mif-copy copy-data-to-clipboard c-pointer" data-value="${row.account_key}"></span>
+                            <a class="link" href="/account/${row.key}">${shorten(row.key, 14)}</a>
+                            <span title="Copy hash to clipboard" class="ml-1 reduce-1 mif-copy copy-data-to-clipboard c-pointer" data-value="${row.key}"></span>
                         </div>
-                        <div class="text-muted">${row.account_name}</div>
+                        <div class="text-muted">${row.name}</div>
                     </td>
-                    <td class="">
-                        <span class="enlarge-2 ${mina === "0" ? 'text-muted' : ''}">${num2fmt(mina, ",")}</span>
-                        <span class="text-muted reduce-1 ml-2-minus">${dec ? '.'+dec : ''}</span>
+                    <td class="text-right">
+                        <div>
+                            <span class="enlarge-2 ${mina === "0" ? 'text-muted' : ''}">${num2fmt(mina, ",")}</span>
+                            <span class="text-muted reduce-1 ml-2-minus">${mina_dec ? '.'+mina_dec : ''} mina</span>
+                        </div>
+                    </td>
+                    <td class="text-right">
+                        <div>
+                            <span class="enlarge-2 ${row.balance === 0 ? 'text-muted' : ''}">${num2fmt(doll, ",")}</span>
+                            <span class="text-muted reduce-1 ml-2-minus">${doll_dec ? '.'+doll_dec : ''} usd</span>
+                        </div>
                     </td>
                     <td>
                         <div class="">${row.timestamp ? datetime(+row.timestamp).format(config.format.datetime) : '<span class="text-muted">UNKNOWN</span>'}</div>

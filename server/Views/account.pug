@@ -7,12 +7,13 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
         section.container-fluid
             div.container
                 div.row
-                    div.cell-md-6
+                    div.cell-md-12
                         div.d-flex.flex-nowrap.flex-align-center.pt-4
                             div
                                 a.c-pointer.h2.mr-4(onclick="history.back()")
                                     span.mif-arrow-left
-                                span.h1 Account Info
+                                span.h1 Account
+                            div.ml-auto#qrcode
 
 
         section.container-fluid
@@ -24,6 +25,9 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
             globalThis.accountHash = "!{hash}"
 
         include partials/_scripts
+
+        script
+            include vendor/qrcode/qrcode.min.js
 
         script
             include js/account/wsc.js

@@ -114,6 +114,7 @@ export const create_websocket_server = (httpServer) => {
                     break
                 }
                 case "account_info": {
+                    response(ws, channel, {})
                     break
                 }
                 case "peers": {

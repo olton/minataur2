@@ -7,15 +7,18 @@ globalThis.wsController = (ws, res) => {
         case "welcome": {
             $(".live").show((el)=>$(el).css("display", "flex"))
             log(`Welcome to Minataur Server!`)
+            request("price")
+            break
+        }
+        case "price": {
+            globalThis.price = data
             request("accounts", createAccountsRequest())
             break
         }
         case "accounts": {
             updateAccountsTable(data)
             enableElements()
-            setTimeout(() => {
-                request("accounts", createAccountsRequest())
-            }, 60000)
+            setTimeout(request, 60000, "price")
             break
         }
     }

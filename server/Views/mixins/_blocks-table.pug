@@ -6,9 +6,14 @@ mixin blocks-table(tableId)
                     th.text-center(style="width: 30px;")
                         span.mif-link(style="display: block; top: 10px;")
 
-                    th(style="width: 100px")
+                    th(style="width: 30px")
                         span Height
                         div.text-small Timelapse
+
+                    th(style="width: 150px")
+                        soan Hash
+                        div.text-small Time
+
                     th
                         span Block Producer
                         div.text-small Name
@@ -37,9 +42,6 @@ mixin blocks-table(tableId)
                         span ZKAPP
                         div.text-small Trans
 
-                    th(style="width: 150px")
-                        soan Hash
-                        div.text-small Time
 
             tbody
                 tr
@@ -63,6 +65,11 @@ script.
                 <td>
                     <a class="link" href="/block/${row.hash}">${row.height}</a>
                     <div class="text-muted text-small">${timelapse === 'less a hour' ? '< hour' : timelapse}</div>
+                </td>
+                <td>
+                    <a class="link" href="/block/${row.hash}">${shorten(row.hash, 6)}</a>
+                    <span title="Copy hash to clipboard" class="reduce-1 mif-copy copy-data-to-clipboard c-pointer" data-value="${row.hash}"></span>
+                    <div class="text-muted text-small">${datetime(+row.timestamp).format(config.format.datetime)}</div>
                 </td>
                 <td>
                     <div class="d-flex flex-row flex-nowrap flex-align-center">
@@ -92,11 +99,6 @@ script.
                 </td>
                 <td class="text-center">
                     <span>${row.zkapp_trans_count}</span>
-                </td>
-                <td>
-                    <a class="link" href="/block/${row.hash}">${shorten(row.hash, 6)}</a>
-                    <span title="Copy hash to clipboard" class="reduce-1 mif-copy copy-data-to-clipboard c-pointer" data-value="${row.hash}"></span>
-                    <div class="text-muted text-small">${datetime(+row.timestamp).format(config.format.datetime)}</div>
                 </td>
             `)
 
