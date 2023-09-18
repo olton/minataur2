@@ -288,10 +288,10 @@ export const db_get_trans_info = async hash => {
                b.chain_status
         from v_user_transactions t
         left join v_block_info b on b.id = t.block_id
-        where t.hash = $1
+        where (b.chain_status = 'canonical' or b.chain_status = 'pending') and t.hash = $1
     `
     const result = (await query(sql, [hash])).rows[0]
-
+    console.log(sql, hash)
     result.memo = decodeMemo(result.memo)
 
     return result
@@ -337,3 +337,11 @@ export const db_get_accounts_count = async ({
     return (await query(sql)).rows[0].length
 }
 
+export const db_get_account_info = async key => {
+    const sql = `
+        select * 
+        from v_accounts a 
+        where a.key = $1         
+    `
+    return (await query(sql, [key])).rows[0]
+}

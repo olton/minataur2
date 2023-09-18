@@ -64,7 +64,7 @@ mixin accounts-table(tableId)
                     </td>
                     <td class="text-right">
                         <div>
-                            <span class="enlarge-2 ${row.balance === 0 ? 'text-muted' : ''}">${num2fmt(doll, ",")}</span>
+                            <span class="enlarge-2 ${doll === "0" ? 'text-muted' : ''}">${num2fmt(doll, ",")}</span>
                             <span class="text-muted reduce-1 ml-2-minus">${doll_dec ? '.'+doll_dec : ''} usd</span>
                         </div>
                     </td>

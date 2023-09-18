@@ -106,6 +106,87 @@ query MyQuery {
 }
 `;
 
+const qAccountInfo = `
+query MyQuery {
+  account(publicKey: "B62qnLVz8wM7MfJsuYbjFf4UWbwrUBEL5ZdawExxxFhnGXB6siqokyM") {
+    nonce
+    inferredNonce
+    receiptChainHash
+    delegate
+    votingFor
+    locked
+    index
+    zkappUri
+    provedState
+    tokenSymbol
+    leafHash
+    actionState
+    balance {
+      blockHeight
+      liquid
+      locked
+      stateHash
+      total
+      unknown
+    }
+    tokenId
+    token
+    stakingActive
+    verificationKey {
+      hash
+      verificationKey
+    }
+    zkappState
+    timing {
+      vestingPeriod
+      vestingIncrement
+      initialMinimumBalance
+      cliffTime
+      cliffAmount
+    }
+    publicKey
+    permissions {
+      setZkappUri
+      setVotingFor
+      setVerificationKey
+      setTokenSymbol
+      setTiming
+      setPermissions
+      setDelegate
+      send
+      receive
+      incrementNonce
+      editState
+      editActionState
+      access
+    }
+    delegators {
+      publicKey
+      balance {
+        blockHeight
+        liquid
+        locked
+        stateHash
+        total
+        unknown
+      }
+    }
+  }
+}
+`
+
+export const ql_get_account_info = async key => {
+    try {
+        let result = await fetchGraphQL(qAccountInfo, {publicKey: key})
+        if (!result.data) {
+            new Error(`No peers!`)
+        }
+        return result.data.account
+    } catch (e) {
+        return null
+    }
+}
+
 export const ql_get_peers = async () => {
     try {
         let result = await fetchGraphQL(qPeers)

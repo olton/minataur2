@@ -18,6 +18,64 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
 
         section.container-fluid
             div.container
+                div.row
+                    div.cell-lg-4
+                        div.border.bd-default.p-2
+                            div.text-muted.pos-absolute(style="top: 4px; right: 4px; font-size: 28px;")
+                                span.mif-barcode
+                            div.text-small.text-muted.text-upper Account Hash
+                            div.box-value2#account-hash XXXXXXX...XXXXXXX
+                    div.cell-lg-4
+                        div.border.bd-default.p-2
+                            div.text-muted.pos-absolute(style="top: 4px; right: 4px; font-size: 28px;")
+                                span.mif-apps
+                            div.text-small.text-muted.text-upper Created In Block
+                            div.box-value2#account-block XXXXXXX...XXXXXXX
+                    div.cell-md-4
+                        div.border.bd-default.p-2
+                            div.text-muted.pos-absolute(style="top: 4px; right: 4px; font-size: 28px;")
+                                span.mif-calendar
+                            div.text-small.text-muted.text-upper Creating Time
+                            div.box-value2#block-date DD, Mon YYYY hh:mm
+
+                div.row
+                    div.cell-lg-8
+                        div.border.bd-default.p-2
+                            table.table.row-border.row-hover
+                                tr
+                                    td.reduce-3 NAME
+                                    td: div.box-value4.flex-justify-end#account-name XXX
+                                tr
+                                    td.reduce-3 SITE
+                                    td: div.box-value4.flex-justify-end#account-site XXX
+                                tr
+                                    td.reduce-3 TELEGRAM
+                                    td: div.box-value4.flex-justify-end#account-telegram XXX
+                                tr
+                                    td.reduce-3 TWITTER
+                                    td: div.box-value4.flex-justify-end#account-twitter XXX
+                                tr
+                                    td.reduce-3 GITHUB
+                                    td: div.box-value4.flex-justify-end#account-github XXX
+                                tr
+                                    td.reduce-3 DISCORD
+                                    td: div.box-value4.flex-justify-end#account-discord XXX
+
+
+                    div.cell-lg-4
+                        div.border.bd-default.p-2.h-100.d-flex.flex-align-center.flex-column.flex-justify-center
+                            div#account-balance-locked(style="display: none;" title="Balance has locked amount!")
+                                span.mif-lock.mif-2x
+
+                            div#mina-rate.border.bd-default.text-center
+                                div.mt-2.reduce-4.text-muted.text-upper MINA/USD
+                                div.text-small.m-0#account-rate-usd 0.0
+
+                            div.text-small.text-muted.text-upper BALANCE MINA
+                            div.box-value.fg-darkViolet.m-0#account-balance 0.0
+                            hr
+                            div.text-small.text-muted.text-upper BALANCE USD
+                            div.box-value.fg-orange.m-0#account-balance-usd 0.0
 
         include partials/_footer
 

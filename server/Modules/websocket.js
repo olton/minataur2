@@ -1,5 +1,6 @@
 import WebSocket, {WebSocketServer} from "ws";
 import {
+    db_get_account_info,
     db_get_accounts,
     db_get_accounts_count,
     db_get_block_info, db_get_block_internal_commands,
@@ -8,7 +9,7 @@ import {
     db_get_blocks_count, db_get_trans_info, db_get_transactions, db_get_transactions_count,
     db_save_ip
 } from "./db.js";
-import {ql_get_pool} from "./graphql.js";
+import {ql_get_account_info, ql_get_pool} from "./graphql.js";
 
 export const create_websocket_server = (httpServer) => {
     globalThis.wss = new WebSocketServer({ server: httpServer })
@@ -114,7 +115,9 @@ export const create_websocket_server = (httpServer) => {
                     break
                 }
                 case "account_info": {
-                    response(ws, channel, {})
+                    const db = await db_get_account_info(data.hash)
+                    const ql = await ql_get_account_info(data.hash)
+                    response(ws, channel, {db, ql})
                     break
                 }
                 case "peers": {

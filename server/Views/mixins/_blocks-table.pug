@@ -73,7 +73,7 @@ script.
                 </td>
                 <td>
                     <div class="d-flex flex-row flex-nowrap flex-align-center">
-                        <a class="link" href="/address/${row.creator_key}">${shorten(row.creator_key, 12)}</a>
+                        <a class="link" href="/account/${row.creator_key}">${shorten(row.creator_key, 12)}</a>
                         <span title="Copy address to clipboard" class="ml-1 reduce-1 mif-copy copy-data-to-clipboard c-pointer" data-value="${row.creator_key}"></span>
                     </div>
                     <div class="text-muted text-small fg-violet">${row.creator_name || 'noname'}</div>
