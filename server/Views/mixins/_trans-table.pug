@@ -79,11 +79,11 @@ mixin trans-table(tableId)
                             </div>
                             <div>
                                 <div class="d-flex flex-row flex-nowrap flex-align-center">
-                                    <a data-role="hint" data-hint-text="${row.sender_name}" class="link" href="/address/${row.sender_key}">${shorten(row.sender_key, 12)}</a>
+                                    <a data-role="hint" data-hint-text="${row.sender_name}" class="link" href="/account/${row.sender_key}">${shorten(row.sender_key, 12)}</a>
                                     <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${row.sender_key}"></span>
                                 </div>
                                 <div class="d-flex flex-row flex-nowrap flex-align-center">
-                                    <a data-role="hint" data-hint-text="${row.receiver_name}" class="link" href="/address/${row.receiver_key}">${shorten(row.receiver_key, 12)}</a>
+                                    <a data-role="hint" data-hint-text="${row.receiver_name}" class="link" href="/account/${row.receiver_key}">${shorten(row.receiver_key, 12)}</a>
                                     <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${row.receiver_key}"></span>
                                 </div>
                             </div>

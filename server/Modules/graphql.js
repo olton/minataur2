@@ -107,8 +107,8 @@ query MyQuery {
 `;
 
 const qAccountInfo = `
-query MyQuery {
-  account(publicKey: "B62qnLVz8wM7MfJsuYbjFf4UWbwrUBEL5ZdawExxxFhnGXB6siqokyM") {
+query ($publicKey: String!) {
+  account(publicKey: $publicKey) {
     nonce
     inferredNonce
     receiptChainHash
@@ -179,7 +179,7 @@ export const ql_get_account_info = async key => {
     try {
         let result = await fetchGraphQL(qAccountInfo, {publicKey: key})
         if (!result.data) {
-            new Error(`No peers!`)
+            new Error(`No account data!`)
         }
         return result.data.account
     } catch (e) {

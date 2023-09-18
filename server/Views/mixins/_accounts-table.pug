@@ -18,9 +18,10 @@ mixin accounts-table(tableId)
                         div Balance
                         div.text-small USD
 
-                    th(style="width: 130px;")
+                    th(style="width: 200px;")
                         div Account
-                        div.text-small Created
+                        div.text-small Block
+
             tbody
                 tr
                     td.text-center(colspan="4")
@@ -69,6 +70,10 @@ mixin accounts-table(tableId)
                         </div>
                     </td>
                     <td>
+                        <div class="${row.block_hash ? '' : 'd-none'}">
+                            <a href="/block/${row.block_hash}" class="link">${shorten(row.block_hash, 8)}</a>
+                            <span class="mif-copy c-pointer copy-data-to-clipboard" data-value="${row.block_hash}"></span>
+                        </div>
                         <div class="">${row.timestamp ? datetime(+row.timestamp).format(config.format.datetime) : '<span class="text-muted">UNKNOWN</span>'}</div>
                     </td>
                 `)

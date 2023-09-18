@@ -1,3 +1,4 @@
+globalThis.UNKNOWN = `<span class="text-muted">UNKNOWN</span>`
 globalThis.SLOT_DURATION = 180000
 globalThis.EPOCH_DURATION = 1285200000
 globalThis.GENESIS_START = "2021-03-17 02:00:00.000000+02:00"
