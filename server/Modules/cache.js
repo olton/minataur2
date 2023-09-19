@@ -75,18 +75,17 @@ export const cache_runtime = async () => {
 
 export const cache_peers = async () => {
     const peers = (await ql_get_peers()).getPeers
-    const ips = []
+    const ips = new Set()
 
     peers.map(async p => {
         p.available = await testPort(p.libp2pPort, {host: p.host})
     })
 
     for(let p of peers) {
-        if (ips.includes(p.host)) continue
-        ips.push(p.host)
+        ips.add(p.host)
     }
 
-    const location = await ip_location_batch(ips)
+    const location = await ip_location_batch([...ips])
 
     cache.peers = {
         peers,

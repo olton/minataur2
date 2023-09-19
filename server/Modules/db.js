@@ -307,7 +307,7 @@ export const db_get_accounts = async ({
         from v_accounts
         where 1=1
         %ACCOUNT%
-        order by name
+        order by id
         limit $1 offset $2
     `
     sql = sql.replace("%ACCOUNT%", search ? `

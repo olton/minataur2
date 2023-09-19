@@ -18,6 +18,10 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
 
         section.container-fluid
             div.container
+
+                div.remark.alert#account-blockchain-alert(style="display: none")
+                    div Account not found in blockchain! Maybe the account has not been activated!
+
                 div.row
                     div.cell-lg-4
                         div.border.bd-default.p-2
@@ -80,12 +84,12 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                             div.row.w-100.mt-auto
                                 div.cell-6
                                     div.border.bd-default.p-2.text-center
-                                        div.text-small.text-muted.text-upper LIQUID MINA
-                                        div.box-value4.fg-cyan.flex-justify-center: span.reduce-1#balance-liquid 0
+                                        div.reduce-4.text-muted.text-upper MOVABLE MINA
+                                        div.box-value4.m-0.fg-cyan.flex-justify-center: span.reduce-1#balance-liquid 0
                                 div.cell-6
                                     div.border.bd-default.p-2.text-center
-                                        div.text-small.text-muted.text-upper LOCKED MINA
-                                        div.box-value4.fg-red.flex-justify-center: span.reduce-1#balance-locked 0
+                                        div.reduce-4.text-muted.text-upper LOCKED MINA
+                                        div.box-value4.m-0.fg-red.flex-justify-center: span.reduce-1#balance-locked 0
 
                 div.row
                     div.cell-lg-2
