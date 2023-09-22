@@ -278,6 +278,82 @@ export const db_get_transactions_count = async ({
     return (await query(sql, [Array.isArray(type) ? type : [type], Array.isArray(status) ? status : [status]])).rows[0].length
 }
 
+export const db_get_transactions_for_account = async ({
+                                              type = [USER_TRANS_TYPE.PAYMENT, USER_TRANS_TYPE.DELEGATION],
+                                              status = [TRANS_STATUS.APPLIED, TRANS_STATUS.FAILED],
+                                              limit = 50,
+                                              offset = 0,
+                                              account = null,
+                                              search = null
+                                          }) => {
+    let sql = `
+        select *
+        from v_user_transactions t
+        where chain_status = 'canonical' 
+        and (sender_id = $3 or receiver_id = $3)  
+        and command_type = ANY($1::user_command_type[])
+        and status = ANY($2::transaction_status[])
+        %BLOCK_HEIGHT%
+        %TRANS_PARTICIPANT%
+        %TRANS_HASH%
+        order by height desc, timestamp desc, nonce desc
+        limit $4 offset $5
+    `
+
+    sql = sql.replace("%BLOCK_HEIGHT%", search && search.block ? `and height = ${search.block}` : "")
+    sql = sql.replace("%TRANS_HASH%", search && search.hash ? `and hash = '${search.hash}'` : "")
+    sql = sql.replace("%TRANS_PARTICIPANT%", search && search.participant ? `
+    and (
+        sender_key = '${search.participant}'
+        or lower(sender_name) like '%${search.participant.toLowerCase()}%'
+        or receiver_key = '${search.participant}'
+        or lower(receiver_name) like '%${search.participant.toLowerCase()}%'
+    )
+    ` : "")
+
+    console.log(account, sql)
+
+    const result = (await query(sql, [Array.isArray(type) ? type : [type], Array.isArray(status) ? status : [status], account, limit, offset])).rows
+
+    for(let row of result) {
+        row.memo = decodeMemo(row.memo)
+    }
+
+    return result
+}
+
+export const db_get_transactions_count_for_account = async ({
+                                                    type = [USER_TRANS_TYPE.PAYMENT, USER_TRANS_TYPE.DELEGATION],
+                                                    status = [TRANS_STATUS.APPLIED, TRANS_STATUS.FAILED],
+                                                    account = null,
+                                                    search = null
+                                                }) => {
+    let sql = `
+        select count(*) as length
+        from v_user_transactions t
+        where chain_status = 'canonical'
+        and (sender_id = $3 or receiver_id = $3)  
+        and command_type = ANY($1::user_command_type[])
+        and status = ANY($2::transaction_status[])
+        %BLOCK_HEIGHT%
+        %TRANS_PARTICIPANT%
+        %TRANS_HASH%
+    `
+
+    sql = sql.replace("%BLOCK_HEIGHT%", search && search.block ? `and height = ${search.block}` : "")
+    sql = sql.replace("%TRANS_HASH%", search && search.hash ? `and hash = '${search.hash}'` : "")
+    sql = sql.replace("%TRANS_PARTICIPANT%", search && search.participant ? `
+    and (
+        sender_key = '${search.participant}'
+        or lower(sender_name) like '%${search.participant.toLowerCase()}%'
+        or receiver_key = '${search.participant}'
+        or lower(receiver_name) like '%${search.participant.toLowerCase()}%'
+    )
+    ` : "")
+
+    return (await query(sql, [Array.isArray(type) ? type : [type], Array.isArray(status) ? status : [status], account])).rows[0].length
+}
+
 export const db_get_trans_info = async hash => {
     const sql = `
         select t.*, 

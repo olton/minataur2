@@ -3,10 +3,16 @@ import {
     db_get_account_info,
     db_get_accounts,
     db_get_accounts_count,
-    db_get_block_info, db_get_block_internal_commands,
-    db_get_block_trans, db_get_block_zkapp_commands,
+    db_get_block_info,
+    db_get_block_internal_commands,
+    db_get_block_trans,
+    db_get_block_zkapp_commands,
     db_get_blocks,
-    db_get_blocks_count, db_get_trans_info, db_get_transactions, db_get_transactions_count,
+    db_get_blocks_count,
+    db_get_trans_info,
+    db_get_transactions,
+    db_get_transactions_count, db_get_transactions_count_for_account,
+    db_get_transactions_for_account,
     db_save_ip
 } from "./db.js";
 import {ql_get_account_info, ql_get_pool} from "./graphql.js";
@@ -118,6 +124,12 @@ export const create_websocket_server = (httpServer) => {
                     const db = await db_get_account_info(data.hash)
                     const ql = await ql_get_account_info(data.hash)
                     response(ws, channel, {db, ql})
+                    break
+                }
+                case "account_transactions": {
+                    const recordsData = await db_get_transactions_for_account({...data})
+                    const recordsCount = await db_get_transactions_count_for_account({...data})
+                    response(ws, channel, {rows: recordsData, length: recordsCount})
                     break
                 }
                 case "peers": {
