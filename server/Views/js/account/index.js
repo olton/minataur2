@@ -62,10 +62,10 @@ const updateAccount = data => {
 
 const updateAccountLedger = data => {
     console.log("ledger", data)
+    $("#account-delegators-staking").html(num2fmt(data.current_stake.delegators, ","))
+    $("#account-delegators-next").html(num2fmt(data.next_stake.delegators, ","))
 }
 
 const updateAccountDelegators = data => {
     console.log(data)
-    $("#account-delegators-staking").html(num2fmt(data.staking.length, ","))
-    $("#account-delegators-next").html(num2fmt(data.next.length, ","))
 }
