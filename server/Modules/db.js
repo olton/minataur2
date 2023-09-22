@@ -431,6 +431,19 @@ export const db_get_account_ledger = async (account_id, ledger = 'staking') => {
     return (await query(sql, [account_id])).rows[0]
 }
 
+export const db_get_account_stake = async (account_id, ledger = 'staking') => {
+    const sql = `
+        select 
+            delegate_key_id as account_id, 
+            sum(l.balance) as stake, 
+            count(*) as delegators
+        from v_ledger_${ledger} l
+        where delegate_key_id = $1
+        group by delegate_key_id
+    `
+    return (await query(sql, [account_id])).rows[0]
+}
+
 export const db_get_account_delegators = async (account_id, ledger = 'staking') => {
     const sql = `
         select *
