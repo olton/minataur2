@@ -1,5 +1,10 @@
 ;
 
+globalThis.ledger = {
+    staking: null,
+    next: null
+}
+
 const updateAccount = data => {
     console.log(data)
     const {db, ql} = data
@@ -53,4 +58,8 @@ const updateAccount = data => {
         colorLight : "#ffffff",
         correctLevel : QRCode.CorrectLevel.L
     })
+}
+
+const updateAccountLedger = data => {
+    console.log(data)
 }

@@ -1,4 +1,4 @@
-include mixins/_trans-table
+include mixins/_account-trans-table
 
 html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
     include partials/_head
@@ -143,6 +143,10 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                             a(href="#account-user-transactions"): span User Transactions
                         li
                             a(href="#account-blocks-producing"): span Blocks
+                        li.disabled
+                            a(href="#account-delegators-list"): span Delegators
+                        li.disabled
+                            a(href="#account-zkapp-commands"): span zkApp
 
                     div
                         div#account-user-transactions.pt-4

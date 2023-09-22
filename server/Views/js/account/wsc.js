@@ -17,11 +17,16 @@ globalThis.wsController = (ws, res) => {
             globalThis.accountID = data.db.id
             updateAccount(data)
             request("account_transactions", createTransRequest())
+            request("account_ledger", {account_id: accountID})
             setTimeout(request, 60000, "price")
             break
         }
         case "account_transactions": {
             updateTransTable(data)
+            break
+        }
+        case "account_ledger": {
+            updateAccountLedger(data)
             break
         }
     }

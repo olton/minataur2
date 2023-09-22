@@ -421,3 +421,12 @@ export const db_get_account_info = async key => {
     `
     return (await query(sql, [key])).rows[0]
 }
+
+export const db_get_account_ledger = async (account_id, ledger = 'staking') => {
+    const sql = `
+        select *
+        from v_ledger_${ledger}
+        where public_key_id = $1
+    `
+    return (await query(sql, [account_id])).rows[0]
+}
