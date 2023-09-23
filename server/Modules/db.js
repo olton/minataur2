@@ -380,7 +380,7 @@ export const db_get_accounts = async ({
 }) => {
     let sql = `
         select *
-        from v_accounts
+        from v_accounts a 
         where 1=1
         %ACCOUNT%
         order by id
@@ -390,6 +390,8 @@ export const db_get_accounts = async ({
     and (
         key = '${search}'
         or lower(name) like '%${search}%'
+        or delegate_key = '${search}'
+        or lower(delegate_name) like '%${search}%'
     )
     ` : "")
     return (await query(sql, [limit, offset])).rows
@@ -408,6 +410,8 @@ export const db_get_accounts_count = async ({
     and (
         key = '${search}'
         or lower(name) like '%${search}%'
+        or delegate_key = '${search}'
+        or lower(delegate_name) like '%${search}%'
     )
     ` : "")
     return (await query(sql)).rows[0].length
@@ -416,7 +420,7 @@ export const db_get_accounts_count = async ({
 export const db_get_account_info = async key => {
     const sql = `
         select * 
-        from v_accounts a 
+        from v_account_info a 
         where a.key = $1         
     `
     return (await query(sql, [key])).rows[0]

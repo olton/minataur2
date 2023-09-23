@@ -88,11 +88,13 @@ $("#pagination-top, #pagination-bottom").on("click", ".page-link", function(){
 const disableElements = () => {
     $("#pagination-top, #pagination-bottom").addClass("disabled")
     $("#reload-button").addClass("disabled")
+    showLoader()
 }
 
 const enableElements = () => {
     $("#pagination-top, #pagination-bottom").removeClass("disabled")
     $("#reload-button").removeClass("disabled")
+    closeLoader()
 }
 
 function transApplyRowsCount(selected){

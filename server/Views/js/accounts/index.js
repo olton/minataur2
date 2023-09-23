@@ -14,7 +14,10 @@ const createAccountsRequest = () => {
 }
 
 const updateAccountsTable = data => {
-    if (!data) return
+    if (!data) {
+        enableElements()
+        return
+    }
 
     Metro.pagination({
         target: "#pagination-top",
@@ -35,21 +38,21 @@ const updateAccountsTable = data => {
     const target = $("#accounts-table tbody").clear()
     const rows = drawAccountsTable(data.rows)
     rows.map( r => target.append(r) )
+    enableElements()
 }
 
 const disableElements = () => {
     $("#pagination-top, #pagination-bottom").addClass("disabled")
-    $("#reload-button").addClass("disabled")
+    showLoader()
 }
 
 const enableElements = () => {
     $("#pagination-top, #pagination-bottom").removeClass("disabled")
-    $("#reload-button").removeClass("disabled")
+    closeLoader()
 }
 
 function refreshAccountsTable(){
     if (globalThis.webSocket) {
-        console.log(`Reload blocks data`)
         disableElements()
         request('accounts', createAccountsRequest())
     }

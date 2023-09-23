@@ -17,7 +17,6 @@ globalThis.wsController = (ws, res) => {
         }
         case "accounts": {
             updateAccountsTable(data)
-            enableElements()
             setTimeout(request, 60000, "price")
             break
         }

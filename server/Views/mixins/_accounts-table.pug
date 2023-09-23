@@ -3,8 +3,7 @@ mixin accounts-table(tableId)
         table.table.data-table.row-border.monospace.row-hover.mt-2.mb-2(id=tableId)
             thead
                 tr
-                    th.text-center(style="width: 30px;")
-                        div Type
+                    th(style="width: 30px;")
 
                     th
                         div Account Key
@@ -18,13 +17,13 @@ mixin accounts-table(tableId)
                         div Balance
                         div.text-small USD
 
-                    th(style="width: 180px;")
-                        div Created
-                        div.text-small In Block
+                    th(style="width: 200px;")
+                        div Delegated
+                        div.text-small To Account
 
             tbody
                 tr
-                    td.text-center(colspan="4")
+                    td.text-center(colspan="5")
                         div.d-flex.flex-align-center.flex-justify-center
                             div(data-role="activity" data-type="bars" data-style="color")
 
@@ -41,40 +40,40 @@ mixin accounts-table(tableId)
             let index = 1
             for (let row of data) {
                 let tr
-                const [mina, mina_dec = "0000"] = (normMina(row.balance)+"").split(".")
-                const [doll, doll_dec = "0000"] = ((row.balance / 10**9) * globalThis.price.current_price).toFixed(4).split(".")
+                let [mina, mina_dec = "0000"] = (normMina(row.balance)+"").split(".")
+                let [doll, doll_dec = "0000"] = ((row.balance / 10**9) * globalThis.price.current_price).toFixed(4).split(".")
+
+                mina_dec = mina_dec.padEnd(9, "0")
 
                 tr = $("<tr>")
 
                 tr.html(`
-                    <td class="text-center">
-                        <div class="${row.blocks_produced > 0 ? 'bg-blue' : ''} fg-white reduce-3 text-upper pl-1 pr-1">${row.blocks_produced > 0 ? 'BLOCK PRODUCER' : ''}</div>
-                    </td>
+                    <td>&nbsp;</td>
                     <td>
                         <div class="d-flex flex-row flex-nowrap flex-align-center">
-                            <a class="link" href="/account/${row.key}">${shorten(row.key, 14)}</a>
+                            <a class="link" href="/account/${row.key}">${shorten(row.key, 10)}</a>
                             <span title="Copy hash to clipboard" class="ml-1 reduce-1 mif-copy copy-data-to-clipboard c-pointer" data-value="${row.key}"></span>
                         </div>
                         <div class="text-muted">${row.name}</div>
                     </td>
                     <td class="text-right">
                         <div>
-                            <span class="enlarge-2 ${mina === "0" ? 'text-muted' : ''}">${num2fmt(mina, ",")}</span>
-                            <span class="text-muted reduce-1 ml-2-minus">${mina_dec ? '.'+mina_dec : ''} mina</span>
+                            <span class="enlarge-2">${num2fmt(mina, ",")}</span>
+                            <span class="text-muted reduce-1 ml-2-minus">${mina_dec ? '.'+mina_dec : ''}</span>
                         </div>
                     </td>
                     <td class="text-right">
                         <div>
-                            <span class="enlarge-2 ${doll === "0" ? 'text-muted' : ''}">${num2fmt(doll, ",")}</span>
-                            <span class="text-muted reduce-1 ml-2-minus">${doll_dec ? '.'+doll_dec : ''} usd</span>
+                            <span class="enlarge-2">${num2fmt(doll, ",")}</span>
+                            <span class="text-muted reduce-1 ml-2-minus">${doll_dec ? '.'+doll_dec : ''}</span>
                         </div>
                     </td>
                     <td>
-                        <div class="${row.block_hash ? '' : 'd-none'}">
-                            <a href="/block/${row.block_hash}" class="link">${shorten(row.block_hash, 8)}</a>
-                            <span class="mif-copy c-pointer copy-data-to-clipboard" data-value="${row.block_hash}"></span>
+                        <div class="${row.delegate_key && row.delegate_key !== row.key ? 'd-flex' : 'd-none'} flex-row flex-nowrap flex-align-center">
+                            <a class="link" href="/account/${row.delegate_key}">${shorten(row.delegate_key, 10)}</a>
+                            <span title="Copy hash to clipboard" class="ml-1 reduce-1 mif-copy copy-data-to-clipboard c-pointer" data-value="${row.delegate_key}"></span>
                         </div>
-                        <div class="">${row.timestamp ? datetime(+row.timestamp).format(config.format.datetime) : '<span class="text-muted">UNKNOWN</span>'}</div>
+                        <div class="${row.delegate_key && row.delegate_key !== row.key ? 'd-block' : 'd-none'} text-muted">${row.delegate_name}</div>
                     </td>
                 `)
 
