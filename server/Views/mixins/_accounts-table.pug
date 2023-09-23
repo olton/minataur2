@@ -13,7 +13,7 @@ mixin accounts-table(tableId)
                         div Balance
                         div.text-small MINA
 
-                    th.text-right(style="width: 220px;")
+                    th.text-right(style="width: 160px;")
                         div Balance
                         div.text-small USD
 
@@ -57,13 +57,13 @@ mixin accounts-table(tableId)
                         <div class="text-muted">${row.name}</div>
                     </td>
                     <td class="text-right">
-                        <div>
+                        <div class="fg-cyan no-wrap">
                             <span class="enlarge-2">${num2fmt(mina, ",")}</span>
                             <span class="text-muted reduce-1 ml-2-minus">${mina_dec ? '.'+mina_dec : ''}</span>
                         </div>
                     </td>
                     <td class="text-right">
-                        <div>
+                        <div class="fg-orange no-wrap">
                             <span class="enlarge-2">${num2fmt(doll, ",")}</span>
                             <span class="text-muted reduce-1 ml-2-minus">${doll_dec ? '.'+doll_dec : ''}</span>
                         </div>
