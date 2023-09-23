@@ -70,8 +70,8 @@ body {
 }
 #mina-rate {
   position: absolute;
-  top: 4px;
-  left: 4px;
+  top: 0;
+  left: 0;
   padding: 0 8px 4px;
 }
 @media screen and (min-width: 768px) {

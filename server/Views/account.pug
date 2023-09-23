@@ -77,15 +77,16 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                             div#account-balance-locked(style="display: none;" title="Balance has locked amount!")
                                 span.mif-lock.mif-2x
 
-                            div#mina-rate.border.bd-default.text-center
+                            div#mina-rate.border-right.border-bottom.bd-default.text-center
                                 div.mt-2.reduce-4.text-muted.text-upper MINA/USD
                                 div.text-small.m-0#account-rate-usd 0.0
 
-                            div.mt-10.text-small.text-muted.text-upper BALANCE MINA
-                            div.box-value.fg-darkViolet.m-0#account-balance 0.0
-                            hr
-                            div.text-small.text-muted.text-upper BALANCE USD
-                            div.box-value.fg-orange.m-0#account-balance-usd 0.0
+                            div.d-flex.flex-column.flex-justify-center.flex-align-center.h-100.w-100
+                                div.text-small.text-muted.text-upper BALANCE MINA
+                                div.box-value.fg-darkViolet.m-0#account-balance 0.0
+                                hr
+                                div.text-small.text-muted.text-upper BALANCE USD
+                                div.box-value.fg-orange.m-0#account-balance-usd 0.0
 
                             div.row.w-100.mt-auto
                                 div.cell-6
@@ -96,6 +97,18 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                                     div.border.bd-default.p-2.text-center
                                         div.reduce-4.text-muted.text-upper LOCKED MINA
                                         div.box-value4.m-0.fg-red.flex-justify-center: span.reduce-1#balance-locked 0
+                                div.cell-12
+                                    div.border.bd-default.p-2.text-center
+                                        div.reduce-4.text-muted.text-upper.mb-1 UNLOCK MINA
+                                        div#cliff
+                                            div.box-value4.m-0.flex-justify-center
+                                                span.reduce-1#cliff-amount 0
+                                            div.ml-auto.box-value4.m-0.flex-justify-center
+                                                span.reduce-1#cliff-time 0
+                                        div#vesting
+                                            div.box-value4.m-0.fg-red.flex-justify-center
+                                                span#balance-unlock 0
+
 
                 div.row
                     div.cell-lg-2

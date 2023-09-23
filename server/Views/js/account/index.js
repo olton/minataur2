@@ -50,6 +50,27 @@ const updateAccount = data => {
     $("#account-delegators").html(ql ? num2fmt(ql.delegators.length, ",") : 0)
     $("#stake-delegated-to").html(ql ? ql.delegate === ql.publicKey ? "TO SELF" : `<a href="/account/${ql.delegate}">${shorten(ql.delegate, 12)}</a><span class="mif-copy ml-2 copy-date-to-clipboard" data-value="${ql.delegate}"></span>` : UNKNOWN)
 
+    const {cliff_time, cliff_amount, vesting_increment, vesting_period} = db
+    const genStart = datetime(HARD_FORK_START)
+    const nextTime = genStart.addSecond(cliff_time * (SLOT_DURATION/1000))
+
+    if (nextTime.time() > datetime().time()) {
+        $("#vesting").hide()
+        $("#cliff").show()
+        $(`#cliff-amount`).html(num2fmt(cliff_amount / 10 ** 9, ",") + '<span class="ml-1 text-muted text-small">mina</span>')
+        $(`#cliff-time`).html(nextTime.format(config.format.datetime))
+    } else {
+        $("#vesting").show()
+        $("#cliff").hide()
+        if (+vesting_increment) {
+            $("#balance-unlock").html(`
+                <span>Unlock <strong>${vesting_increment/10**9}</strong> each <strong>${vesting_period}</strong> slot(s)</span>
+            `)
+        } else {
+            $("#balance-unlock").html(`Nothing to unlock`)
+        }
+    }
+
     $("#qrcode").clear()
     new QRCode("qrcode", {
         text: window.location.href,
