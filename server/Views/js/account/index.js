@@ -26,6 +26,7 @@ const updateAccount = data => {
     $("#account-twitter").html(db && db.twitter || UNKNOWN)
     $("#account-github").html(db && db.github || UNKNOWN)
     $("#account-discord").html(db && db.discord || UNKNOWN)
+    $("#account-description").html(db && db.description || UNKNOWN)
 
     if (ql && +ql.balance.locked !== 0) {
         $("#account-balance-locked").show()
