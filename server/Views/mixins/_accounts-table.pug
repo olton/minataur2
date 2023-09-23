@@ -29,6 +29,7 @@ mixin accounts-table(tableId)
 
     script.
         ;const drawAccountsTable = data => {
+            console.log(data)
             const rows = []
 
             if (data.length === 0) {
@@ -48,7 +49,7 @@ mixin accounts-table(tableId)
                 tr = $("<tr>")
 
                 tr.html(`
-                    <td>&nbsp;</td>
+                    <td class="text-center">${row.locked ? "<span class='mif-lock'></span>" : ""}</td>
                     <td>
                         <div class="d-flex flex-row flex-nowrap flex-align-center">
                             <a class="link" href="/account/${row.key}">${shorten(row.key, 10)}</a>
