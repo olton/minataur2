@@ -48,7 +48,15 @@ const updateAccount = data => {
     $("#blocks-produced").html(db ? num2fmt(db.blocks_produced, ",") : 0)
     $("#blocks-produced-in-current-epoch").html(db ? num2fmt(db.blocks_produced_in_epoch, ",") : 0)
     $("#account-delegators").html(ql ? num2fmt(ql.delegators.length, ",") : 0)
-    $("#stake-delegated-to").html(ql ? ql.delegate === ql.publicKey ? "TO SELF" : `<a href="/account/${ql.delegate}">${shorten(ql.delegate, 12)}</a><span class="mif-copy ml-2 copy-date-to-clipboard" data-value="${ql.delegate}"></span>` : UNKNOWN)
+
+    if (ql && ql.delegate === ql.publicKey) {
+        $("#delegate-account").hide()
+        $("#stake-size").show()
+    } else {
+        $("#delegate-account").show()
+        $("#stake-size").hide()
+        $("#stake-delegated-to").html(ql ? ql.delegate === ql.publicKey ? "TO SELF" : `<a href="/account/${ql.delegate}">${shorten(ql.delegate, 12)}</a><span class="mif-copy ml-2 copy-date-to-clipboard" data-value="${ql.delegate}"></span>` : UNKNOWN)
+    }
 
     const {cliff_time, cliff_amount, vesting_increment, vesting_period} = db
     const genStart = datetime(HARD_FORK_START)
@@ -85,7 +93,9 @@ const updateAccount = data => {
 const updateAccountLedger = data => {
     console.log("ledger", data)
     $("#account-delegators-staking").html(data.current_stake ? num2fmt(data.current_stake.delegators, ",") : 0)
-    $("#account-delegators-next").html(data.current_stake ? num2fmt(data.next_stake.delegators, ",") : 0)
+    $("#account-delegators-next").html(data.next_stake ? num2fmt(data.next_stake.delegators, ",") : 0)
+    $("#stake-size-current").html(data.current_stake ? num2fmt(normMina(data.current_stake.stake), ",") : 0)
+    $("#stake-size-next").html(data.next_stake ? num2fmt(normMina(data.next_stake.stake), ",") : 0)
 }
 
 const updateAccountDelegators = data => {

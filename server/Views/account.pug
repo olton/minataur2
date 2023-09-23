@@ -106,7 +106,7 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                                             div.ml-auto.box-value4.m-0.flex-justify-center
                                                 span.reduce-1#cliff-time 0
                                         div#vesting
-                                            div.box-value4.m-0.fg-red.flex-justify-center
+                                            div.box-value4.m-0.flex-justify-center
                                                 span#balance-unlock 0
 
 
@@ -152,8 +152,16 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                                 span#account-delegators-next 0
                     div.cell-lg-4
                         div.border.bd-default.p-2
-                            div.text-small.text-muted.text-upper STAKE DELEGATED TO
-                            div.box-value4#stake-delegated-to XXXXXXX...XXXXXXX
+                            div#delegate-account
+                                div.text-small.text-muted.text-upper STAKE DELEGATED TO
+                                div.box-value4#stake-delegated-to XXXXXXX...XXXXXXX
+                            div#stake-size
+                                div.text-small.text-muted.text-upper STAKE SIZE MINA
+                                div.box-value4
+                                    span.reduce-4.text-muted CURR:
+                                    span#stake-size-current 0
+                                    span.reduce-4.text-muted.ml-auto NEXT:
+                                    span#stake-size-next 0
 
         section.container-fluid.mt-10
             div.container
