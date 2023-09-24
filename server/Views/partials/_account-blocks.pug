@@ -1,0 +1,35 @@
+div.row.flex-align-start.border.bd-default.ml-0.mr-0
+    div.cell-md-6
+        span.ml-1.text-muted.reduce-4.text-bold BLOCK STATE FILTER
+        div.mt-1-minus
+            input#block-status-pending(type="checkbox" checked data-cls-check="bg-cyan no-border" data-role="checkbox" data-caption="<span>Pending</span>")
+            input#block-status-canonical(type="checkbox" checked data-cls-check="bg-green no-border" data-role="checkbox" data-caption="<span>Canonical</span>")
+            input#block-status-orphaned(type="checkbox" checked data-cls-check="bg-red no-border" data-role="checkbox" data-caption="<span>Orphaned</span>")
+
+div.row.mt-2
+    div.cell-md-9
+        input#blocks-search(
+            data-role="input"
+            data-prepend="Search: "
+            placeholder="Enter block number, producer key or name, or block hash"
+            data-search-button="false"
+        )
+
+    div.cell-md-3
+        select(data-role="select" data-filter="false" data-prepend="Show rows: " data-on-change="blocksApplyRowsCount")
+            option(value="20") 20
+            option(value="50" selected) 50
+            option(value="100") 100
+
+div.row
+    div.cell-lg-6
+        div.mt-2#blocks-pagination-top
+    div.cell-lg-6.text-right-lg
+        span.ml-1.text-muted.reduce-4.text-bold RECORDS FOUND
+        div
+            span.ml-1.text-bold(style="font-size: 24px; line-height: 1")#found-blocks 0
+
+div.scroll-table-container.border.bd-default
+    +blocks-table("blocks-table")
+
+div.mt-4#blocks-pagination-bottom

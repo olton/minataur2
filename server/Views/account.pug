@@ -1,4 +1,5 @@
 include mixins/_account-trans-table
+include mixins/_blocks-table
 
 html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
     include partials/_head
@@ -169,58 +170,19 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                     ul(data-role="tabs" data-expand-point="md")
                         li
                             a(href="#account-user-transactions"): span User Transactions
-                        li
+                        li.active
                             a(href="#account-blocks-producing"): span Blocks
-                        li.disabled
+                        li
                             a(href="#account-delegators-list"): span Delegators
-                        li.disabled
+                        li
                             a(href="#account-zkapp-commands"): span zkApp
 
                     div
                         div#account-user-transactions.pt-4
-                            div.row.flex-align-start.border.bd-default.ml-0.mr-0
-                                div.cell-md-3
-                                    span.ml-1.text-muted.reduce-4.text-bold TRANSACTION TYPE
-                                    div.mt-1-minus
-                                        input#trans-type-payment(type="checkbox" checked data-cls-check="bg-cyan no-border" data-role="checkbox" data-caption="<span>Payment</span>")
-                                        input#trans-type-delegation(type="checkbox" checked data-cls-check="bg-pink no-border" data-role="checkbox" data-caption="<span>Delegation</span>")
+                            include partials/_account-transactions
 
-                                div.cell-md-3
-                                    span.ml-1.text-muted.reduce-4.text-bold TRANSACTION STATUS
-                                    div.mt-1-minus
-                                        input#trans-status-applied(type="checkbox" checked data-cls-check="bg-green no-border" data-role="checkbox" data-caption="<span>Applied</span>")
-                                        input#trans-status-failed(type="checkbox" checked data-cls-check="bg-red no-border" data-role="checkbox" data-caption="<span>Failed</span>")
-
-                            div.row.mt-2
-                                div.cell-md-9
-                                    input#trans-search(
-                                        data-role="input"
-                                        data-prepend="Search: "
-                                        placeholder="Enter block number, transaction participant key or name, or transaction hash"
-                                        data-search-button="false"
-                                    )
-
-                                div.cell-md-3
-                                    select(data-role="select" data-filter="false" data-prepend="Show rows: " data-on-change="transApplyRowsCount")
-                                        option(value="20") 20
-                                        option(value="50" selected) 50
-                                        option(value="100") 100
-
-                            div.row
-                                div.cell-lg-6
-                                    div.mt-2#transactions-pagination-top
-                                div.cell-lg-6.text-right-lg
-                                    span.ml-1.text-muted.reduce-4.text-bold RECORDS FOUND
-                                    div
-                                        span.ml-1.text-bold(style="font-size: 24px; line-height: 1")#found-trans 0
-
-                            div.scroll-table-container.border.bd-default
-                                +trans-table("trans-table")
-
-                            div.mt-4#transactions-pagination-bottom
-
-                        div#account-blocks-producing
-                            div Blocks
+                        div#account-blocks-producing.pt-4
+                            include partials/_account-blocks
 
         include partials/_footer
 
@@ -236,3 +198,4 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
             include js/account/wsc.js
             include js/account/index.js
             include js/account/transactions.js
+            include js/account/blocks.js

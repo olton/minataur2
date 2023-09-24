@@ -6,7 +6,6 @@ globalThis.ledger = {
 }
 
 const updateAccount = data => {
-    console.log(data)
     const {db, ql} = data
     const [mina = 0, dec_mina = 0] = (""+normMina(ql ? ql.balance.total : db.balance)).split(".")
     const [usd = 0, dec_usd = 0] = (""+(normMina(ql ? ql.balance.total : db.balance) * globalThis.price.current_price).toFixed(4)).split(".")
@@ -91,7 +90,6 @@ const updateAccount = data => {
 }
 
 const updateAccountLedger = data => {
-    console.log("ledger", data)
     $("#account-delegators-staking").html(data.current_stake ? num2fmt(data.current_stake.delegators, ",") : 0)
     $("#account-delegators-next").html(data.next_stake ? num2fmt(data.next_stake.delegators, ",") : 0)
     $("#stake-size-current").html(data.current_stake ? num2fmt(normMina(data.current_stake.stake), ",") : 0)

@@ -1,9 +1,8 @@
 ;
 globalThis.blocksOrder = ""
-globalThis.blocksLimit = +Metro.utils.getURIParameter(null, 'size') || 50
+globalThis.blocksLimit = 50
 globalThis.blocksSearch = ""
-globalThis.blocksPage = +Metro.utils.getURIParameter(null, 'page') || 1
-globalThis.searchThreshold = 500
+globalThis.blocksPage = 1
 
 const createBlockRequest = () => {
     const status = []
@@ -15,9 +14,9 @@ const createBlockRequest = () => {
         type: status,
         limit: blocksLimit,
         offset: blocksLimit * (blocksPage - 1),
+        account: accountID,
         search: blocksSearch ? {
             block: isNaN(+blocksSearch) ? null : +blocksSearch,
-            producer: isNaN(+blocksSearch) ? blocksSearch : null,
             hash: isNaN(+blocksSearch) ? blocksSearch : null,
             coinbase: !isNaN(+blocksSearch) ? +blocksSearch : null,
         } : null
@@ -28,14 +27,14 @@ const updateBlocksTable = (data) => {
     if (!data) return
 
     Metro.pagination({
-        target: "#pagination-top",
+        target: "#blocks-pagination-top",
         length: data.length,
         rows: blocksLimit,
         current: blocksPage
     })
 
     Metro.pagination({
-        target: "#pagination-bottom",
+        target: "#blocks-pagination-bottom",
         length: data.length,
         rows: blocksLimit,
         current: blocksPage
@@ -46,17 +45,17 @@ const updateBlocksTable = (data) => {
     const target = $("#blocks-table tbody").clear()
     const rows = drawBlocksTable(data.rows)
     rows.map( r => target.append(r) )
+    enableElements()
 }
 
 function refreshBlocksTable(){
     if (globalThis.webSocket) {
-        console.log(`Reload blocks data`)
         disableElements()
-        request('blocks', createBlockRequest())
+        request('account_blocks', createBlockRequest())
     }
 }
 
-$("#pagination-top, #pagination-bottom").on("click", ".page-link", function(){
+$("#blocks-pagination-top, #blocks-pagination-bottom").on("click", ".page-link", function(){
     const val = $(this).data("page")
     if (val === 'next') {
         blocksPage++
@@ -65,19 +64,8 @@ $("#pagination-top, #pagination-bottom").on("click", ".page-link", function(){
     } else {
         blocksPage = val
     }
-    history.pushState('', '', `/blockchain?page=${blocksPage}&size=${blocksLimit}`)
     refreshBlocksTable()
 })
-
-const disableElements = () => {
-    $("#pagination-top, #pagination-bottom").addClass("disabled")
-    $("#reload-button").addClass("disabled")
-}
-
-const enableElements = () => {
-    $("#pagination-top, #pagination-bottom").removeClass("disabled")
-    $("#reload-button").removeClass("disabled")
-}
 
 function blocksApplyRowsCount(selected){
     blocksLimit = +selected[0]

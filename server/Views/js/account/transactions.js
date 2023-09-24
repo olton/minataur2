@@ -88,10 +88,12 @@ $("#transactions-pagination-top, #transactions-pagination-bottom").on("click", "
 
 const disableElements = () => {
     $("#transactions-pagination-top, #transactions-pagination-bottom").addClass("disabled")
+    $("#blocks-pagination-top, #blocks-pagination-bottom").addClass("disabled")
 }
 
 const enableElements = () => {
     $("#transactions-pagination-top, #transactions-pagination-bottom").removeClass("disabled")
+    $("#blocks-pagination-top, #blocks-pagination-bottom").removeClass("disabled")
 }
 
 function transApplyRowsCount(selected){

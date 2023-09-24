@@ -116,7 +116,7 @@ export const db_get_blocks = async ({
     `
 
     sql = sql.replace("%BLOCK_SEARCH%", search && search.block ? `and height = ${search.block}` : "")
-    sql = sql.replace("%HASH_SEARCH%", search && search.hash ? `and (creator_key = '${search.hash}' or lower(creator_name) like '%${search.hash.toLowerCase()}%' or hash = '${search.hash}')` : "")
+    sql = sql.replace("%HASH_SEARCH%", search && search.hash ? `and (hash = 'creator_key = '${search.hash}' or lower(creator_name) like '%${search.hash.toLowerCase()}%' or hash = '${search.hash}')` : "")
     sql = sql.replace("%COINBASE_SEARCH%", search && !isNaN(search.coinbase) ? `and coinbase = ${search.coinbase}` : "")
 
     return (await query(sql, [Array.isArray(type) ? type : [type], limit, offset])).rows
@@ -311,8 +311,6 @@ export const db_get_transactions_for_account = async ({
     )
     ` : "")
 
-    console.log(account, sql)
-
     const result = (await query(sql, [Array.isArray(type) ? type : [type], Array.isArray(status) ? status : [status], account, limit, offset])).rows
 
     for(let row of result) {
@@ -455,4 +453,52 @@ export const db_get_account_delegators = async (account_id, ledger = 'staking') 
         where delegate_key_id = $1
     `
     return (await query(sql, [account_id])).rows
+}
+
+export const db_get_blocks_for_account = async ({
+    type = [CHAIN_STATUS.CANONICAL, CHAIN_STATUS.PENDING, CHAIN_STATUS.ORPHANED],
+    limit = 50,
+    offset = 0,
+    account = null,
+    search = null
+}) => {
+    let sql = `
+        select * 
+        from v_blocks b 
+        where creator_id = $2 and chain_status = ANY($1::chain_status_type[])
+        %BLOCK_SEARCH%
+        %HASH_SEARCH%
+        %COINBASE_SEARCH%
+        order by height desc
+        limit $3 offset $4        
+    `
+
+    sql = sql.replace("%BLOCK_SEARCH%", search && search.block ? `and height = ${search.block}` : "")
+    sql = sql.replace("%HASH_SEARCH%", search && search.hash ? `and hash = '${search.hash}'` : "")
+    sql = sql.replace("%COINBASE_SEARCH%", search && search.coinbase ? `and coinbase = ${search.coinbase}` : "")
+
+    console.log(sql)
+
+    return (await query(sql, [Array.isArray(type) ? type : [type], account, limit, offset])).rows
+}
+
+export const db_get_blocks_count_for_account = async ({
+    type = [CHAIN_STATUS.CANONICAL, CHAIN_STATUS.PENDING, CHAIN_STATUS.ORPHANED],
+    account = null,
+    search = null
+}) => {
+    let sql = `
+        select count(*) as length
+        from v_blocks b 
+        where creator_id = $2 and chain_status = ANY($1::chain_status_type[])
+        %BLOCK_SEARCH%
+        %HASH_SEARCH%
+        %COINBASE_SEARCH%
+    `
+
+    sql = sql.replace("%BLOCK_SEARCH%", search && search.block ? `and height = ${search.block}` : "")
+    sql = sql.replace("%HASH_SEARCH%", search && search.hash ? `and hash = '${search.hash}'` : "")
+    sql = sql.replace("%COINBASE_SEARCH%", search && search.coinbase ? `and coinbase = ${search.coinbase}` : "")
+
+    return (await query(sql, [Array.isArray(type) ? type : [type], account])).rows[0].length
 }

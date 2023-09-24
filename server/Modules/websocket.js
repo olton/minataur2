@@ -9,7 +9,7 @@ import {
     db_get_block_trans,
     db_get_block_zkapp_commands,
     db_get_blocks,
-    db_get_blocks_count,
+    db_get_blocks_count, db_get_blocks_count_for_account, db_get_blocks_for_account,
     db_get_trans_info,
     db_get_transactions,
     db_get_transactions_count, db_get_transactions_count_for_account,
@@ -130,6 +130,12 @@ export const create_websocket_server = (httpServer) => {
                 case "account_transactions": {
                     const recordsData = await db_get_transactions_for_account({...data})
                     const recordsCount = await db_get_transactions_count_for_account({...data})
+                    response(ws, channel, {rows: recordsData, length: recordsCount})
+                    break
+                }
+                case "account_blocks": {
+                    const recordsData = await db_get_blocks_for_account({...data})
+                    const recordsCount = await db_get_blocks_count_for_account({...data})
                     response(ws, channel, {rows: recordsData, length: recordsCount})
                     break
                 }
