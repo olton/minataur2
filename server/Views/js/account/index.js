@@ -90,12 +90,14 @@ const updateAccount = data => {
 }
 
 const updateAccountLedger = data => {
+    console.log(data)
     $("#account-delegators-staking").html(data.current_stake ? num2fmt(data.current_stake.delegators, ",") : 0)
     $("#account-delegators-next").html(data.next_stake ? num2fmt(data.next_stake.delegators, ",") : 0)
     $("#stake-size-current").html(data.current_stake ? num2fmt(normMina(data.current_stake.stake), ",") : 0)
     $("#stake-size-next").html(data.next_stake ? num2fmt(normMina(data.next_stake.stake), ",") : 0)
+    $("#account-voting-for2").html(data.staking ? shorten(data.staking.voting_for, 12) + `<span class="ml-2 mif-copy c-pointer copy-to-clipboard" data-value="${data.staking.voting_for}"></span>` : UNKNOWN)
 }
 
 const updateAccountDelegators = data => {
-    console.log(data)
+    // console.log(data)
 }

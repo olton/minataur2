@@ -126,7 +126,7 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                             div.box-value4#account-receipt-chain-hash XXXXX...XXXXX
                     div.cell-lg-4
                         div.border.bd-default.p-2
-                            div.text-small.text-muted.text-upper VOTING FOR
+                            div.text-small.text-muted.text-upper VOTING FOR (GRAPHQL)
                             div.box-value4#account-voting-for XXXXX...XXXXX
 
         section.container-fluid#account-produce-data
@@ -134,20 +134,17 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                 div.row
                     div.cell-lg-2
                         div.border.bd-default.p-2
-                            div.text-small.text-muted.text-upper POOL FEE
-                            div.box-value4#pool-fee 0
-                    div.cell-lg-2
-                        div.border.bd-default.p-2
                             div.text-small.text-muted.text-upper BLOCKS PRODUCED
-                            div.box-value4#blocks-produced 0
-                    div.cell-lg-2
-                        div.border.bd-default.p-2
-                            div.text-small.text-muted.text-upper BLOCKS IN CURRENT EPOCH
-                            div.box-value4#blocks-produced-in-current-epoch 0
-                    div.cell-lg-2
-                        div.border.bd-default.p-2
-                            div.text-small.text-muted.text-upper DELEGATORS
                             div.box-value4
+                                span.reduce-4.text-muted TOTAL:
+                                span#blocks-produced 0
+                                span.reduce-4.text-muted.ml-auto EPOCH:
+                                span#blocks-produced-in-current-epoch 0
+                    div.cell-lg-2
+                        div.border.bd-default.p-2
+                            div.text-small.text-muted.text-upper DELEGATORS IN EPOCH
+                            div.box-value4
+                                span.reduce-4.text-muted CURR:
                                 span#account-delegators-staking 0
                                 span.reduce-4.text-muted.ml-auto NEXT:
                                 span#account-delegators-next 0
@@ -163,6 +160,11 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                                     span#stake-size-current 0
                                     span.reduce-4.text-muted.ml-auto NEXT:
                                     span#stake-size-next 0
+                    div.cell-lg-4
+                        div.border.bd-default.p-2
+                            div.text-small.text-muted.text-upper VOTING FOR (LEDGER)
+                            div.box-value4#account-voting-for2 XXXXX...XXXXX
+
 
         section.container-fluid.mt-10
             div.container
