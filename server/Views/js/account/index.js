@@ -120,12 +120,12 @@ const updateAccountLedger = data => {
     $("#ledger-next-nonce").html(num2fmt(nvl(next.nonce, 0), ","))
     $("#ledger-staking-cliff-amount").html(num2fmt(normMina(nvl(staking.cliff_amount, 0)), ",") + `<span class="text-muted text-small ml-1">mina</span>`)
     $("#ledger-next-cliff-amount").html(num2fmt(normMina(nvl(next.cliff_amount, 0)), ",") + `<span class="text-muted text-small ml-1">mina</span>`)
-    $("#ledger-staking-cliff-time").html(cliffTimeStaking.format(config.format.datetime))
-    $("#ledger-next-cliff-time").html(cliffTimeNext.format(config.format.datetime))
-    $("#ledger-staking-vesting-period").html(staking.vesting_period)
-    $("#ledger-next-vesting-period").html(next.vesting_period)
-    $("#ledger-staking-vesting-increment").html(staking.vesting_increment)
-    $("#ledger-next-vesting-increment").html(next.vesting_increment)
+    $("#ledger-staking-cliff-time").html(staking.cliff_time ? cliffTimeStaking.format(config.format.datetime) : 'NONE')
+    $("#ledger-next-cliff-time").html(next.cliff_time ? cliffTimeNext.format(config.format.datetime) : 'NONE')
+    $("#ledger-staking-vesting-period").html(staking.vesting_period || 'NONE')
+    $("#ledger-next-vesting-period").html(next.vesting_period || 'NONE')
+    $("#ledger-staking-vesting-increment").html(staking.vesting_increment || 'NONE')
+    $("#ledger-next-vesting-increment").html(next.vesting_increment || 'NONE')
 }
 
 const updateAccountDelegators = data => {
