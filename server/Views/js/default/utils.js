@@ -41,3 +41,5 @@ const normMina = (nano = 0, type = "number") => {
 const num2fmt = (v, s = " ") => Number(v).format(0, null, s, ".")
 
 const clearText = ( str ) => (str + '').replace(/[<>="'*+?^${}()|[\]\\]/g, '').replace(/\u0000/g, '\\0')
+
+const nvl = (v, ifnull) => (typeof v === "undefined" || v === null) ? ifnull : v

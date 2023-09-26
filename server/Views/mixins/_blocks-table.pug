@@ -45,7 +45,7 @@ mixin blocks-table(tableId)
 
             tbody
                 tr
-                    td.text-center(colspan="8")
+                    td.text-center(colspan="10")
                         div.d-flex.flex-align-center.flex-justify-center
                             div(data-role="activity" data-type="bars" data-style="color")
 
@@ -53,6 +53,13 @@ mixin blocks-table(tableId)
 script.
     ;const drawBlocksTable = data => {
         const rows = []
+
+        if (data.length === 0) {
+            return [$("<tr>").html(`
+                <td colspan="10" class="text-center">Nothing to show</td>
+            `)]
+        }
+
 
         for (let row of data) {
             let tr = $("<tr>")
