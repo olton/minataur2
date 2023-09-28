@@ -1,13 +1,11 @@
 ;
 const updateRuntime = data => {
-    console.log(data)
     $("#version").html(data.version)
     $("#genesis-time").html(datetime(data.genesisConstants.genesisTimestamp).format(config.format.datetime))
     $("#coinbase").html(normMina(data.genesisConstants.coinbase) + '<span class="ml-2 reduce-4">mina</span>')
     $("#account-creation-fee").html(normMina(data.genesisConstants.accountCreationFee) + '<span class="ml-2 reduce-4">mina</span>')
 
     $("#runtime-ledger-name").html(data.runtimeConfig.ledger.name)
-    $("#runtime-ledger-hash").html(shorten(data.runtimeConfig.ledger.hash, 10) + `<span class="mif-copy copy-data-to-clipboard c-pointer ml-2" data-value="${data.runtimeConfig.ledger.hash}"></span>`)
 
     $("#runtime-genesis-delta").html(data.runtimeConfig.genesis.delta)
     $("#runtime-genesis-timestamp").html(datetime(data.runtimeConfig.genesis.genesis_state_timestamp).format(config.format.datetime))
