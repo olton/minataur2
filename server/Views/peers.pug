@@ -22,10 +22,15 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                         div.d-flex.flex-nowrap.flex-align-center.pt-4.w-100
                             div
                                 span.h1 Network Peers
-                            div.ml-auto
-                                span.ml-1.text-muted.reduce-4.text-bold RECORDS FOUND
-                                div
-                                    span.ml-1.text-bold(style="font-size: 24px; line-height: 1")#found-peers 0
+                            div.ml-auto.d-flex.border.bd-default
+                                div.ml-auto.p-1.text-center
+                                    span.ml-1.text-muted.reduce-4.text-bold ACTIVE
+                                    div
+                                        span.fg-green.ml-1.text-bold(style="font-size: 24px; line-height: 1")#active-peers 0
+                                div.border-left.bd-default.p-1.text-center
+                                    span.ml-1.text-muted.reduce-4.text-bold TOTAL
+                                    div
+                                        span.ml-1.text-bold(style="font-size: 24px; line-height: 1")#found-peers 0
 
 
         section.container-fluid

@@ -1,15 +1,19 @@
 ;
 const updatePeers = (data) => {
-    // console.log(data)
+    console.log(data)
     const location = {}
+    const available = data.peers.filter(r => r.available).length
 
-    for(let l of data.location) {
-        location[l.query] = l
+    if (data.location) {
+        for (let l of data.location) {
+            location[l.query] = l
+        }
+
+        addMapMarkers(location)
     }
 
-    addMapMarkers(location)
-
-    $("#found-peers").html(num2fmt(data.peers.length))
+    $("#found-peers").html(`${num2fmt(data.peers.length)}`)
+    $("#active-peers").html(`${num2fmt(available)}`)
 
     const target = $("#peers-table tbody").clear()
     const rows = drawPeersTable(data.peers, location)

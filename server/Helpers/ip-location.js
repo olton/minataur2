@@ -17,12 +17,16 @@ export const ip_location_one = async (ip) => {
 }
 
 export const ip_location_batch = async (ips) => {
-    const response = await fetch(`http://ip-api.com/batch?fields=61439`, {
-        method: "POST",
-        body: JSON.stringify(ips)
-    })
-    if (!response.ok) {
+    try {
+        const response = await fetch(`http://ip-api.com/batch?fields=61439`, {
+            method: "POST",
+            body: JSON.stringify(ips)
+        })
+        if (!response.ok) {
+            return null
+        }
+        return await response.json()
+    } catch (e) {
         return null
     }
-    return await response.json()
 }

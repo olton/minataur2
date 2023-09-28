@@ -6,11 +6,11 @@ mixin peers-table(tableId)
                     th.text-center: div #
                     th: div Peer ID
                     th: div Location
-                    th: div Organization
+                    th: div ISP
                     th: div Host
                     th: div Port
                     th(style="width: 30px;")
-                        div Available
+                        div Check
             tbody
                 tr
                     td.text-center(colspan="5")
@@ -23,7 +23,7 @@ mixin peers-table(tableId)
 
             if (data.length === 0) {
                 return [$("<tr>").html(`
-                    <td colspan="5" class="text-center">Nothing to show</td>
+                    <td colspan="7" class="text-center">Nothing to show</td>
                 `)]
             }
 
@@ -43,7 +43,7 @@ mixin peers-table(tableId)
                         <div class="">${loc[row.host].country}</div>
                     </td>
                     <td class="">
-                        <div class="">${loc[row.host].org}</div>
+                        <div class="">${loc[row.host].isp}</div>
                     </td>
                     <td class="">
                         <div class="">${row.host}</div>
