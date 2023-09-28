@@ -6,7 +6,7 @@
 
 # Support Me
 You can support me with donation MINA to address:
-> B62qmBGSuC68Hrw7UVaJBcmnmYGs4RQ2MVvhY8pNzdZ6nAqt5nP5tTs
+> B62qn7xfSA93rMAAfxze5DwrJEpa6251Y1dkDmsNjMkhnX2LvzsCp3w
 
 Or PayPal to address:
 > serhii@pimenov.com.ua
