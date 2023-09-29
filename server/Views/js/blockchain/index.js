@@ -15,6 +15,7 @@ const createBlockRequest = () => {
         type: status,
         limit: blocksLimit,
         offset: blocksLimit * (blocksPage - 1),
+        currentEpoch: $("#block-current-epoch").is(":checked"),
         search: blocksSearch ? {
             block: isNaN(+blocksSearch) ? null : +blocksSearch,
             producer: isNaN(+blocksSearch) ? blocksSearch : null,
@@ -84,7 +85,7 @@ function blocksApplyRowsCount(selected){
     refreshBlocksTable()
 }
 
-$("#block-status-pending, #block-status-canonical, #block-status-orphaned").on("click", () => {
+$("#block-status-pending, #block-status-canonical, #block-status-orphaned, #block-current-epoch").on("click", () => {
     refreshBlocksTable()
 })
 

@@ -102,12 +102,14 @@ export const db_get_blocks = async ({
                                     type = CHAIN_STATUS.CANONICAL,
                                     limit = 50,
                                     offset = 0,
+                                    currentEpoch = false,
                                     search = null
                                 } = {}) => {
     let sql = `
         select * 
         from v_blocks b 
         where chain_status = ANY($1::chain_status_type[])
+        %CURRENT_EPOCH%
         %BLOCK_SEARCH%
         %HASH_SEARCH%
         %COINBASE_SEARCH%
@@ -115,6 +117,7 @@ export const db_get_blocks = async ({
         limit $2 offset $3        
     `
 
+    sql = sql.replace("%CURRENT_EPOCH%", currentEpoch ? `and epoch_since_genesis = (select epoch_since_genesis from v_epoch)` : "")
     sql = sql.replace("%BLOCK_SEARCH%", search && search.block ? `and height = ${search.block}` : "")
     sql = sql.replace("%HASH_SEARCH%", search && search.hash ? `and (hash = 'creator_key = '${search.hash}' or lower(creator_name) like '%${search.hash.toLowerCase()}%' or hash = '${search.hash}')` : "")
     sql = sql.replace("%COINBASE_SEARCH%", search && !isNaN(search.coinbase) ? `and coinbase = ${search.coinbase}` : "")
@@ -124,17 +127,20 @@ export const db_get_blocks = async ({
 
 export const db_get_blocks_count = async ({
                                     type = CHAIN_STATUS.CANONICAL,
+                                    currentEpoch = false,
                                     search = null
                                 } = {}) => {
     let sql = `
         select count(*) as length
         from v_blocks b 
         where chain_status = ANY($1::chain_status_type[])
+        %CURRENT_EPOCH%
         %BLOCK_SEARCH%
         %HASH_SEARCH%
         %COINBASE_SEARCH%
     `
 
+    sql = sql.replace("%CURRENT_EPOCH%", currentEpoch ? `and epoch_since_genesis = (select epoch_since_genesis from v_epoch)` : "")
     sql = sql.replace("%BLOCK_SEARCH%", search && search.block ? `and height = ${search.block}` : "")
     sql = sql.replace("%HASH_SEARCH%", search && search.hash ? `and (creator_key = '${search.hash}' or lower(creator_name) like '%${search.hash.toLowerCase()}%' or hash = '${search.hash}')` : "")
     sql = sql.replace("%COINBASE_SEARCH%", search && !isNaN(search.coinbase) ? `and coinbase = ${search.coinbase}` : "")
@@ -460,12 +466,14 @@ export const db_get_blocks_for_account = async ({
     limit = 50,
     offset = 0,
     account = null,
+    currentEpoch = false,
     search = null
 }) => {
     let sql = `
         select * 
         from v_blocks b 
         where creator_id = $2 and chain_status = ANY($1::chain_status_type[])
+        %CURRENT_EPOCH%
         %BLOCK_SEARCH%
         %HASH_SEARCH%
         %COINBASE_SEARCH%
@@ -473,6 +481,7 @@ export const db_get_blocks_for_account = async ({
         limit $3 offset $4        
     `
 
+    sql = sql.replace("%CURRENT_EPOCH%", currentEpoch ? `and epoch_since_genesis = (select epoch_since_genesis from v_epoch)` : "")
     sql = sql.replace("%BLOCK_SEARCH%", search && search.block ? `and height = ${search.block}` : "")
     sql = sql.replace("%HASH_SEARCH%", search && search.hash ? `and hash = '${search.hash}'` : "")
     sql = sql.replace("%COINBASE_SEARCH%", search && search.coinbase ? `and coinbase = ${search.coinbase}` : "")
@@ -485,17 +494,20 @@ export const db_get_blocks_for_account = async ({
 export const db_get_blocks_count_for_account = async ({
     type = [CHAIN_STATUS.CANONICAL, CHAIN_STATUS.PENDING, CHAIN_STATUS.ORPHANED],
     account = null,
+    currentEpoch = false,
     search = null
 }) => {
     let sql = `
         select count(*) as length
         from v_blocks b 
         where creator_id = $2 and chain_status = ANY($1::chain_status_type[])
+        %CURRENT_EPOCH%
         %BLOCK_SEARCH%
         %HASH_SEARCH%
         %COINBASE_SEARCH%
     `
 
+    sql = sql.replace("%CURRENT_EPOCH%", currentEpoch ? `and epoch_since_genesis = (select epoch_since_genesis from v_epoch)` : "")
     sql = sql.replace("%BLOCK_SEARCH%", search && search.block ? `and height = ${search.block}` : "")
     sql = sql.replace("%HASH_SEARCH%", search && search.hash ? `and hash = '${search.hash}'` : "")
     sql = sql.replace("%COINBASE_SEARCH%", search && search.coinbase ? `and coinbase = ${search.coinbase}` : "")
