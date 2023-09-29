@@ -163,6 +163,7 @@ pool.on('error', (err, client) => {
         await client.query('BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED')
         await client.query(`delete from ledger where epoch_since_genesis = $1`, [args.epoch])
         for (let o of ledger) {
+            if (o.token !== "wSHV2S4qX9jFsLjQo8r1BsMLH2ZRKsZx6EJd1sbozGPieEC4Jf") continue
             await save(o)
             processed++
         }
