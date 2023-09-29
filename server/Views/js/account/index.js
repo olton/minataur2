@@ -99,33 +99,47 @@ const updateAccountLedger = data => {
     const staking = data.staking
     const next = data.next
 
-    const cliffTimeStaking = datetime(HARD_FORK_START).addSecond(staking.cliff_time * (SLOT_DURATION/1000))
-    const cliffTimeNext = datetime(HARD_FORK_START).addSecond(next.cliff_time * (SLOT_DURATION/1000))
+    if (staking) {
+        $("#staking-ledger").css("opacity", 1)
 
-    $("#ledger-staking-balance").html(num2fmt(normMina(nvl(staking.balance, 0)), ",") + `<span class="text-muted text-small ml-1">mina</span>`)
-    $("#ledger-next-balance").html(num2fmt(normMina(nvl(next.balance, 0)), ",") + `<span class="text-muted text-small ml-1">mina</span>`)
-    $("#ledger-staking-initial-minimum-balance").html(num2fmt(normMina(nvl(staking.initial_minimum_balance, 0)), ",") + `<span class="text-muted text-small ml-1">mina</span>`)
-    $("#ledger-next-initial-minimum-balance").html(num2fmt(normMina(nvl(next.initial_minimum_balance, 0)), ",") + `<span class="text-muted text-small ml-1">mina</span>`)
-    $("#ledger-staking-initial-balance").html(num2fmt(normMina(nvl(staking.initial_balance, 0)), ",") + `<span class="text-muted text-small ml-1">mina</span>`)
-    $("#ledger-next-initial-balance").html(num2fmt(normMina(nvl(next.initial_balance, 0)), ",") + `<span class="text-muted text-small ml-1">mina</span>`)
-    $("#ledger-staking-delegate-key").html(staking.delegate_key === accountHash ? `<span>TO SELF</span>` : `<a href="/account/${staking.delegate_key}">${shorten(staking.delegate_key, 12)}</a><span class="mif-copy ml-1 copy-data-to-clipboard" data-value="${staking.delegate_key}"></span>`)
-    $("#ledger-next-delegate-key").html(next.delegate_key === accountHash ? `<span>TO SELF</span>` : `<a href="/account/${next.delegate_key}">${shorten(next.delegate_key, 12)}</a><span class="mif-copy ml-1 copy-data-to-clipboard" data-value="${next.delegate_key}"></span>`)
-    $("#ledger-staking-receipt-chain-hash").html(staking.receipt_chain_hash ? shorten(staking.receipt_chain_hash, 12) + `<span class="mif-copy ml-1 copy-data-to-clipboard" data-value="${staking.receipt_chain_hash}"></span>` : '')
-    $("#ledger-next-receipt-chain-hash").html(next.receipt_chain_hash ? shorten(next.receipt_chain_hash, 12) + `<span class="mif-copy ml-1 copy-data-to-clipboard" data-value="${next.receipt_chain_hash}"></span>` : '')
-    $("#ledger-staking-voting-for").html(staking.voting_for ? shorten(staking.voting_for, 12) + `<span class="mif-copy ml-1 copy-data-to-clipboard" data-value="${staking.voting_for}"></span>` : '')
-    $("#ledger-next-voting-for").html(next.voting_for ? shorten(next.voting_for, 12) + `<span class="mif-copy ml-1 copy-data-to-clipboard" data-value="${next.voting_for}"></span>` : '')
-    $("#ledger-staking-token").html(staking.token ? shorten(staking.token, 12) + `<span class="mif-copy ml-1 copy-data-to-clipboard" data-value="${staking.token}"></span>` : '')
-    $("#ledger-next-token").html(next.token ? shorten(next.token, 12) + `<span class="mif-copy ml-1 copy-data-to-clipboard" data-value="${next.token}"></span>` : '')
-    $("#ledger-staking-nonce").html(num2fmt(nvl(staking.nonce, 0), ","))
-    $("#ledger-next-nonce").html(num2fmt(nvl(next.nonce, 0), ","))
-    $("#ledger-staking-cliff-amount").html(num2fmt(normMina(nvl(staking.cliff_amount, 0)), ",") + `<span class="text-muted text-small ml-1">mina</span>`)
-    $("#ledger-next-cliff-amount").html(num2fmt(normMina(nvl(next.cliff_amount, 0)), ",") + `<span class="text-muted text-small ml-1">mina</span>`)
-    $("#ledger-staking-cliff-time").html(staking.cliff_time ? cliffTimeStaking.format(config.format.datetime) : 'NONE')
-    $("#ledger-next-cliff-time").html(next.cliff_time ? cliffTimeNext.format(config.format.datetime) : 'NONE')
-    $("#ledger-staking-vesting-period").html(staking.vesting_period || 'NONE')
-    $("#ledger-next-vesting-period").html(next.vesting_period || 'NONE')
-    $("#ledger-staking-vesting-increment").html(staking.vesting_increment || 'NONE')
-    $("#ledger-next-vesting-increment").html(next.vesting_increment || 'NONE')
+        const cliffTimeStaking = datetime(HARD_FORK_START).addSecond(staking.cliff_time * (SLOT_DURATION / 1000))
+
+        $("#ledger-staking-balance").html(num2fmt(normMina(nvl(staking.balance, 0)), ",") + `<span class="text-muted text-small ml-1">mina</span>`)
+        $("#ledger-staking-initial-minimum-balance").html(num2fmt(normMina(nvl(staking.initial_minimum_balance, 0)), ",") + `<span class="text-muted text-small ml-1">mina</span>`)
+        $("#ledger-staking-initial-balance").html(num2fmt(normMina(nvl(staking.initial_balance, 0)), ",") + `<span class="text-muted text-small ml-1">mina</span>`)
+        $("#ledger-staking-delegate-key").html(staking.delegate_key === accountHash ? `<span>TO SELF</span>` : `<a href="/account/${staking.delegate_key}">${shorten(staking.delegate_key, 12)}</a><span class="mif-copy ml-1 copy-data-to-clipboard" data-value="${staking.delegate_key}"></span>`)
+        $("#ledger-staking-receipt-chain-hash").html(staking.receipt_chain_hash ? shorten(staking.receipt_chain_hash, 12) + `<span class="mif-copy ml-1 copy-data-to-clipboard" data-value="${staking.receipt_chain_hash}"></span>` : '')
+        $("#ledger-staking-voting-for").html(staking.voting_for ? shorten(staking.voting_for, 12) + `<span class="mif-copy ml-1 copy-data-to-clipboard" data-value="${staking.voting_for}"></span>` : '')
+        $("#ledger-staking-token").html(staking.token ? shorten(staking.token, 12) + `<span class="mif-copy ml-1 copy-data-to-clipboard" data-value="${staking.token}"></span>` : '')
+        $("#ledger-staking-nonce").html(num2fmt(nvl(staking.nonce, 0), ","))
+        $("#ledger-staking-cliff-amount").html(num2fmt(normMina(nvl(staking.cliff_amount, 0)), ",") + `<span class="text-muted text-small ml-1">mina</span>`)
+        $("#ledger-staking-cliff-time").html(staking.cliff_time ? cliffTimeStaking.format(config.format.datetime) : 'NONE')
+        $("#ledger-staking-vesting-period").html(staking.vesting_period || 'NONE')
+        $("#ledger-staking-vesting-increment").html(staking.vesting_increment || 'NONE')
+    } else {
+        $("#staking-ledger").css("opacity", .3)
+    }
+
+    if (next) {
+        $("#next-ledger").css("opacity", 1)
+
+        const cliffTimeNext = datetime(HARD_FORK_START).addSecond(next.cliff_time * (SLOT_DURATION / 1000))
+
+        $("#ledger-next-balance").html(num2fmt(normMina(nvl(next.balance, 0)), ",") + `<span class="text-muted text-small ml-1">mina</span>`)
+        $("#ledger-next-initial-minimum-balance").html(num2fmt(normMina(nvl(next.initial_minimum_balance, 0)), ",") + `<span class="text-muted text-small ml-1">mina</span>`)
+        $("#ledger-next-initial-balance").html(num2fmt(normMina(nvl(next.initial_balance, 0)), ",") + `<span class="text-muted text-small ml-1">mina</span>`)
+        $("#ledger-next-delegate-key").html(next.delegate_key === accountHash ? `<span>TO SELF</span>` : `<a href="/account/${next.delegate_key}">${shorten(next.delegate_key, 12)}</a><span class="mif-copy ml-1 copy-data-to-clipboard" data-value="${next.delegate_key}"></span>`)
+        $("#ledger-next-receipt-chain-hash").html(next.receipt_chain_hash ? shorten(next.receipt_chain_hash, 12) + `<span class="mif-copy ml-1 copy-data-to-clipboard" data-value="${next.receipt_chain_hash}"></span>` : '')
+        $("#ledger-next-voting-for").html(next.voting_for ? shorten(next.voting_for, 12) + `<span class="mif-copy ml-1 copy-data-to-clipboard" data-value="${next.voting_for}"></span>` : '')
+        $("#ledger-next-token").html(next.token ? shorten(next.token, 12) + `<span class="mif-copy ml-1 copy-data-to-clipboard" data-value="${next.token}"></span>` : '')
+        $("#ledger-next-nonce").html(num2fmt(nvl(next.nonce, 0), ","))
+        $("#ledger-next-cliff-amount").html(num2fmt(normMina(nvl(next.cliff_amount, 0)), ",") + `<span class="text-muted text-small ml-1">mina</span>`)
+        $("#ledger-next-cliff-time").html(next.cliff_time ? cliffTimeNext.format(config.format.datetime) : 'NONE')
+        $("#ledger-next-vesting-period").html(next.vesting_period || 'NONE')
+        $("#ledger-next-vesting-increment").html(next.vesting_increment || 'NONE')
+    } else {
+        $("#next-ledger").css("opacity", .3)
+    }
 }
 
 const updateAccountDelegators = data => {
