@@ -1,4 +1,5 @@
 ;
+globalThis.showError = true
 const updateBlockTransactions = data => {
     const target = $("#block-trans-table tbody").clear()
     const rows = drawBlockTransTable(data)
