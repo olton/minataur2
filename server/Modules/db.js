@@ -452,13 +452,42 @@ export const db_get_account_stake = async (account_id, ledger = 'staking') => {
     return (await query(sql, [account_id])).rows[0]
 }
 
-export const db_get_account_delegators = async (account_id, ledger = 'staking') => {
-    const sql = `
+export const db_get_account_delegators = async ({
+    account_id,
+    ledger = 'staking',
+    limit = 50,
+    offset = 0,
+    search = null
+}) => {
+    let sql = `
         select *
         from v_ledger_${ledger}
         where delegate_key_id = $1
+        %HASH_SEARCH%
+        order by balance desc
+        limit $2 offset $3
     `
-    return (await query(sql, [account_id])).rows
+
+    sql = sql.replace("%HASH_SEARCH%", search && search.hash ? `and account_key = '${search.hash}'` : "")
+
+    return (await query(sql, [account_id, limit, offset])).rows
+}
+
+export const db_get_account_delegators_count = async ({
+    account_id,
+    ledger = 'staking',
+    search = null
+}) => {
+    let sql = `
+        select count(*) as length
+        from v_ledger_${ledger}
+        where delegate_key_id = $1
+        %HASH_SEARCH%
+    `
+
+    sql = sql.replace("%HASH_SEARCH%", search && search.hash ? `and account_key = '${search.hash}'` : "")
+
+    return (await query(sql, [account_id])).rows[0].length
 }
 
 export const db_get_blocks_for_account = async ({

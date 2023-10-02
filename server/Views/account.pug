@@ -1,5 +1,6 @@
 include mixins/_account-trans-table
 include mixins/_blocks-table
+include mixins/_delegators-table
 
 html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
     include partials/_head
@@ -182,7 +183,7 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                             a(href="#account-blocks-producing"): span Blocks
                         li
                             a(href="#account-delegators-list"): span Delegators
-                        li
+                        li.disabled
                             a(href="#account-zkapp-commands"): span zkApp
                         li
                             a(href="#account-ledger-data"): span Ledger
@@ -196,6 +197,9 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
 
                         div#account-ledger-data.pt-4
                             include partials/_account-ledger
+
+                        div#account-delegators-list.pt-4
+                            include partials/_account-delegators
 
         include partials/_footer
 
@@ -212,3 +216,4 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
             include js/account/index.js
             include js/account/transactions.js
             include js/account/blocks.js
+            include js/account/delegators.js

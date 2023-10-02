@@ -64,7 +64,7 @@ pool.on('error', (err, client) => {
                 key_id = res.rows[0].id
             }
 
-            if (pk !== delegate) {
+            if (delegate && pk !== delegate) {
                 res = await client.query(`select id from public_keys where value = $1`, [delegate])
                 delegate_key_id = !res.rows.length || !isset(res.rows[0].id, true) ? false : res.rows[0].id
                 if (!delegate_key_id) {

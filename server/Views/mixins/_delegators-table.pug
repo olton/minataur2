@@ -1,0 +1,76 @@
+mixin delegators-table(tableId)
+    div.scroll-table-container
+        table.table.data-table.row-border.monospace.row-hover.mt-2.mb-2(id=tableId)
+            thead
+                tr
+                    th(style="width: 30px;")
+
+                    th
+                        div Account Key
+                        div.text-small Name
+
+                    th.text-right(style="width: 220px;")
+                        div Balance
+                        div.text-small MINA
+
+                    th.text-right(style="width: 160px;")
+                        div Balance
+                        div.text-small USD
+
+            tbody
+                tr
+                    td.text-center(colspan="4")
+                        div.d-flex.flex-align-center.flex-justify-center
+                            div(data-role="activity" data-type="bars" data-style="color")
+
+    script.
+        ;const drawDelegatorsTable = data => {
+            const rows = []
+
+            if (data.length === 0) {
+                return [$("<tr>").html(`
+                    <td colspan="4" class="text-center">Nothing to show</td>
+                `)]
+            }
+
+            let index = 1
+            for (let row of data) {
+                const locked = row.cliff_amount && +row.cliff_amount > 0
+                let tr
+                let [mina, mina_dec = "0000"] = (normMina(row.balance)+"").split(".")
+                let [doll, doll_dec = "0000"] = ((row.balance / 10**9) * globalThis.price.current_price).toFixed(4).split(".")
+
+                mina_dec = mina_dec.padEnd(9, "0")
+
+                tr = $("<tr>")
+
+                tr.html(`
+                    <td class="text-center">${locked ? "<span class='mif-lock'></span>" : ""}</td>
+                    <td>
+                        <div class="d-flex flex-row flex-nowrap flex-align-center">
+                            <a class="link" href="/account/${row.account_key}">${shorten(row.account_key, 10)}</a>
+                            <span title="Copy hash to clipboard" class="ml-1 reduce-1 mif-copy copy-data-to-clipboard c-pointer" data-value="${row.account_key}"></span>
+                        </div>
+                        <div class="text-muted">${row.name}</div>
+                    </td>
+                    <td class="text-right">
+                        <div class="fg-cyan no-wrap">
+                            <span class="enlarge-2">${num2fmt(mina, ",")}</span>
+                            <span class="text-muted reduce-1 ml-2-minus">${mina_dec ? '.'+mina_dec : ''}</span>
+                        </div>
+                    </td>
+                    <td class="text-right">
+                        <div class="fg-orange no-wrap">
+                            <span class="enlarge-2">${num2fmt(doll, ",")}</span>
+                            <span class="text-muted reduce-1 ml-2-minus">${doll_dec ? '.'+doll_dec : ''}</span>
+                        </div>
+                    </td>
+                `)
+
+                rows.push(tr)
+
+                index++
+            }
+
+            return rows
+        }

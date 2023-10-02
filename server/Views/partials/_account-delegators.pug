@@ -1,0 +1,34 @@
+div.row.flex-align-start.border.bd-default.ml-0.mr-0
+    div.cell-md-6
+        span.ml-1.text-muted.reduce-4.text-bold LEDGER TYPE
+        div.mt-1-minus
+            input(type="radio" name="delegators-ledger" value="staking" checked data-cls-check="bg-cyan no-border" data-role="radio" data-caption="<span>Staking Ledger</span>")
+            input(type="radio" name="delegators-ledger" value="next" data-cls-check="bg-orange no-border" data-role="radio" data-caption="<span>Next Ledger</span>")
+
+div.row.mt-2
+    div.cell-md-9
+        input#blocks-search(
+            data-role="input"
+            data-prepend="Search: "
+            placeholder="Enter delegator key"
+            data-search-button="false"
+        )
+
+    div.cell-md-3
+        select(data-role="select" data-filter="false" data-prepend="Show rows: " data-on-change="delegatorsApplyRowsCount")
+            option(value="20") 20
+            option(value="50" selected) 50
+            option(value="100") 100
+
+div.row
+    div.cell-lg-6
+        div.mt-2#delegators-pagination-top
+    div.cell-lg-6.text-right-lg
+        span.ml-1.text-muted.reduce-4.text-bold RECORDS FOUND
+        div
+            span.ml-1.text-bold(style="font-size: 24px; line-height: 1")#found-delegators 0
+
+div.scroll-table-container.border.bd-default
+    +delegators-table("delegators-table")
+
+div.mt-4#delegators-pagination-bottom

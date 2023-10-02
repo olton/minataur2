@@ -1,6 +1,6 @@
 import WebSocket, {WebSocketServer} from "ws";
 import {
-    db_get_account_delegators,
+    db_get_account_delegators, db_get_account_delegators_count,
     db_get_account_info, db_get_account_ledger, db_get_account_stake,
     db_get_accounts,
     db_get_accounts_count,
@@ -148,9 +148,9 @@ export const create_websocket_server = (httpServer) => {
                     break
                 }
                 case "account_delegators": {
-                    const staking = await db_get_account_delegators(data.account_id, 'staking')
-                    const next = await db_get_account_delegators(data.account_id, 'next')
-                    response(ws, channel, {staking, next})
+                    const rows = await db_get_account_delegators({...data})
+                    const length = await db_get_account_delegators_count({...data})
+                    response(ws, channel, {rows, length})
                     break
                 }
                 case "peers": {
