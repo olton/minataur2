@@ -1,4 +1,5 @@
 ;
+globalThis.showError = false
 
 const updateTransData = data => {
     let {
@@ -17,7 +18,7 @@ const updateTransData = data => {
     $("#chain-status").html(chain_status)
 
     $("#trans-type").html(command_type)
-    $("#trans-hash").html(`${shorten(hash, 10)} <span title="Copy hash to clipboard" data-value="${hash}" class="ml-2 mif-copy copy-data-to-clipboard c-pointer"></span>`)
+    $("#trans-hash").html(`${shorten(hash, 10)} <span title="Copy hash to clipboard" data-value="${hash}" class="ml-2 mif-copy copy-data-to-clipboard c-pointer"></span><span data-value="${hash}" class="mif-qrcode ml-2 c-pointer"></span>`)
     $("#trans-sender").html(`<a href="/account/${sender_key}">${shorten(sender_key, 10)}</a> <span title="Copy hash to clipboard" data-value="${sender_key}" class="ml-2 mif-copy copy-data-to-clipboard c-pointer"></span>`)
     $("#trans-sender-name").html(sender_name)
     $("#trans-receiver").html(`<a href="/account/${receiver_key}">${shorten(receiver_key, 10)}</a> <span title="Copy hash to clipboard" data-value="${receiver_key}" class="ml-2 mif-copy copy-data-to-clipboard c-pointer"></span>`)
@@ -68,4 +69,11 @@ const updateTransData = data => {
         colorLight : "#ffffff",
         correctLevel : QRCode.CorrectLevel.L
     })
+}
+
+const updateBlockTrans = (data) => {
+    console.log(data)
+    const target = $("#block-trans-table tbody").clear()
+    const rows = drawBlockTransTable(data)
+    rows.map( r => target.append(r) )
 }

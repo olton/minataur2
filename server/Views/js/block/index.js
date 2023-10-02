@@ -64,7 +64,7 @@ const updateBlockInfo = data => {
 
     $("#block-height").html(num2fmt(height))
     $("#block-version").html(`v${version}`)
-    $("#block-hash").html(`${shorten(hash, 10)} <span title="Copy hash to clipboard" data-value="${hash}" class="ml-2 mif-copy copy-data-to-clipboard c-pointer"></span>`)
+    $("#block-hash").html(`${shorten(hash, 10)} <span title="Copy hash to clipboard" data-value="${hash}" class="ml-2 mif-copy copy-data-to-clipboard c-pointer"></span><span data-value="${hash}" class="mif-qrcode ml-2 c-pointer"></span>`)
     $("#block-date").html(datetime(+timestamp).format(config.format.datetime))
     $("#chain-status").html(chain_status)
     $("#block-coinbase").html(coinbase/10**9)

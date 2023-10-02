@@ -1,3 +1,5 @@
+include mixins/_block-trans
+
 html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
     include partials/_head
 
@@ -85,14 +87,14 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                 div.row
                     div.cell-lg-6
                         div.d-flex.flex-column.flex-align-center.flex-justify-center.border.bd-default.p-10
-                            div.text-small.text-muted.text-upper AMOUNT
+                            div.text-leader2.text-muted.text-upper AMOUNT
                             div.h1.monospace.m-0.fg-darkViolet#trans-amount 0
                             div.text-small.text-muted.text-upper MINA
                             div.text-leader2#trans-amount-usd 0
 
                     div.cell-lg-6
                         div.d-flex.flex-column.flex-align-center.flex-justify-center.border.bd-default.p-10
-                            div.text-small.text-muted.text-upper FEE
+                            div.text-leader2.text-muted.text-upper FEE
                             div.h1.monospace.m-0.fg-cyan#trans-fee 0
                             div.text-small.text-muted.text-upper MINA
                             div.text-leader2#trans-fee-usd 0
@@ -124,7 +126,7 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                                 div#block-height-icon.text-muted.pos-absolute(style="top: 4px; right: 4px; font-size: 28px;")
                                     span.mif-satellite
                                 div.text-small.text-muted.text-upper Block Height
-                                div.box-value2
+                                div.box-value4
                                     span#block-height 0
                                     span.reduce-4.ml-auto#block-version 0.0.0
 
@@ -133,22 +135,28 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                                 div#chain-status-icon.pos-absolute(style="top: 4px; right: 4px; font-size: 28px;")
                                     span.mif-stop
                                 div.text-small.text-muted.text-upper Chain Status
-                                div.box-value2#chain-status XXXXXXXX
+                                div.box-value4#chain-status XXXXXXXX
 
                         div.cell-md-5
                             div.border.bd-default.p-2
                                 div#block-hash-icon.text-muted.pos-absolute(style="top: 4px; right: 4px; font-size: 28px;")
                                     span.mif-barcode
                                 div.text-small.text-muted.text-upper Block Hash
-                                div.box-value2#block-hash XXXXXXXXXX...XXXXXXXXXX
+                                div.box-value4#block-hash XXXXXXXXXX...XXXXXXXXXX
 
                         div.cell-md-3
                             div.border.bd-default.p-2
                                 div#block-date-icon.text-muted.pos-absolute(style="top: 4px; right: 4px; font-size: 28px;")
                                     span.mif-calendar
                                 div.text-small.text-muted.text-upper Block Date
-                                div.box-value2#block-date DD, Mon YYYY hh:mm
+                                div.box-value4#block-date DD, Mon YYYY hh:mm
 
+                div.mt-10
+                    h2.text-light Transactions in block
+                    div
+                        +block-trans-table("block-trans-table")
+
+        section.mb-10
 
         include partials/_footer
 
@@ -156,9 +164,6 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
             globalThis.transHash = "!{hash}"
 
         include partials/_scripts
-
-        script
-            include vendor/qrcode/qrcode.min.js
 
         script
             include js/transaction/wsc.js

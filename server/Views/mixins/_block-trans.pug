@@ -77,7 +77,7 @@ mixin block-trans-table(tableId)
 
                 rows.push(tr)
 
-                if (row.status === 'failed') {
+                if (showError && row.status === 'failed') {
                     tr = $("<tr>").addClass('bg-light')
                     tr.html(`
                         <td>

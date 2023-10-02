@@ -10,7 +10,7 @@ const updateAccount = data => {
     const [mina = 0, dec_mina = 0] = (""+normMina(ql ? ql.balance.total : db.balance)).split(".")
     const [usd = 0, dec_usd = 0] = (""+(normMina(ql ? ql.balance.total : db.balance) * globalThis.price.current_price).toFixed(4)).split(".")
 
-    $("#account-hash").html(shorten(db && db.key || ql.publicKey, 12) + `<span class="reduce-1 ml-1 mif-copy c-pointer copy-data-to-clipboard" data-value="${db && db.key || ql.publicKey}"></span>`)
+    $("#account-hash").html(shorten(db && db.key || ql.publicKey, 12) + `<span class="reduce-1 ml-1 mif-copy c-pointer copy-data-to-clipboard" data-value="${db && db.key || ql.publicKey}"></span> <span data-value="${db && db.key || ql.publicKey}" class="mif-qrcode ml-2 c-pointer"></span>`)
     $("#account-block").html(db.block_hash ? `<a href="${db.block_hash ? '/block/'+db.block_hash : '#'}">${shorten(db.block_hash, 12)}</a>` + `<span class="reduce-1 ml-1 mif-copy c-pointer copy-data-to-clipboard" data-value="${db.block_hash}"></span>` : UNKNOWN)
     $("#block-date").html(db && db.timestamp ? datetime(+db.timestamp).format(config.format.datetime) : UNKNOWN)
     $("#account-balance").html(num2fmt(mina, ",") + `<span class="reduce-2 text-muted">.${dec_mina}</span>`)
@@ -89,7 +89,6 @@ const updateAccount = data => {
 }
 
 const updateAccountLedger = data => {
-    console.log(data)
     $("#account-delegators-staking").html(data.current_stake ? num2fmt(data.current_stake.delegators, ",") : 0)
     $("#account-delegators-next").html(data.next_stake ? num2fmt(data.next_stake.delegators, ",") : 0)
     $("#stake-size-current").html(data.current_stake ? num2fmt(normMina(data.current_stake.stake), ",") : 0)

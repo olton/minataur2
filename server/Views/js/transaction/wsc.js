@@ -14,11 +14,16 @@ globalThis.wsController = (ws, res) => {
         }
         case "trans_info": {
             updateTransData(data)
+            request("block_trans", {block_id: data.block_id})
             break
         }
         case "price": {
             globalThis.price = data
             request("trans_info", {hash: transHash})
+            break
+        }
+        case "block_trans": {
+            updateBlockTrans(data)
             break
         }
     }
