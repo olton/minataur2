@@ -10,8 +10,8 @@ mixin blocks-table(tableId)
                         span Height
                         div.text-small Timelapse
 
-                    th(style="width: 150px")
-                        soan Hash
+                    th(style="width: 250px")
+                        soan Block Hash
                         div.text-small Time
 
                     th
@@ -74,7 +74,7 @@ script.
                     <div class="text-muted text-small">${timelapse === 'less a hour' ? '< hour' : timelapse}</div>
                 </td>
                 <td>
-                    <a class="link" href="/block/${row.hash}">${shorten(row.hash, 6)}</a>
+                    <a class="link" href="/block/${row.hash}">${shorten(row.hash, 12)}</a>
                     <span title="Copy hash to clipboard" class="reduce-1 mif-copy copy-data-to-clipboard c-pointer" data-value="${row.hash}"></span>
                     <div class="text-muted text-small">${datetime(+row.timestamp).format(config.format.datetime)}</div>
                 </td>

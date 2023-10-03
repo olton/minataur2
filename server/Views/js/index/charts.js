@@ -1,136 +1,136 @@
-;
-const chartOptions = {
-    height: 120,
-    title: false,
-    padding: {
-        bottom: 20,
-        right: 20,
-        top: 20,
-    },
-    axis: {
-        y: {
-            label: {
-                fixed: 0,
-                count: 5,
-                step: "auto",
-                font: {
-                    size: 10
-                }
+
+
+const updateCharts = data => {
+    drawChartTPB(data)
+    drawChartSPB(data)
+    drawChartFPB(data)
+    drawChartPAR(data)
+}
+
+const drawChartTPB = data => {
+    $("#chart-tpb").clear()
+    const tx = [], bl = []
+    for(let r of data.reverse()) {
+        tx.push(+r.user_trans_count + +r.internal_trans_count + +r.zkapp_trans_count)
+        bl.push(+r.height)
+    }
+    const chart = new ApexCharts(document.querySelector("#chart-tpb"), {
+        chart: {
+            type: 'line',
+            toolbar: {
+                show: false
             }
         },
-        x: {
-            label: false
+        series: [{
+            name: 'TPB',
+            data: tx
+        }],
+        xaxis: {
+            categories: bl,
+            labels: {
+                show: false
+            }
         },
-    },
-    arrows: false,
-    legend: false,
-    border: false,
+        stroke: {
+            width: 1
+        }
+    }).render();
 }
 
-const updateCharts = (data) => {
-    updateChartTPB(data)
-    updateChartSPB(data)
-    updateChartFPB(data)
-    updateChartPAR(data)
-}
-
-const updateChartTPB = data => {
-    let _data = []
-    let index = 0
+const drawChartSPB = data => {
+    $("#chart-spb").clear()
+    const tx = [], bl = []
     for(let r of data.reverse()) {
-        _data.push([+r.height, +r.user_trans_count + +r.internal_trans_count + +r.zkapp_trans_count])
-        index++
+        tx.push(+r.block_slots)
+        bl.push(+r.height)
     }
-    const areas = [
-        {
-            name: "TPB"
-        }
-    ]
-    chart.lineChart("#chart-tpb", [_data], {
-        lines: areas,
-        ...chartOptions,
-        colors: [chart.defaultColors.cornflowerBlue],
-        onTooltipShow: (data) => {
-            const [block, transactionsCount] = data
-            return `<span>Block: ${block}, Trans: ${transactionsCount}</span>`
-        }
-    })
-}
-
-const updateChartSPB = data => {
-    let _data = []
-    let index = 0
-    for(let r of data.reverse()) {
-        _data.push([+r.height, +r.block_slots])
-        index++
-    }
-    const areas = [
-        {
-            name: "SPB"
-        }
-    ]
-    chart.lineChart("#chart-spb", [_data], {
-        lines: areas,
-        ...chartOptions,
-        colors: [chart.defaultColors.coral],
-        onTooltipShow: (data) => {
-            const [block, slotsCount] = data
-            return `<span>Block: ${block}, Slots: ${slotsCount}</span>`
-        }
-    })
-}
-
-const updateChartPAR = data => {
-    let _data = []
-    let index = 0
-    for(let r of data.reverse()) {
-        _data.push([+r.height, +r.block_participants])
-        index++
-    }
-    const areas = [
-        {
-            name: "SPB"
-        }
-    ]
-    chart.lineChart("#chart-par", [_data], {
-        lines: areas,
-        ...chartOptions,
-        colors: [chart.defaultColors.oliveDrab],
-        onTooltipShow: (data) => {
-            const [block, count] = data
-            return `<span>Block: ${block}, Parts: ${count}</span>`
-        }
-    })
-}
-
-const updateChartFPB = data => {
-    let _data = []
-    let index = 0
-    for(let r of data.reverse()) {
-        _data.push([+r.height, +r.trans_fee])
-        index++
-    }
-    const areas = [
-        {
-            name: "FPB"
-        }
-    ]
-    chart.lineChart("#chart-fpb", [_data], {
-        lines: areas,
-        ...chartOptions,
-        padding: {
-            bottom: 20,
-            right: 20,
-            top: 20,
-            left: 60,
+    const chart = new ApexCharts(document.querySelector("#chart-spb"), {
+        chart: {
+            type: 'line',
+            toolbar: {
+                show: false
+            }
         },
-        colors: [chart.defaultColors.darkOrchid],
-        onTooltipShow: (data) => {
-            const [block, transactionsFee] = data
-            return `<span>Block: ${block}, Fee: ${transactionsFee / 10**9}</span>`
+        series: [{
+            name: 'SPB',
+            data: tx
+        }],
+        xaxis: {
+            categories: bl,
+            labels: {
+                show: false
+            }
         },
-        onDrawLabelY: (val) => {
-            return (val / 10**9).toFixed(4)
-        }
-    })
+        stroke: {
+            width: 1
+        },
+        colors: ['#ff7f50']
+
+    }).render();
+}
+
+const drawChartFPB = data => {
+    $("#chart-fpb").clear()
+    const tx = [], bl = []
+    for(let r of data.reverse()) {
+        tx.push(+r.trans_fee/10**9)
+        bl.push(+r.height)
+    }
+    const chart = new ApexCharts(document.querySelector("#chart-fpb"), {
+        chart: {
+            type: 'line',
+            toolbar: {
+                show: false
+            }
+        },
+        series: [{
+            name: 'SPB',
+            data: tx
+        }],
+        xaxis: {
+            categories: bl,
+            labels: {
+                show: false
+            }
+        },
+        yaxis: {
+            decimalsInFloat: 4
+        },
+        stroke: {
+            width: 1
+        },
+        colors: ['#9932cc']
+
+    }).render();
+}
+
+const drawChartPAR = data => {
+    $("#chart-par").clear()
+    const tx = [], bl = []
+    for(let r of data.reverse()) {
+        tx.push(+r.block_participants)
+        bl.push(+r.height)
+    }
+    const chart = new ApexCharts(document.querySelector("#chart-par"), {
+        chart: {
+            type: 'line',
+            toolbar: {
+                show: false
+            }
+        },
+        series: [{
+            name: 'SPB',
+            data: tx
+        }],
+        xaxis: {
+            categories: bl,
+            labels: {
+                show: false
+            }
+        },
+        stroke: {
+            width: 1
+        },
+        colors: ['#6b8e23']
+    }).render();
 }
