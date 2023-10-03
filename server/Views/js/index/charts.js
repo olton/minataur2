@@ -144,6 +144,12 @@ const drawChartPAR = data => {
                 show: false
             }
         },
+        yaxis: {
+            min: 0,
+            decimalsInFloat: 0,
+            forceNiceScale: true,
+            floating: false,
+        },
         stroke: {
             width: 1
         },
