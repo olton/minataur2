@@ -1,30 +1,44 @@
 ;
-const chartOptions = {
-    height: 100,
-    title: false,
-    padding: {
-        bottom: 20,
-        right: 20,
-        top: 20,
-    },
-    axis: {
-        y: {
-            label: {
-                fixed: 0,
-                count: 5,
-                step: "auto",
-                font: {
-                    size: 10
-                }
+
+const updateChartTransInBlock = data => {
+    $("#chart-trans-in-block").clear()
+    const tx = [], bl = []
+    let index = 0
+    for(let r of data.reverse()) {
+        tx.push(+r.user_trans_count)
+        bl.push(+r.height)
+        index++
+    }
+    const chart = new ApexCharts(document.querySelector("#chart-trans-in-block"), {
+        chart: {
+            type: 'line',
+            toolbar: {
+                show: false
+            },
+            animations: {
+                speed: 300
+            },
+            height: 150,
+        },
+        series: [{
+            name: 'Tx',
+            data: tx
+        }],
+        xaxis: {
+            categories: bl,
+            labels: {
+                show: false
             }
         },
-        x: {
-            label: false
+        yaxis: {
+            decimalsInFloat: 4
         },
-    },
-    arrows: false,
-    legend: false,
-    border: false,
+        stroke: {
+            width: 1
+        },
+        colors: ['#ff7f50']
+
+    }).render();
 }
 
 const updateTransCharts = (data) => {
@@ -33,136 +47,110 @@ const updateTransCharts = (data) => {
     updateChartStatus(data)
 }
 
-const updateChartTransInBlock = data => {
-    let _data = []
-    let index = 0
-    for(let r of data.reverse()) {
-        _data.push([+r.height, +r.user_trans_count])
-        index++
-    }
-    const areas = [
-        {
-            name: "TPB"
-        }
-    ]
-    chart.lineChart("#chart-trans-in-block", [_data], {
-        lines: areas,
-        ...chartOptions,
-        colors: [chart.defaultColors.coral],
-        boundaries: {
-            minY: 0
-        },
-        onTooltipShow: (data) => {
-            const [block, transactionsCount] = data
-            return `<span>Block: ${block}, Trans: ${transactionsCount}</span>`
-        }
-    })
-}
-
 const updateChartFees = data => {
-    let _data = []
+    $("#chart-trans-fee").clear()
+    const tx = [], bl = []
     let index = 0
     for(let r of data.reverse()) {
-        _data.push([index, +r.fee])
+        tx.push(+r.fee/10**9)
+        bl.push(index)
         index++
     }
-    const areas = [
-        {
-            name: "TPB"
-        }
-    ]
-    chart.lineChart("#chart-trans-fee", [_data], {
-        lines: areas,
-        ...chartOptions,
-        colors: [chart.defaultColors.mediumSlateBlue],
-        boundaries: {
-            minY: 0
+    const chart = new ApexCharts(document.querySelector("#chart-trans-fee"), {
+        chart: {
+            type: 'line',
+            toolbar: {
+                show: false
+            },
+            animations: {
+                speed: 300
+            },
+            height: 150,
         },
-        padding: {
-            bottom: 20,
-            right: 20,
-            top: 20,
-            left: 60,
+        series: [{
+            name: 'FEE',
+            data: tx
+        }],
+        xaxis: {
+            categories: bl,
+            labels: {
+                show: false
+            }
         },
-        onTooltipShow: (data) => {
-            const [block, transactionsCount] = data
-            return `<span>Fee: ${transactionsCount}</span>`
+        yaxis: {
+            decimalsInFloat: 4
         },
-        onDrawLabelY: (val) => {
-            return (val / 10**9).toFixed(4)
-        }
-    })
+        stroke: {
+            width: 1
+        },
+        colors: ['#7b68ee']
+
+    }).render();
 }
 
 const updateChartAmount = data => {
-    let _data = []
+    $("#chart-trans-amount").clear()
+    const tx = [], bl = []
     let index = 0
     for(let r of data.reverse()) {
-        _data.push([index, +r.amount])
+        tx.push(+r.amount/10**9)
+        bl.push(index)
         index++
     }
-    const areas = [
-        {
-            name: "TPB"
-        }
-    ]
-    chart.lineChart("#chart-trans-amount", [_data], {
-        lines: areas,
-        ...chartOptions,
-        colors: [chart.defaultColors.deepSkyBlue],
-        boundaries: {
-            minY: 0
+    const chart = new ApexCharts(document.querySelector("#chart-trans-amount"), {
+        chart: {
+            type: 'line',
+            toolbar: {
+                show: false
+            },
+            animations: {
+                speed: 300
+            },
+            height: 150,
         },
-        padding: {
-            bottom: 20,
-            right: 20,
-            top: 20,
-            left: 60,
+        series: [{
+            name: 'AMOUNT',
+            data: tx
+        }],
+        xaxis: {
+            categories: bl,
+            labels: {
+                show: false
+            }
         },
-        onTooltipShow: (data) => {
-            const [block, transactionsCount] = data
-            return `<span>Amount: ${transactionsCount}</span>`
+        yaxis: {
+            decimalsInFloat: 4
         },
-        onDrawLabelY: (val) => {
-            return (val / 10**9).toFixed(4)
-        }
-    })
+        stroke: {
+            width: 1
+        },
+        colors: ['#00bfff']
+
+    }).render();
 }
 
 const updateChartStatus = data => {
-    let applied = 0, failed = 0
-    let index = 0
+    $("#chart-trans-status").clear()
+    let index = 0, applied = 0, failed = 0
     for(let r of data.reverse()) {
         if (r.status === 'applied') applied++
         if (r.status === 'failed') failed++
         index++
     }
-    chart.barChart("#chart-trans-status", [applied, failed], {
-        height: 100,
-        bars: ["Applied", "Failed"],
-        colors: ["green", "red"],
-        title: false,
-        barDistance: 10,
-        groupDistance: 10,
-        arrows: false,
-        border: false,
-        boundaries: {
-            max: applied + failed
+    const chart = new ApexCharts(document.querySelector("#chart-trans-status"), {
+        chart: {
+            type: 'donut',
+            toolbar: {
+                show: false
+            },
+            animations: {
+                speed: 300
+            },
+            height: 162,
         },
-        padding: {
-            top: 10
-        },
-        axis: {
-            y: {
-                label: {
-                    fixed: 0,
-                    count: 5,
-                    step: "auto",
-                    font: {
-                        size: 10
-                    }
-                }
-            }
-        }
-    })
+        series: [applied, failed],
+        labels: ['Applied', 'Failed'],
+        colors: ['#94ff6a', '#ff1841']
+
+    }).render();
 }

@@ -1,32 +1,4 @@
 ;
-const chartOptions = {
-    height: 100,
-    title: false,
-    padding: {
-        bottom: 20,
-        right: 20,
-        top: 20,
-    },
-    axis: {
-        y: {
-            label: {
-                fixed: 0,
-                count: 5,
-                step: "auto",
-                font: {
-                    size: 10
-                }
-            }
-        },
-        x: {
-            label: false
-        },
-    },
-    arrows: false,
-    legend: false,
-    border: false,
-}
-
 const updateBlockchainCharts = data => {
     updateChartCoinbase(data)
     updateChartTrans(data)
@@ -34,137 +6,163 @@ const updateBlockchainCharts = data => {
     updateChartSlots(data)
 }
 
-
 const updateChartCoinbase = data => {
-    let _data = []
-    let index = 0
+    $("#chart-blockchain-coinbase").clear()
+    const tx = [], bl = []
     for(let r of data.rows.reverse()) {
         if (r.chain_status !== 'canonical') continue
-        _data.push([+r.height, +r.coinbase/10**9])
-        index++
+        tx.push(+r.coinbase/10**9)
+        bl.push(+r.height)
     }
-    const areas = [
-        {
-            name: "Coinbase"
-        }
-    ]
-    chart.lineChart("#chart-blockchain-coinbase", [_data], {
-        lines: areas,
-        ...chartOptions,
-        colors: [chart.defaultColors.cornflowerBlue],
-        axis: {
-            y: {
-                label: {
-                    fixed: 0,
-                    count: 2,
-                    step: "auto",
-                    font: {
-                        size: 10
-                    }
-                }
+    const chart = new ApexCharts(document.querySelector("#chart-blockchain-coinbase"), {
+        chart: {
+            type: 'line',
+            toolbar: {
+                show: false
             },
-            x: {
-                label: false
+            animations: {
+                speed: 300
             },
+            height: 150,
         },
-        boundaries: {
-            minY: 0,
-            maxY: 1440
+        series: [{
+            name: 'COINBASE',
+            data: tx
+        }],
+        xaxis: {
+            categories: bl,
+            labels: {
+                show: false
+            }
         },
-        onTooltipShow: (data) => {
-            const [block, coinbase] = data
-            return `<span>Block: ${block}, Coinbase: ${coinbase}</span>`
+        yaxis: {
+            min: 0,
+            max: 1440,
+            tickAmount: 2
+        },
+        stroke: {
+            width: 1
         }
-    })
+    }).render();
 }
 
-
 const updateChartTrans = data => {
-    let _data = []
-    let index = 0
+    $("#chart-blockchain-trans").clear()
+    const tx = [], bl = []
     for(let r of data.rows.reverse()) {
         if (r.chain_status !== 'canonical') continue
-        _data.push([+r.height, +r.user_trans_count + +r.internal_trans_count + +r.zkapp_trans_count])
-        index++
+        tx.push(+r.user_trans_count + +r.internal_trans_count + +r.zkapp_trans_count)
+        bl.push(+r.height)
     }
-    const areas = [
-        {
-            name: "TPB"
-        }
-    ]
-    chart.lineChart("#chart-blockchain-trans", [_data], {
-        lines: areas,
-        ...chartOptions,
-        colors: [chart.defaultColors.coral],
-        boundaries: {
-            minY: 0
+    const chart = new ApexCharts(document.querySelector("#chart-blockchain-trans"), {
+        chart: {
+            type: 'line',
+            toolbar: {
+                show: false
+            },
+            animations: {
+                speed: 300
+            },
+            height: 150,
         },
-        onTooltipShow: (data) => {
-            const [block, transactionsCount] = data
-            return `<span>Block: ${block}, Trans: ${transactionsCount}</span>`
+        colors: ["#ff7f50"],
+        series: [{
+            name: 'TPB',
+            data: tx
+        }],
+        xaxis: {
+            categories: bl,
+            labels: {
+                show: false
+            }
+        },
+        yaxis: {
+            min: 0,
+            tickAmount: 4
+        },
+        stroke: {
+            width: 1
         }
-    })
+    }).render();
 }
 
 const updateChartFee = data => {
-    let _data = []
-    let index = 0
+    $("#chart-blockchain-fee").clear()
+    const tx = [], bl = []
     for(let r of data.rows.reverse()) {
         if (r.chain_status !== 'canonical') continue
-        _data.push([+r.height, +r.trans_fee])
-        index++
+        tx.push(+r.trans_fee/10**9)
+        bl.push(+r.height)
     }
-    const areas = [
-        {
-            name: "Fee"
+    const chart = new ApexCharts(document.querySelector("#chart-blockchain-fee"), {
+        chart: {
+            type: 'line',
+            toolbar: {
+                show: false
+            },
+            animations: {
+                speed: 300
+            },
+            height: 150,
+        },
+        colors: ["#9932cc"],
+        series: [{
+            name: 'TPB',
+            data: tx
+        }],
+        xaxis: {
+            categories: bl,
+            labels: {
+                show: false
+            }
+        },
+        yaxis: {
+            min: 0,
+            tickAmount: 4,
+            decimalsInFloat: 4,
+        },
+        stroke: {
+            width: 1
         }
-    ]
-    chart.lineChart("#chart-blockchain-fee", [_data], {
-        lines: areas,
-        ...chartOptions,
-        colors: [chart.defaultColors.darkOrchid],
-        boundaries: {
-            minY: 0
-        },
-        padding: {
-            bottom: 20,
-            right: 20,
-            top: 20,
-            left: 60,
-        },
-        onTooltipShow: (data) => {
-            const [block, fee] = data
-            return `<span>Block: ${block}, Fee: ${fee/10**9}</span>`
-        },
-        onDrawLabelY: (val) => {
-            return (val / 10**9).toFixed(4)
-        }
-    })
+    }).render();
 }
-
 const updateChartSlots = data => {
-    let _data = []
-    let index = 0
+    $("#chart-blockchain-slots").clear()
+    const tx = [], bl = []
     for(let r of data.rows.reverse()) {
         if (r.chain_status !== 'canonical') continue
-        _data.push([+r.height, +r.block_slots])
-        index++
+        tx.push(+r.block_slots)
+        bl.push(+r.height)
     }
-    const areas = [
-        {
-            name: "Fee"
-        }
-    ]
-    chart.lineChart("#chart-blockchain-slots", [_data], {
-        lines: areas,
-        ...chartOptions,
-        colors: [chart.defaultColors.darkOliveGreen],
-        boundaries: {
-            minY: 0
+    const chart = new ApexCharts(document.querySelector("#chart-blockchain-slots"), {
+        chart: {
+            type: 'line',
+            toolbar: {
+                show: false
+            },
+            animations: {
+                speed: 300
+            },
+            height: 150,
         },
-        onTooltipShow: (data) => {
-            const [block, slots] = data
-            return `<span>Block: ${block}, Fee: ${slots}</span>`
+        colors: ["#556b2f"],
+        series: [{
+            name: 'TPB',
+            data: tx
+        }],
+        xaxis: {
+            categories: bl,
+            labels: {
+                show: false
+            }
+        },
+        yaxis: {
+            min: 0,
+            tickAmount: 4,
+            decimalsInFloat: 0,
+        },
+        stroke: {
+            width: 1
         }
-    })
+    }).render();
 }

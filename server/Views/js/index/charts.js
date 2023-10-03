@@ -19,7 +19,11 @@ const drawChartTPB = data => {
             type: 'line',
             toolbar: {
                 show: false
-            }
+            },
+            animations: {
+                speed: 300
+            },
+            height: 150,
         },
         series: [{
             name: 'TPB',
@@ -49,7 +53,11 @@ const drawChartSPB = data => {
             type: 'line',
             toolbar: {
                 show: false
-            }
+            },
+            animations: {
+                speed: 300
+            },
+            height: 150,
         },
         series: [{
             name: 'SPB',
@@ -81,7 +89,11 @@ const drawChartFPB = data => {
             type: 'line',
             toolbar: {
                 show: false
-            }
+            },
+            animations: {
+                speed: 300
+            },
+            height: 150,
         },
         series: [{
             name: 'SPB',
@@ -116,7 +128,11 @@ const drawChartPAR = data => {
             type: 'line',
             toolbar: {
                 show: false
-            }
+            },
+            animations: {
+                speed: 300
+            },
+            height: 150,
         },
         series: [{
             name: 'SPB',
