@@ -24,6 +24,7 @@ const drawChartTPB = data => {
                 speed: 300
             },
             height: 150,
+            parentHeightOffset: 0,
         },
         series: [{
             name: 'TPB',
@@ -58,6 +59,7 @@ const drawChartSPB = data => {
                 speed: 300
             },
             height: 150,
+            parentHeightOffset: 0,
         },
         series: [{
             name: 'SPB',
@@ -94,6 +96,7 @@ const drawChartFPB = data => {
                 speed: 300
             },
             height: 150,
+            parentHeightOffset: 0,
         },
         series: [{
             name: 'SPB',
@@ -133,6 +136,7 @@ const drawChartPAR = data => {
                 speed: 300
             },
             height: 150,
+            parentHeightOffset: 0,
         },
         series: [{
             name: 'SPB',

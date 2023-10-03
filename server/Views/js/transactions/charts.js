@@ -19,6 +19,7 @@ const updateChartTransInBlock = data => {
                 speed: 300
             },
             height: 150,
+            parentHeightOffset: 0,
         },
         series: [{
             name: 'Tx',
@@ -66,6 +67,7 @@ const updateChartFees = data => {
                 speed: 300
             },
             height: 150,
+            parentHeightOffset: 0,
         },
         series: [{
             name: 'FEE',
@@ -107,6 +109,7 @@ const updateChartAmount = data => {
                 speed: 300
             },
             height: 150,
+            parentHeightOffset: 0,
         },
         series: [{
             name: 'AMOUNT',
@@ -146,11 +149,15 @@ const updateChartStatus = data => {
             animations: {
                 speed: 300
             },
-            height: 162,
+            height: 172,
+            parentHeightOffset: 0,
         },
         series: [applied, failed],
         labels: ['Applied', 'Failed'],
-        colors: ['#94ff6a', '#ff1841']
-
+        colors: ['#94ff6a', '#ff1841'],
+        legend: {
+            show: false,
+            position: 'bottom'
+        }
     }).render();
 }

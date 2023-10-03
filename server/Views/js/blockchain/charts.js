@@ -24,6 +24,7 @@ const updateChartCoinbase = data => {
                 speed: 300
             },
             height: 150,
+            parentHeightOffset: 0,
         },
         series: [{
             name: 'COINBASE',
@@ -64,6 +65,7 @@ const updateChartTrans = data => {
                 speed: 300
             },
             height: 150,
+            parentHeightOffset: 0,
         },
         colors: ["#ff7f50"],
         series: [{
@@ -104,6 +106,7 @@ const updateChartFee = data => {
                 speed: 300
             },
             height: 150,
+            parentHeightOffset: 0,
         },
         colors: ["#9932cc"],
         series: [{
@@ -144,6 +147,7 @@ const updateChartSlots = data => {
                 speed: 300
             },
             height: 150,
+            parentHeightOffset: 0,
         },
         colors: ["#556b2f"],
         series: [{
