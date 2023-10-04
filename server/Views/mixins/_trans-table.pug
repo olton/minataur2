@@ -6,6 +6,11 @@ mixin trans-table(tableId)
                     th.text-center(style="width: 30px;")
                         div Trans
                         div.text-small Type
+
+                    th.text-center(style="width: 110px;")
+                        div Tx
+                        div.text-small Time
+
                     th(style="width: 250px;")
                         div Hash
                         div.text-small Memo
@@ -70,6 +75,9 @@ mixin trans-table(tableId)
                     <td class="text-center">
                         <div class="${row.command_type === 'payment' ? 'bg-blue' : 'bg-pink'} fg-white reduce-3 text-upper pl-1 pr-1">${row.command_type}</div>
                         <div class="${row.status === 'pending' ? 'bg-cyan' : row.status === 'applied' ? 'bg-green' : 'bg-red'} fg-white reduce-3 text-upper">${row.status}</div>
+                    </td>
+                    <td>
+                        <span class="text-muted reduce-1">${datetime(+row.timestamp).format(config.format.datetime)}</span>
                     </td>
                     <td>
                         <div class="d-flex flex-row flex-nowrap flex-align-center">

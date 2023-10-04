@@ -175,6 +175,16 @@ query ($publicKey: String!) {
 }
 `
 
+const qSnarkPool = `
+query MyQuery {
+  snarkPool {
+    workIds
+    prover
+    fee
+  }
+}
+`
+
 export const ql_get_account_info = async key => {
     try {
         let result = await fetchGraphQL(qAccountInfo, {publicKey: key})
@@ -182,6 +192,18 @@ export const ql_get_account_info = async key => {
             new Error(`No account data!`)
         }
         return result.data.account
+    } catch (e) {
+        return null
+    }
+}
+
+export const ql_get_snark_pool = async () => {
+    try {
+        let result = await fetchGraphQL(qSnarkPool)
+        if (!result.data) {
+            new Error(`No data!`)
+        }
+        return result.data
     } catch (e) {
         return null
     }

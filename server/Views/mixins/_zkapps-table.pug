@@ -7,6 +7,10 @@ mixin zkappas-table(tableId)
                         div Tx
                         div.text-small Status
 
+                    th.text-center(style="width: 110px;")
+                        div Tx
+                        div.text-small Time
+
                     th(style="width: 270px;")
                         div Hash
                         div.text-small Memo
@@ -72,6 +76,9 @@ mixin zkappas-table(tableId)
                     <td class="text-center">
                         <div class="bg-blue fg-white reduce-3 text-upper">zkapp</div>
                         <div class="${row.status === 'applied' ? 'bg-green' : 'bg-red'} fg-white reduce-3 text-upper pl-1 pr-1">${row.status}</div>
+                    </td>
+                    <td>
+                        <span class="text-muted reduce-1">${datetime(+row.timestamp).format(config.format.datetime)}</span>
                     </td>
                     <td>
                         <a class="link enlarge-1" href="/zkapp/${row.hash}">${shorten(row.hash, 12)}</a>
