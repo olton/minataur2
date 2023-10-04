@@ -5,7 +5,7 @@ globalThis.transSearch = ""
 globalThis.transPage = +Metro.utils.getURIParameter(null, 'page') || 1
 globalThis.searchThreshold = 500
 globalThis.showError = false
-globalThis.showBlockNumber = true
+globalThis.showBlockNumber = false
 globalThis.updateInterval = null
 
 const clearUpdateInterval = () => {
