@@ -5,6 +5,7 @@ globalThis.transSearch = ""
 globalThis.transPage = +Metro.utils.getURIParameter(null, 'page') || 1
 globalThis.searchThreshold = 500
 globalThis.showError = false
+globalThis.showBlockNumber = true
 globalThis.updateInterval = null
 
 const clearUpdateInterval = () => {
@@ -103,6 +104,11 @@ function transApplyRowsCount(selected){
 }
 
 $("#trans-status-applied, #trans-status-failed, #trans-type-payment, #trans-type-delegation").on("click", () => {
+    refreshTransTable()
+})
+
+$("#trans-show-block").on("click", function(){
+    globalThis.showBlockNumber = this.checked
     refreshTransTable()
 })
 

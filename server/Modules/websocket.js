@@ -13,7 +13,7 @@ import {
     db_get_trans_info,
     db_get_transactions,
     db_get_transactions_count, db_get_transactions_count_for_account,
-    db_get_transactions_for_account,
+    db_get_transactions_for_account, db_get_zkapps, db_get_zkapps_count,
     db_save_ip
 } from "./db.js";
 import {ql_get_account_info, ql_get_pool} from "./graphql.js";
@@ -155,6 +155,12 @@ export const create_websocket_server = (httpServer) => {
                 }
                 case "peers": {
                     response(ws, channel, cache.peers)
+                    break
+                }
+                case "zkapps": {
+                    const rows = await db_get_zkapps({...data})
+                    const length = await db_get_zkapps_count({...data})
+                    response(ws, channel, {rows, length})
                     break
                 }
             }

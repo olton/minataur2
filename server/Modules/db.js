@@ -543,3 +543,62 @@ export const db_get_blocks_count_for_account = async ({
 
     return (await query(sql, [Array.isArray(type) ? type : [type], account])).rows[0].length
 }
+
+export const db_get_zkapps = async ({
+    limit = 50,
+    offset = 0,
+    search = null,
+    status = [TRANS_STATUS.APPLIED, TRANS_STATUS.FAILED]
+}) => {
+    let sql = `
+        select *
+        from v_zkapp_commands z
+        where chain_status = 'canonical' 
+        and status = ANY($1::transaction_status[])
+        %BLOCK_HEIGHT%
+        %PAYER_HASH%
+        %TRANS_HASH%
+        order by height desc, timestamp desc, nonce desc
+        limit $2 offset $3
+    `
+    sql = sql.replace("%BLOCK_HEIGHT%", search && search.block ? `and height = ${search.block}` : "")
+    sql = sql.replace("%TRANS_HASH%", search && search.hash ? `and hash = '${search.hash}'` : "")
+    sql = sql.replace("%PAYER_HASH%", search && search.payer ? `
+    and (
+        payer_key = '${search.payer}'
+        or lower(payer_name) like '%${search.payer.toLowerCase()}%'
+    )
+    ` : "")
+
+    const result = (await query(sql, [Array.isArray(status) ? status : [status], limit, offset])).rows
+
+    for(let row of result) {
+        row.memo = decodeMemo(row.memo)
+    }
+
+    return result
+}
+export const db_get_zkapps_count = async ({
+    search = null,
+    status = [TRANS_STATUS.APPLIED, TRANS_STATUS.FAILED]
+}) => {
+    let sql = `
+        select count(*) as length
+        from v_zkapp_commands z
+        where chain_status = 'canonical' 
+        and status = ANY($1::transaction_status[])
+        %BLOCK_HEIGHT%
+        %PAYER_HASH%
+        %TRANS_HASH%
+    `
+    sql = sql.replace("%BLOCK_HEIGHT%", search && search.block ? `and height = ${search.block}` : "")
+    sql = sql.replace("%TRANS_HASH%", search && search.hash ? `and hash = '${search.hash}'` : "")
+    sql = sql.replace("%PAYER_HASH%", search && search.payer ? `
+    and (
+        payer_key = '${search.payer}'
+        or lower(payer_name) like '%${search.payer.toLowerCase()}%'
+    )
+    ` : "")
+
+    return (await query(sql, [Array.isArray(status) ? status : [status]])).rows[0].length
+}

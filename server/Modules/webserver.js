@@ -105,6 +105,14 @@ const routes = () => {
         })
     })
 
+    app.get('/zkapps', async (req, res) => {
+        res.render('zkapps', {
+            title: 'zkApps :: Minataur - The Fastest block explorer for Mina Blockchain',
+            appTitle: 'zkApps',
+            client: JSON.stringify(client)
+        })
+    })
+
 }
 
 export const create_web_server  = () => {

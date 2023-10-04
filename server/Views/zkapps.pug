@@ -1,0 +1,70 @@
+include mixins/_zkapps-table
+
+html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
+    include partials/_head
+
+    body.m4-cloak
+        include partials/_appbar
+
+        section.container-fluid
+            div.container
+                div.row
+                    div.cell-md-6
+                        div.d-flex.flex-nowrap.flex-align-center.pt-4
+                            div
+                                span.h1 zkApps
+
+
+        section.container-fluid.mt-4
+            div.container
+                div.row.flex-align-start.border.bd-default.ml-0.mr-0
+                    div.cell-md-9
+                        span.ml-1.text-muted.reduce-4.text-bold ZKAPP STATUS
+                        div.mt-1-minus
+                            input#zkapp-status-applied(type="checkbox" checked data-cls-check="bg-green no-border" data-role="checkbox" data-caption="<span>Applied</span>")
+                            input#zkapp-status-failed(type="checkbox" checked data-cls-check="bg-red no-border" data-role="checkbox" data-caption="<span>Failed</span>")
+                            input#zkapp-show-block(type="checkbox" checked data-cls-check="bg-orange no-border" data-role="checkbox" data-caption="<span>Show Block Info</span>")
+
+                    div.cell-md-3
+                        div.text-left-fs.text-right-md
+                            button.mt-3.button.success.small(onclick="refreshZkappsTable()")
+                                span RELOAD DATA
+                                span.mif-refresh
+
+                div.row.mt-2
+                    div.cell-md-9
+                        input#zkapps-search(
+                            data-role="input"
+                            data-prepend="Search: "
+                            placeholder="Enter block number, transaction participant key or name, or transaction hash"
+                            data-search-button="false"
+                        )
+
+                    div.cell-md-3
+                        select(data-role="select" data-filter="false" data-prepend="Show rows: " data-on-change="zkappsApplyRowsCount")
+                            option(value="20") 20
+                            option(value="50" selected) 50
+                            option(value="100") 100
+
+
+                div.row
+                    div.cell-lg-6
+                        div.mt-2#pagination-top
+                    div.cell-lg-6.text-right-lg
+                        span.ml-1.text-muted.reduce-4.text-bold RECORDS FOUND
+                        div
+                            span.ml-1.text-bold(style="font-size: 24px; line-height: 1")#found-zkapps 0
+
+                div.scroll-table-container.border.bd-default
+                    +zkappas-table("zkapps-table")
+
+                div.mt-4#pagination-bottom
+
+
+        include partials/_footer
+
+        include partials/_scripts
+
+        script
+            include js/zkapps/wsc.js
+            include js/zkapps/index.js

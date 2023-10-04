@@ -6,7 +6,7 @@ mixin trans-table(tableId)
                     th.text-center(style="width: 30px;")
                         div Trans
                         div.text-small Type
-                    th
+                    th(style="width: 250px;")
                         div Hash
                         div.text-small Memo
                     th
@@ -45,14 +45,20 @@ mixin trans-table(tableId)
             for (let row of data) {
                 let tr
 
-                if (row.height !== block_height) {
+                if (showBlockNumber && row.height !== block_height) {
                     block_height = row.height
                     tr = $("<tr>")
                     tr.html(`
-                        <td colspan="6" class="enlarge-2">
-                            <span>Block: </span>
-                            <span class="text-bold">${row.height}</span>
-                            <span class="text-muted">at ${datetime(+row.timestamp).format(config.format.datetime)}</span>
+                        <td colspan="7" class="enlarge-2">
+                            <div class="d-flex flex-align-center">
+                                <span>Block: </span>
+                                <a href="/block/${row.block_hash}" class="link ml-2">${row.height}</a>
+                                <span class="text-muted ml-2">at ${datetime(+row.timestamp).format(config.format.datetime)}</span>
+                                <span class="ml-auto">&nbsp;</span>
+                                <a class="link ml-2" href="/block/${row.block_hash}">${shorten(row.block_hash, 12)}</a>
+                                <span class="ml-2 mif-copy copy-data-to-clipboard c-pointer" data-value="${row.block_hash}"></span>
+                                <span class="ml-2 mif-qrcode c-pointer" data-value="${row.block_hash}"></span>
+                            </div>
                         </td>
                     `)
                     rows.push(tr)
