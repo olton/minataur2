@@ -578,6 +578,7 @@ export const db_get_zkapps = async ({
 
     return result
 }
+
 export const db_get_zkapps_count = async ({
     search = null,
     status = [TRANS_STATUS.APPLIED, TRANS_STATUS.FAILED]
@@ -597,6 +598,60 @@ export const db_get_zkapps_count = async ({
     and (
         payer_key = '${search.payer}'
         or lower(payer_name) like '%${search.payer.toLowerCase()}%'
+    )
+    ` : "")
+
+    return (await query(sql, [Array.isArray(status) ? status : [status]])).rows[0].length
+}
+
+export const db_get_coinbase = async ({
+                                        limit = 50,
+                                        offset = 0,
+                                        search = null,
+                                        status = [TRANS_STATUS.APPLIED, TRANS_STATUS.FAILED]
+                                    }) => {
+    let sql = `
+        select *
+        from v_internal_commands i
+        where chain_status = 'canonical' and command_type = 'coinbase'
+        and status = ANY($1::transaction_status[])
+        %BLOCK_HEIGHT%
+        %RECEIVER_HASH%
+        %TRANS_HASH%
+        order by height desc
+        limit $2 offset $3
+    `
+    sql = sql.replace("%BLOCK_HEIGHT%", search && search.block ? `and height = ${search.block}` : "")
+    sql = sql.replace("%TRANS_HASH%", search && search.hash ? `and (hash = '${search.hash}' || block_hash = '${search.hash}')` : "")
+    sql = sql.replace("%RECEIVER_HASH%", search && search.payer ? `
+    and (
+        receiver_key = '${search.payer}'
+        or lower(receiver_name) like '%${search.payer.toLowerCase()}%'
+    )
+    ` : "")
+
+    return (await query(sql, [Array.isArray(status) ? status : [status], limit, offset])).rows
+}
+
+export const db_get_coinbase_count = async ({
+                                              search = null,
+                                              status = [TRANS_STATUS.APPLIED, TRANS_STATUS.FAILED]
+                                          }) => {
+    let sql = `
+        select count(*) as length
+        from v_internal_commands i
+        where chain_status = 'canonical' and command_type = 'coinbase'
+        and status = ANY($1::transaction_status[])
+        %BLOCK_HEIGHT%
+        %RECEIVER_HASH%
+        %TRANS_HASH%
+    `
+    sql = sql.replace("%BLOCK_HEIGHT%", search && search.block ? `and height = ${search.block}` : "")
+    sql = sql.replace("%TRANS_HASH%", search && search.hash ? `and (hash = '${search.hash}' || block_hash = '${search.hash}')` : "")
+    sql = sql.replace("%RECEIVER_HASH%", search && search.payer ? `
+    and (
+        receiver_key = '${search.payer}'
+        or lower(receiver_name) like '%${search.payer.toLowerCase()}%'
     )
     ` : "")
 

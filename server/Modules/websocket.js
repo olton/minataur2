@@ -1,7 +1,10 @@
 import WebSocket, {WebSocketServer} from "ws";
 import {
-    db_get_account_delegators, db_get_account_delegators_count,
-    db_get_account_info, db_get_account_ledger, db_get_account_stake,
+    db_get_account_delegators,
+    db_get_account_delegators_count,
+    db_get_account_info,
+    db_get_account_ledger,
+    db_get_account_stake,
     db_get_accounts,
     db_get_accounts_count,
     db_get_block_info,
@@ -9,11 +12,18 @@ import {
     db_get_block_trans,
     db_get_block_zkapp_commands,
     db_get_blocks,
-    db_get_blocks_count, db_get_blocks_count_for_account, db_get_blocks_for_account,
+    db_get_blocks_count,
+    db_get_blocks_count_for_account,
+    db_get_blocks_for_account,
+    db_get_coinbase,
+    db_get_coinbase_count,
     db_get_trans_info,
     db_get_transactions,
-    db_get_transactions_count, db_get_transactions_count_for_account,
-    db_get_transactions_for_account, db_get_zkapps, db_get_zkapps_count,
+    db_get_transactions_count,
+    db_get_transactions_count_for_account,
+    db_get_transactions_for_account,
+    db_get_zkapps,
+    db_get_zkapps_count,
     db_save_ip
 } from "./db.js";
 import {ql_get_account_info, ql_get_pool} from "./graphql.js";
@@ -160,6 +170,12 @@ export const create_websocket_server = (httpServer) => {
                 case "zkapps": {
                     const rows = await db_get_zkapps({...data})
                     const length = await db_get_zkapps_count({...data})
+                    response(ws, channel, {rows, length})
+                    break
+                }
+                case "coinbase": {
+                    const rows = await db_get_coinbase({...data})
+                    const length = await db_get_coinbase_count({...data})
                     response(ws, channel, {rows, length})
                     break
                 }

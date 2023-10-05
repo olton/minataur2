@@ -113,6 +113,14 @@ const routes = () => {
         })
     })
 
+    app.get('/coinbase', async (req, res) => {
+        res.render('coinbase', {
+            title: 'Coinbase Rewards :: Minataur - The Fastest block explorer for Mina Blockchain',
+            appTitle: 'Coinbase Rewards',
+            client: JSON.stringify(client)
+        })
+    })
+
 }
 
 export const create_web_server  = () => {

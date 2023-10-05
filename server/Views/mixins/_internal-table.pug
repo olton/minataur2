@@ -1,0 +1,96 @@
+mixin internal-table(tableId)
+    div.scroll-table-container
+        table.table.data-table.row-border.monospace.row-hover.mt-2.mb-2(id=tableId)
+            thead
+                tr
+                    th.text-center(style="width: 30px;")
+                        div Tx
+                        div.text-small Type
+
+                    th(style="width: 30px;")
+                        div Block
+
+                    th.text-center(style="width: 30px;")
+                        div Coinbase
+
+                    th(style="width: 260px;")
+                        div Tx Hash
+                        div.text-small Time
+
+                    th
+                        div Receiver
+                        div.text-small Name
+
+                    th.text-center(style="width: 30px;")
+                        div Sequence
+                        div.text-small Primary
+
+                    th.text-center(style="width: 30px;")
+                        div Sequence
+                        div.text-small Secondary
+
+                    th.text-center(style="width: 30px;")
+                        div Blocks
+                        div.text-small Confirm
+            tbody
+                tr
+                    td.text-center(colspan="8")
+                        div.d-flex.flex-align-center.flex-justify-center
+                            div(data-role="activity" data-type="bars" data-style="color")
+
+
+
+    script.
+        ;const drawInternalTable = data => {
+            console.log(data)
+            const rows = []
+            let index = 1
+            for (let row of data) {
+                let tr = $("<tr>")
+
+                tr.html(`
+                    <td class="text-center">
+                        <div class="${row.command_type === 'coinbase' ? 'bg-blue' : row.command_type === 'fee_transfer' ? 'bg-pink' : 'bg-orange'} fg-white reduce-3 text-upper pl-1 pr-1">${row.command_type === 'fee_transfer_via_coinbase' ? 'fee_coinbase' : row.command_type}</div>
+                        <div class="${row.status === 'pending' ? 'bg-cyan' : row.status === 'applied' ? 'bg-green' : 'bg-red'} fg-white reduce-3 text-upper">${row.status}</div>
+                    </td>
+                    <td>
+                        <a class="link" href="/block/${row.block_hash}">${num2fmt(row.height)}</a>
+                    </td>
+                    <td class="text-center">
+                        <div class="">${normMina(row.fee)}</div>
+                    </td>
+                    <td>
+                        <a class="link enlarge-1" href="/internal-command/${row.hash}">${shorten(row.hash, 12)}</a>
+                        <span title="Copy hash to clipboard" class="reduce-1 mif-copy copy-data-to-clipboard c-pointer" data-value="${row.hash}"></span>
+                        <div class="reduce-2 text-muted">${datetime(+row.timestamp).format(config.format.datetime)}</div>
+                    </td>
+                    <td>
+                        <a data-role="hint" data-hint-text="${row.receiver_name}" class="link" href="/account/${row.receiver_key}">${shorten(row.receiver_key, 12)}</a>
+                        <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${row.receiver_key}"></span>
+                        <div class="text-muted reduce-2">${row.receiver_name}</div>
+                    </td>
+                    <td class="text-center">${row.sequence_no}</td>
+                    <td class="text-center">${row.secondary_sequence_no}</td>
+                    <td class="text-center">
+                        <div>${row.confirm}</div>
+                    </td>
+                `)
+
+                rows.push(tr)
+
+                if (row.status === 'failed') {
+                    tr = $("<tr>").addClass('bg-light')
+                    tr.html(`
+                        <td>
+                            <span class="mif-keyboard-return flip"></span>
+                        </td>
+                        <td colspan="7" class="fg-red">${row.failure_reason}</td>
+                    `)
+                    rows.push(tr)
+                }
+
+                index++
+            }
+
+            return rows
+        }

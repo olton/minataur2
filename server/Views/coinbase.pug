@@ -1,0 +1,56 @@
+include mixins/_internal-table
+
+html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
+    include partials/_head
+
+    body.m4-cloak
+        include partials/_appbar
+
+        section.container-fluid
+            div.container
+                div.row
+                    div.cell-md-6
+                        div.d-flex.flex-nowrap.flex-align-center.pt-4
+                            div
+                                span.h1 Coinbase Rewards
+
+
+        section.container-fluid.mt-4
+            div.container
+                div.row.mt-2
+                    div.cell-md-9
+                        input#coinbase-search(
+                            data-role="input"
+                            data-prepend="Search: "
+                            placeholder="Enter block number, transaction participant key or name, or transaction hash"
+                            data-search-button="false"
+                        )
+
+                    div.cell-md-3
+                        select(data-role="select" data-filter="false" data-prepend="Show rows: " data-on-change="coinbaseApplyRowsCount")
+                            option(value="20") 20
+                            option(value="50" selected) 50
+                            option(value="100") 100
+
+
+                div.row
+                    div.cell-md-7
+                        div.mt-2#pagination-top
+                    div.cell-md-5.text-right-md
+                        span.ml-1.text-muted.reduce-4.text-bold RECORDS FOUND
+                        div
+                            span.ml-1.text-bold(style="font-size: 24px; line-height: 1")#found-coinbase 0
+
+                div.scroll-table-container.border.bd-default
+                    +internal-table("coinbase-table")
+
+                div.mt-4#pagination-bottom
+
+
+        include partials/_footer
+
+        include partials/_scripts
+
+        script
+            include js/coinbase/wsc.js
+            include js/coinbase/index.js
