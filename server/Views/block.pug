@@ -1,6 +1,7 @@
 include mixins/_block-trans
 include mixins/_block-internal
 include mixins/_block-zkapp
+include mixins/_snarks-table
 
 html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
     include partials/_head
@@ -15,7 +16,7 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                         div
                             a.c-pointer.h2.mr-4(onclick="history.back()")
                                 span.mif-arrow-left
-                            span.h1 Block Info
+                            span.h1 Block
 
                     div.cell-lg-7
                         div.adv-banner
@@ -274,6 +275,8 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                         a(href="#internal-trans") Internal Commands
                     li#zkapp-trans-tab
                         a(href="#zkapp-trans") zkApp Transactions
+                    li#snarks-tab
+                        a(href="#snarks") Snark Jobs
 
                 div#transactions-container
                     div#user-trans
@@ -284,6 +287,9 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
 
                     div#zkapp-trans
                         +block-zkapp-commands-table("block-zkapp-commands-table")
+
+                    div#snarks
+                        +snarks-table("snarks-table")
 
         include partials/_footer
 

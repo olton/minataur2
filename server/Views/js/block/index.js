@@ -4,21 +4,21 @@ const updateBlockTransactions = data => {
     const target = $("#block-trans-table tbody").clear()
     const rows = drawBlockTransTable(data)
     rows.map( r => target.append(r) )
-    $("#user-trans-tab").removeClass("disabled").addClass(data.length ? "" : "disabled")
+    // $("#user-trans-tab").removeClass("disabled").addClass(data.length ? "" : "disabled")
 }
 
 const updateBlockInternalCommands = data => {
     const target = $("#block-internal-commands-table tbody").clear()
     const rows = drawBlockInternalCommandsTable(data)
     rows.map( r => target.append(r) )
-    $("#internal-trans-tab").removeClass("disabled").addClass(data.length ? "" : "disabled")
+    // $("#internal-trans-tab").removeClass("disabled").addClass(data.length ? "" : "disabled")
 }
 
 const updateBlockZkAppCommands = data => {
     const target = $("#block-zkapp-commands-table tbody").clear()
     const rows = drawBlockZkAppCommandsTable(data)
     rows.map( r => target.append(r) )
-    $("#zkapp-trans-tab").removeClass("disabled").addClass(data.length ? "" : "disabled")
+    // $("#zkapp-trans-tab").removeClass("disabled").addClass(data.length ? "" : "disabled")
 }
 
 
@@ -120,4 +120,10 @@ const updateBlockInfo = data => {
         colorLight : "#ffffff",
         correctLevel : QRCode.CorrectLevel.L
     })
+}
+
+const updateBlockSnarkJobs = data => {
+    const target = $("#snarks-table tbody").clear()
+    const rows = drawSnarksTable(data)
+    rows.map( r => target.append(r) )
 }

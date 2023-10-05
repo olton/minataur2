@@ -26,7 +26,7 @@ import {
     db_get_zkapps_count,
     db_save_ip
 } from "./db.js";
-import {ql_get_account_info, ql_get_pool} from "./graphql.js";
+import {ql_get_account_info, ql_get_pool, ql_get_snark_jobs} from "./graphql.js";
 
 export const create_websocket_server = (httpServer) => {
     globalThis.wss = new WebSocketServer({ server: httpServer })
@@ -113,6 +113,11 @@ export const create_websocket_server = (httpServer) => {
                 }
                 case "block_zkapp_commands": {
                     response(ws, channel, await db_get_block_zkapp_commands(data.block_id))
+                    break
+                }
+                case "block_snarks": {
+                    console.log(data.height)
+                    response(ws, channel, await ql_get_snark_jobs(+data.height))
                     break
                 }
                 case "user_transactions": {

@@ -1,0 +1,48 @@
+mixin snarks-table(tableId)
+    div.scroll-table-container
+        table.table.data-table.row-border.monospace.row-hover.mt-2.mb-2(id=tableId)
+            thead
+                tr
+                    th: div Prover
+                    th: div Work IDs
+                    th(style="width: 30px;"): div Fee
+            tbody
+                tr
+                    td.text-center(colspan="5")
+                        div.d-flex.flex-align-center.flex-justify-center
+                            div(data-role="activity" data-type="bars" data-style="color")
+
+    script.
+        ;const drawSnarksTable = (data, loc = []) => {
+            const rows = []
+
+            if (data.length === 0) {
+                return [$("<tr>").html(`
+                    <td colspan="3" class="text-center">Nothing to show</td>
+                `)]
+            }
+
+            let index = 1
+            for (let row of data) {
+                let tr = $("<tr>")
+
+                tr.html(`
+                    <td>
+                        <span>${shorten(row.prover, 12)}</span>
+                        <span class="mif-copy copy-data-to-clipboard c-pointer ml-2" data-value="${row.prover}"></span>
+                    </td>
+                    <td class="">
+                        <div class="">${row.workIds.map( id => '<span class="ml-1">'+id+'</span>')}</div>
+                    </td>
+                    <td class="">
+                        <div class="">${normMina(row.fee)}</div>
+                    </td>
+                `)
+
+                rows.push(tr)
+
+                index++
+            }
+
+            return rows
+        }

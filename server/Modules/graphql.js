@@ -232,6 +232,30 @@ query MyQuery {
 }
 `
 
+const qSnarkJobs = `
+query ($height: Int!) {
+  block(height: $height) {
+    snarkJobs {
+      fee
+      prover
+      workIds
+    }
+  }
+}
+`
+
+export const ql_get_snark_jobs = async (height = 1) => {
+    try {
+        let result = await fetchGraphQL(qSnarkJobs, {height})
+        if (!result.data) {
+            new Error(`No jobs!`)
+        }
+        return result.data.block.snarkJobs
+    } catch (e) {
+        return null
+    }
+}
+
 export const ql_get_account_info = async (publicKey, token = 'wSHV2S4qX9jFsLjQo8r1BsMLH2ZRKsZx6EJd1sbozGPieEC4Jf') => {
     try {
         let result = await fetchGraphQL(qAccountInfo, {publicKey, token})
@@ -258,11 +282,11 @@ export const ql_get_snark_pool = async () => {
 
 export const ql_get_zkapp_pool = async () => {
     try {
-        let result = await fetchGraphQL(qZkappPool).pooledZkappCommands
+        let result = await fetchGraphQL(qZkappPool)
         if (!result.data) {
             new Error(`No data!`)
         }
-        return result.data
+        return result.data.pooledZkappCommands
     } catch (e) {
         return null
     }

@@ -17,6 +17,7 @@ globalThis.wsController = (ws, res) => {
             request("block_trans", {block_id: data.id})
             request("block_internal_commands", {block_id: data.id})
             request("block_zkapp_commands", {block_id: data.id})
+            request("block_snarks", {height: data.height})
             break
         }
         case "block_trans": {
@@ -29,6 +30,10 @@ globalThis.wsController = (ws, res) => {
         }
         case "block_zkapp_commands": {
             updateBlockZkAppCommands(data)
+            break
+        }
+        case "block_snarks": {
+            updateBlockSnarkJobs(data)
             break
         }
     }
