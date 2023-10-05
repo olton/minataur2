@@ -12,7 +12,7 @@ section.container-fluid.pos-fixed.fixed-top.z-top.bg-darkViolet.fg-white
                 a(href="/blockchain") Blockchain
             li
                 a.dropdown-toggle.marker-light(href="#") Transactions
-                ul.d-menu(data-role="dropdown")
+                ul.d-menu.place-right(data-role="dropdown")
                     li
                         a(href="/transactions")
                             span.icon.mif-users
@@ -30,14 +30,18 @@ section.container-fluid.pos-fixed.fixed-top.z-top.bg-darkViolet.fg-white
                     li
                         a(href="/pool")
                             span.icon.mif-broadcast
-                            span Pool
+                            span User Transactions Pool
+                    li
+                        a(href="/pool")
+                            span.icon.mif-air
+                            span zkApps Pool
             li
                 a(href="/accounts") Accounts
             li.disabled
                 a(href="/uptime") Uptime
             li
                 a.dropdown-toggle.marker-light(href="#") Network
-                ul.d-menu(data-role="dropdown")
+                ul.d-menu.place-right(data-role="dropdown")
                     li
                         a(href="/config")
                             span.icon.mif-cog

@@ -185,6 +185,53 @@ query MyQuery {
 }
 `
 
+const qZkappPool = `
+query MyQuery {
+  pooledZkappCommands {
+    id
+    hash
+    zkappCommand {
+      memo
+      feePayer {
+        authorization
+        body {
+          fee
+          nonce
+          publicKey
+          validUntil
+        }
+      }
+      accountUpdates {
+        body {
+          actions
+          publicKey
+          tokenId
+          incrementNonce
+          implicitAccountCreationFee
+          events
+          callDepth
+          callData
+          useFullCommitment
+          authorizationKind {
+            isProved
+            isSigned
+            verificationKeyHash
+          }
+          balanceChange {
+            magnitude
+            sgn
+          }
+        }
+      }
+    }
+    failureReason {
+      failures
+      index
+    }
+  }
+}
+`
+
 export const ql_get_account_info = async (publicKey, token = 'wSHV2S4qX9jFsLjQo8r1BsMLH2ZRKsZx6EJd1sbozGPieEC4Jf') => {
     try {
         let result = await fetchGraphQL(qAccountInfo, {publicKey, token})
@@ -200,6 +247,18 @@ export const ql_get_account_info = async (publicKey, token = 'wSHV2S4qX9jFsLjQo8
 export const ql_get_snark_pool = async () => {
     try {
         let result = await fetchGraphQL(qSnarkPool)
+        if (!result.data) {
+            new Error(`No data!`)
+        }
+        return result.data
+    } catch (e) {
+        return null
+    }
+}
+
+export const ql_get_zkapp_pool = async () => {
+    try {
+        let result = await fetchGraphQL(qZkappPool).pooledZkappCommands
         if (!result.data) {
             new Error(`No data!`)
         }
@@ -264,7 +323,7 @@ export const ql_check_payment_status = async (payment) => {
 
 export const ql_get_transaction_in_pool = async (publicKey) => {
     try {
-        let sql = address ? qTransactionInPoolForAddress : qTransactionInPool
+        let sql = publicKey ? qTransactionInPoolForAddress : qTransactionInPool
         let result = await fetchGraphQL(sql, {publicKey})
 
         result = result.data.pooledUserCommands
