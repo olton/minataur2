@@ -26,7 +26,6 @@ mixin delegators-table(tableId)
     script.
         ;const drawDelegatorsTable = data => {
             const rows = []
-
             if (data.length === 0) {
                 return [$("<tr>").html(`
                     <td colspan="4" class="text-center">Nothing to show</td>
@@ -51,7 +50,6 @@ mixin delegators-table(tableId)
                             <a class="link" href="/account/${row.account_key}">${shorten(row.account_key, 10)}</a>
                             <span title="Copy hash to clipboard" class="ml-1 reduce-1 mif-copy copy-data-to-clipboard c-pointer" data-value="${row.account_key}"></span>
                         </div>
-                        <div class="text-muted">${row.name}</div>
                     </td>
                     <td class="text-right">
                         <div class="fg-cyan no-wrap">

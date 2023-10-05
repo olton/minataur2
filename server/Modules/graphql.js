@@ -37,8 +37,8 @@ query {
 `
 
 const qBalance = `
-query ($publicKey: String!) {
-  account(publicKey: $publicKey) {
+query ($publicKey: String!, $token: String!) {
+  account(publicKey: $publicKey, token: $token) {
     balance {
       total
       blockHeight
@@ -107,8 +107,8 @@ query MyQuery {
 `;
 
 const qAccountInfo = `
-query ($publicKey: String!) {
-  account(publicKey: $publicKey) {
+query ($publicKey: String!, $token: String!) {
+  account(publicKey: $publicKey, token: $token) {
     nonce
     inferredNonce
     receiptChainHash
@@ -185,9 +185,9 @@ query MyQuery {
 }
 `
 
-export const ql_get_account_info = async key => {
+export const ql_get_account_info = async (publicKey, token = 'wSHV2S4qX9jFsLjQo8r1BsMLH2ZRKsZx6EJd1sbozGPieEC4Jf') => {
     try {
-        let result = await fetchGraphQL(qAccountInfo, {publicKey: key})
+        let result = await fetchGraphQL(qAccountInfo, {publicKey, token})
         if (!result.data) {
             new Error(`No account data!`)
         }
@@ -236,9 +236,9 @@ export const ql_get_runtime = async () => {
 
 
 
-export const ql_get_address_balance = async (address) => {
+export const ql_get_address_balance = async (publicKey, token = 'wSHV2S4qX9jFsLjQo8r1BsMLH2ZRKsZx6EJd1sbozGPieEC4Jf') => {
     try {
-        let result = await fetchGraphQL(qBalance, {publicKey: address})
+        let result = await fetchGraphQL(qBalance, {publicKey, token})
         return result.data.account.balance
     } catch (e) {
         return {
@@ -253,19 +253,19 @@ export const ql_get_address_balance = async (address) => {
     }
 }
 
-export const ql_check_payment_status = async (id) => {
+export const ql_check_payment_status = async (payment) => {
     try {
-        let result = await fetchGraphQL(qPaymentStatus, {payment: id})
+        let result = await fetchGraphQL(qPaymentStatus, {payment})
         return result.data ? result.data.transactionStatus : false
     } catch (e) {
         return false
     }
 }
 
-export const ql_get_transaction_in_pool = async (address) => {
+export const ql_get_transaction_in_pool = async (publicKey) => {
     try {
         let sql = address ? qTransactionInPoolForAddress : qTransactionInPool
-        let result = await fetchGraphQL(sql, {publicKey: address})
+        let result = await fetchGraphQL(sql, {publicKey})
 
         result = result.data.pooledUserCommands
 

@@ -18,8 +18,9 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                             span.h1 Account
 
                     div.cell-lg-7.order-3.order-lg-2
-                        div.bg-ad.d-flex.flex-align-center.flex-justify-center.h-100
-                            div.text-leader Your ad can be here!
+                        div.adv-banner
+                            div.adv-label PROMOTION
+                            a(href="https://zkappsformina.com/" target="_blank"): img(src="/images/zkappsformina.png" style='height: 64px')
 
                     div.cell-lg-2.cell-fs-4.order-2.order-lg-3
                         div.d-flex.flex-nowrap.flex-align-center
@@ -39,13 +40,13 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                                 span.mif-barcode
                             div.text-small.text-muted.text-upper Account Hash
                             div.box-value2.text-bold#account-hash XXXXXXX...XXXXXXX
-                    div.cell-lg-4
+                    div.cell-lg-4.cell-md-6
                         div.border.bd-default.p-2
                             div.text-muted.pos-absolute(style="top: 4px; right: 4px; font-size: 28px;")
                                 span.mif-apps
                             div.text-small.text-muted.text-upper Created In Block
                             div.box-value2#account-block XXXXXXX...XXXXXXX
-                    div.cell-lg-4
+                    div.cell-lg-4.cell-md-6
                         div.border.bd-default.p-2
                             div.text-muted.pos-absolute(style="top: 4px; right: 4px; font-size: 28px;")
                                 span.mif-calendar
@@ -119,19 +120,19 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
 
 
                 div.row
-                    div.cell-lg-2
+                    div.cell-lg-2.cell-md-6
                         div.border.bd-default.p-2
                             div.text-small.text-muted.text-upper NONCE
                             div.box-value4#account-nonce 0
-                    div.cell-lg-2
+                    div.cell-lg-2.cell-md-6
                         div.border.bd-default.p-2
                             div.text-small.text-muted.text-upper INFERRED NONCE
                             div.box-value4#account-inferred-nonce 0
-                    div.cell-lg-4
+                    div.cell-lg-4.cell-md-6
                         div.border.bd-default.p-2
                             div.text-small.text-muted.text-upper RECEIPT CHAIN HASH
                             div.box-value4#account-receipt-chain-hash XXXXX...XXXXX
-                    div.cell-lg-4
+                    div.cell-lg-4.cell-md-6
                         div.border.bd-default.p-2
                             div.text-small.text-muted.text-upper VOTING FOR (GRAPHQL)
                             div.box-value4#account-voting-for XXXXX...XXXXX
@@ -139,15 +140,15 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
         section.container-fluid#account-produce-data
             div.container
                 div.row
-                    div.cell-lg-2
+                    div.cell-lg-2.cell-md-6
                         div.border.bd-default.p-2
-                            div.text-small.text-muted.text-upper BLOCKS PRODUCED
+                            div.text-small.text-muted.text-upper BLOCKS PRODUCED (canonical)
                             div.box-value4
                                 span.reduce-4.text-muted TOTAL:
                                 span#blocks-produced 0
                                 span.reduce-4.text-muted.ml-auto EPOCH:
                                 span#blocks-produced-in-current-epoch 0
-                    div.cell-lg-2
+                    div.cell-lg-2.cell-md-6
                         div.border.bd-default.p-2
                             div.text-small.text-muted.text-upper DELEGATORS IN EPOCH
                             div.box-value4
@@ -155,7 +156,7 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                                 span#account-delegators-staking 0
                                 span.reduce-4.text-muted.ml-auto NEXT:
                                 span#account-delegators-next 0
-                    div.cell-lg-4
+                    div.cell-lg-4.cell-md-6
                         div.border.bd-default.p-2
                             div#delegate-account
                                 div.text-small.text-muted.text-upper STAKE DELEGATED TO
@@ -167,7 +168,7 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                                     span#stake-size-current 0
                                     span.reduce-4.text-muted.ml-auto NEXT:
                                     span#stake-size-next 0
-                    div.cell-lg-4
+                    div.cell-lg-4.cell-md-6
                         div.border.bd-default.p-2
                             div.text-small.text-muted.text-upper VOTING FOR (LEDGER)
                             div.box-value4#account-voting-for2 XXXXX...XXXXX
