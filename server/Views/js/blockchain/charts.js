@@ -50,7 +50,7 @@ const updateChartCoinbase = data => {
 const updateChartTrans = data => {
     $("#chart-blockchain-trans").clear()
     const tx = [], bl = []
-    for(let r of data.rows.reverse()) {
+    for(let r of data.rows) {
         if (r.chain_status !== 'canonical') continue
         tx.push(+r.user_trans_count + +r.internal_trans_count + +r.zkapp_trans_count)
         bl.push(+r.height)
@@ -91,7 +91,7 @@ const updateChartTrans = data => {
 const updateChartFee = data => {
     $("#chart-blockchain-fee").clear()
     const tx = [], bl = []
-    for(let r of data.rows.reverse()) {
+    for(let r of data.rows) {
         if (r.chain_status !== 'canonical') continue
         tx.push(+r.trans_fee/10**9)
         bl.push(+r.height)
@@ -132,7 +132,7 @@ const updateChartFee = data => {
 const updateChartSlots = data => {
     $("#chart-blockchain-slots").clear()
     const tx = [], bl = []
-    for(let r of data.rows.reverse()) {
+    for(let r of data.rows) {
         if (r.chain_status !== 'canonical') continue
         tx.push(+r.block_slots)
         bl.push(+r.height)
