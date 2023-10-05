@@ -116,7 +116,6 @@ export const create_websocket_server = (httpServer) => {
                     break
                 }
                 case "block_snarks": {
-                    console.log(data.height)
                     response(ws, channel, await ql_get_snark_jobs(+data.height))
                     break
                 }
