@@ -1,4 +1,4 @@
-create function public.notify_new_block() returns trigger
+create or replace function public.notify_new_block() returns trigger
     language plpgsql
 as
 $$
@@ -10,13 +10,7 @@ $$;
 
 alter function public.notify_new_block() owner to mina;
 
-create trigger tr_ai_notify_new_block
-    after insert
-    on blocks
-    for each row
-execute procedure notify_new_block();
-
-create function set_block_state() returns trigger
+create or replace function public.set_block_state() returns trigger
     language plpgsql
 as
 $$
@@ -85,11 +79,18 @@ begin
 end;
 $$;
 
-alter function set_block_state() owner to mina;
+alter function public.set_block_state() owner to mina;
+
+create trigger tr_ai_notify_new_block
+    after insert
+    on public.blocks
+    for each row
+execute procedure public.notify_new_block();
 
 create trigger tr_ai_set_block_state
     after insert
-    on blocks
+    on public.blocks
     for each row
-execute procedure set_block_state();
+execute procedure public.set_block_state();
+
 

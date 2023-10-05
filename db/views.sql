@@ -1,39 +1,86 @@
-create view public.v_accounts
-            (account_id, account_value, account_name, is_mina_foundation, is_o1, balance, blocks_produced, timestamp) as
-WITH blocks_producing AS (SELECT b.creator_id,
-                                 count(b.id) AS blocks_produced
-                          FROM blocks b
-                          WHERE b.chain_status = 'canonical'::chain_status_type
-                          GROUP BY b.creator_id),
-     accounts_create_time AS (SELECT ai_1.public_key_id,
-                                     b."timestamp"
-                              FROM blocks b
-                                       LEFT JOIN accounts_created ac ON ac.block_id = b.id
-                                       LEFT JOIN account_identifiers ai_1 ON ac.account_identifier_id = ai_1.id
-                              WHERE ai_1.token_id = 1)
-SELECT pk.id                                                           AS account_id,
-       pk.value                                                        AS account_value,
-       COALESCE(pr.name, 'noname'::character varying)                  AS account_name,
-       COALESCE("position"(pr.name::text, 'Mina Foundation'::text), 0) AS is_mina_foundation,
-       COALESCE("position"(pr.name::text, 'O(1)'::text), 0)            AS is_o1,
-       COALESCE(((SELECT aa.balance
-                  FROM accounts_accessed aa
-                  WHERE aa.account_identifier_id = ai.id
-                    AND aa.token_symbol_id = ai.token_id
-                  ORDER BY aa.block_id DESC
-                  LIMIT 1))::bigint, 0::bigint)                        AS balance,
-       COALESCE(bp.blocks_produced, 0::bigint)                         AS blocks_produced,
-       act."timestamp"
-FROM public_keys pk
-         LEFT JOIN whois pr ON pr.public_key_id = pk.id
-         LEFT JOIN account_identifiers ai ON ai.public_key_id = pk.id
-         LEFT JOIN blocks_producing bp ON bp.creator_id = pk.id
-         LEFT JOIN accounts_create_time act ON act.public_key_id = pk.id;
+create or replace view public.v_block_stats
+            (id, height, internal_trans_count, zkapp_trans_count, user_trans_count, trans_fee, block_slots,
+             block_timelapse, block_participants)
+as
+WITH bl AS (SELECT b.id,
+                   b.height,
+                   COALESCE((SELECT count(ic.id::double precision) AS sum
+                             FROM internal_commands ic
+                                      LEFT JOIN blocks_internal_commands bic ON bic.internal_command_id = ic.id
+                             WHERE bic.block_id = b.id), 0::numeric::bigint)           AS internal_trans_count,
+                   COALESCE((SELECT count(zc.id::double precision) AS sum
+                             FROM zkapp_commands zc
+                                      LEFT JOIN blocks_zkapp_commands bzc ON bzc.zkapp_command_id = zc.id
+                             WHERE bzc.block_id = b.id), 0::numeric::bigint)           AS zkapp_trans_count,
+                   COALESCE((SELECT count(ic.fee::double precision) AS sum
+                             FROM user_commands ic
+                                      LEFT JOIN blocks_user_commands bic ON bic.user_command_id = ic.id
+                             WHERE bic.block_id = b.id), 0::numeric::bigint)           AS user_trans_count,
+                   COALESCE((SELECT sum(ic.fee::double precision) AS sum
+                             FROM user_commands ic
+                                      LEFT JOIN blocks_user_commands bic ON bic.user_command_id = ic.id
+                             WHERE bic.block_id = b.id), 0::numeric::double precision) AS trans_fee,
+                   b.global_slot_since_genesis - ((SELECT b2.global_slot_since_genesis
+                                                   FROM blocks b2
+                                                   WHERE b2.height = (b.height - 1)
+                                                     AND b.chain_status = 'canonical'::chain_status_type
+                                                   LIMIT 1))                           AS block_slots,
+                   (SELECT count(*) AS count
+                    FROM blocks b1
+                    WHERE b1.height = b.height)                                        AS block_participants
+            FROM blocks b
+            WHERE b.chain_status = 'canonical'::chain_status_type
+            ORDER BY b.height DESC
+            LIMIT 100)
+SELECT bl.id,
+       bl.height,
+       bl.internal_trans_count,
+       bl.zkapp_trans_count,
+       bl.user_trans_count,
+       bl.trans_fee,
+       bl.block_slots,
+       bl.block_slots * 3 AS block_timelapse,
+       bl.block_participants
+FROM bl;
 
-alter table public.v_accounts
+alter table public.v_block_stats
     owner to mina;
 
-create view public.v_block_info
+create or replace view public.v_block_stats_avg
+            (avg_slots, avg_internal_trans_count, avg_zkapp_trans_count, avg_user_trans_count, avg_trans_fee,
+             avg_time) as
+SELECT avg(b.block_slots)          AS avg_slots,
+       avg(b.internal_trans_count) AS avg_internal_trans_count,
+       avg(b.zkapp_trans_count)    AS avg_zkapp_trans_count,
+       avg(b.user_trans_count)     AS avg_user_trans_count,
+       round(avg(b.trans_fee))     AS avg_trans_fee,
+       avg(b.block_timelapse)      AS avg_time
+FROM v_block_stats b;
+
+alter table public.v_block_stats_avg
+    owner to mina;
+
+create or replace view public.v_commands_in_block
+            (id, height, user_commands_count, internal_commands_count, zkapp_commands_count) as
+SELECT b.id,
+       b.height,
+       COALESCE((SELECT count(1) AS count
+                 FROM blocks_user_commands buc
+                 WHERE buc.block_id = b.id), 0::bigint) AS user_commands_count,
+       COALESCE((SELECT count(1) AS count
+                 FROM blocks_internal_commands bic
+                 WHERE bic.block_id = b.id), 0::bigint) AS internal_commands_count,
+       COALESCE((SELECT count(1) AS count
+                 FROM blocks_zkapp_commands bzc
+                 WHERE bzc.block_id = b.id), 0::bigint) AS zkapp_commands_count
+FROM blocks b
+WHERE b.chain_status = 'canonical'::chain_status_type
+ORDER BY b.height DESC;
+
+alter table public.v_commands_in_block
+    owner to mina;
+
+create or replace view public.v_block_info
             (id, height, hash, timestamp, chain_status, global_slot_since_genesis, global_slot_since_hard_fork,
              slot_in_epoch, epoch_since_genesis, epoch_since_hard_fork, coinbase, user_trans_count,
              internal_trans_count, zkapp_trans_count, participants_count, block_slots, creator_id, creator_name,
@@ -132,69 +179,7 @@ FROM blocks b
 alter table public.v_block_info
     owner to mina;
 
-create view public.v_block_stats
-            (id, height, internal_trans_count, zkapp_trans_count, user_trans_count, trans_fee, block_slots,
-             block_timelapse, block_participants)
-as
-WITH bl AS (SELECT b.id,
-                   b.height,
-                   COALESCE((SELECT count(ic.id::double precision) AS sum
-                             FROM internal_commands ic
-                                      LEFT JOIN blocks_internal_commands bic ON bic.internal_command_id = ic.id
-                             WHERE bic.block_id = b.id), 0::numeric::bigint)           AS internal_trans_count,
-                   COALESCE((SELECT count(zc.id::double precision) AS sum
-                             FROM zkapp_commands zc
-                                      LEFT JOIN blocks_zkapp_commands bzc ON bzc.zkapp_command_id = zc.id
-                             WHERE bzc.block_id = b.id), 0::numeric::bigint)           AS zkapp_trans_count,
-                   COALESCE((SELECT count(ic.fee::double precision) AS sum
-                             FROM user_commands ic
-                                      LEFT JOIN blocks_user_commands bic ON bic.user_command_id = ic.id
-                             WHERE bic.block_id = b.id), 0::numeric::bigint)           AS user_trans_count,
-                   COALESCE((SELECT sum(ic.fee::double precision) AS sum
-                             FROM user_commands ic
-                                      LEFT JOIN blocks_user_commands bic ON bic.user_command_id = ic.id
-                             WHERE bic.block_id = b.id), 0::numeric::double precision) AS trans_fee,
-                   b.global_slot_since_genesis - ((SELECT b2.global_slot_since_genesis
-                                                   FROM blocks b2
-                                                   WHERE b2.height = (b.height - 1)
-                                                     AND b.chain_status = 'canonical'::chain_status_type
-                                                   LIMIT 1))                           AS block_slots,
-                   (SELECT count(*) AS count
-                    FROM blocks b1
-                    WHERE b1.height = b.height)                                        AS block_participants
-            FROM blocks b
-            WHERE b.chain_status = 'canonical'::chain_status_type
-            ORDER BY b.height DESC
-            LIMIT 100)
-SELECT bl.id,
-       bl.height,
-       bl.internal_trans_count,
-       bl.zkapp_trans_count,
-       bl.user_trans_count,
-       bl.trans_fee,
-       bl.block_slots,
-       bl.block_slots * 3 AS block_timelapse,
-       bl.block_participants
-FROM bl;
-
-alter table public.v_block_stats
-    owner to mina;
-
-create view public.v_block_stats_avg
-            (avg_slots, avg_internal_trans_count, avg_zkapp_trans_count, avg_user_trans_count, avg_trans_fee,
-             avg_time) as
-SELECT avg(b.block_slots)          AS avg_slots,
-       avg(b.internal_trans_count) AS avg_internal_trans_count,
-       avg(b.zkapp_trans_count)    AS avg_zkapp_trans_count,
-       avg(b.user_trans_count)     AS avg_user_trans_count,
-       round(avg(b.trans_fee))     AS avg_trans_fee,
-       avg(b.block_timelapse)      AS avg_time
-FROM v_block_stats b;
-
-alter table public.v_block_stats_avg
-    owner to mina;
-
-create view public.v_blocks
+create or replace view public.v_blocks
             (id, timestamp, height, chain_status, hash, global_slot_since_genesis, global_slot_since_hard_fork,
              epoch_since_genesis, epoch_since_hard_fork, slot, coinbase, snark_fee, trans_fee, user_trans_count,
              internal_trans_count, zkapp_trans_count, creator_id, creator_name, creator_key, block_slots,
@@ -260,32 +245,13 @@ FROM blocks b
 alter table public.v_blocks
     owner to mina;
 
-create view public.v_commands_in_block
-            (id, height, user_commands_count, internal_commands_count, zkapp_commands_count) as
-SELECT b.id,
-       b.height,
-       COALESCE((SELECT count(1) AS count
-                 FROM blocks_user_commands buc
-                 WHERE buc.block_id = b.id), 0::bigint) AS user_commands_count,
-       COALESCE((SELECT count(1) AS count
-                 FROM blocks_internal_commands bic
-                 WHERE bic.block_id = b.id), 0::bigint) AS internal_commands_count,
-       COALESCE((SELECT count(1) AS count
-                 FROM blocks_zkapp_commands bzc
-                 WHERE bzc.block_id = b.id), 0::bigint) AS zkapp_commands_count
-FROM blocks b
-WHERE b.chain_status = 'canonical'::chain_status_type
-ORDER BY b.height DESC;
-
-alter table public.v_commands_in_block
-    owner to mina;
-
-create view public.v_epoch
+create or replace view public.v_epoch
             (height, global_slot_since_genesis, global_slot_since_hard_fork, epoch_since_genesis, epoch_since_hard_fork,
-             current_slot, epoch_start_block, epoch_blocks, block_time, active_producers)
+             current_slot, epoch_start_block, epoch_blocks, block_time, active_producers, total_currency)
 as
 WITH block AS (SELECT b.height,
-                      b."timestamp"
+                      b."timestamp",
+                      b.total_currency
                FROM blocks b
                WHERE b.chain_status = 'canonical'::chain_status_type
                ORDER BY b.height DESC
@@ -320,7 +286,8 @@ SELECT block.height,
        block."timestamp"                                          AS block_time,
        (SELECT count(DISTINCT vb.creator_id) AS count
         FROM v_blocks vb
-        WHERE vb.epoch_since_genesis = epoch.epoch_since_genesis) AS active_producers
+        WHERE vb.epoch_since_genesis = epoch.epoch_since_genesis) AS active_producers,
+       block.total_currency
 FROM block,
      slot,
      epoch,
@@ -329,9 +296,9 @@ FROM block,
 alter table public.v_epoch
     owner to mina;
 
-create view public.v_internal_commands
+create or replace view public.v_internal_commands
             (block_id, hash, command_type, fee, sequence_no, secondary_sequence_no, status, failure_reason, confirm,
-             receiver_id, receiver_key, receiver_name, height, timestamp, chain_status)
+             receiver_id, receiver_key, receiver_name, height, timestamp, chain_status, block_hash)
 as
 SELECT b.id                                           AS block_id,
        ic.hash,
@@ -348,7 +315,8 @@ SELECT b.id                                           AS block_id,
        COALESCE(pr.name, 'noname'::character varying) AS receiver_name,
        b.height,
        b."timestamp",
-       b.chain_status
+       b.chain_status,
+       b.state_hash                                   AS block_hash
 FROM internal_commands ic
          LEFT JOIN blocks_internal_commands bic ON bic.internal_command_id = ic.id
          LEFT JOIN blocks b ON b.id = bic.block_id
@@ -358,7 +326,7 @@ FROM internal_commands ic
 alter table public.v_internal_commands
     owner to mina;
 
-create view public.v_last_canonical_block
+create or replace view public.v_last_canonical_block
             (id, timestamp, height, chain_status, hash, global_slot_since_genesis, global_slot_since_hard_fork,
              epoch_since_genesis, epoch_since_hard_fork, slot, coinbase, snark_fee, trans_fee, user_trans_count,
              internal_trans_count, zkapp_trans_count, creator_id, creator_name, creator_key)
@@ -390,10 +358,10 @@ LIMIT 1;
 alter table public.v_last_canonical_block
     owner to mina;
 
-create view public.v_user_transactions
+create or replace view public.v_user_transactions
             (block_id, height, timestamp, hash, command_type, nonce, amount, fee, memo, sequence_no, status,
              failure_reason, confirm, sender_id, sender_key, sender_name, receiver_id, receiver_key, receiver_name,
-             fee_payer_id, fee_payer_key, fee_payer_name, chain_status)
+             fee_payer_id, fee_payer_key, fee_payer_name, chain_status, block_hash)
 as
 SELECT b.id                                            AS block_id,
        b.height,
@@ -418,7 +386,8 @@ SELECT b.id                                            AS block_id,
        uc.fee_payer_id,
        pk3.value                                       AS fee_payer_key,
        COALESCE(pr3.name, 'noname'::character varying) AS fee_payer_name,
-       b.chain_status
+       b.chain_status,
+       b.state_hash                                    AS block_hash
 FROM user_commands uc
          LEFT JOIN blocks_user_commands buc ON buc.user_command_id = uc.id
          LEFT JOIN blocks b ON buc.block_id = b.id
@@ -432,9 +401,9 @@ FROM user_commands uc
 alter table public.v_user_transactions
     owner to mina;
 
-create view public.v_zkapp_commands
+create or replace view public.v_zkapp_commands
             (block_id, hash, memo, sequence_no, status, fee, nonce, confirm, payer_id, payer_key, payer_name, height,
-             timestamp, chain_status)
+             timestamp, chain_status, block_hash)
 as
 SELECT b.id                                           AS block_id,
        zc.hash,
@@ -450,7 +419,8 @@ SELECT b.id                                           AS block_id,
        COALESCE(pr.name, 'noname'::character varying) AS payer_name,
        b.height,
        b."timestamp",
-       b.chain_status
+       b.chain_status,
+       b.state_hash                                   AS block_hash
 FROM zkapp_commands zc
          LEFT JOIN blocks_zkapp_commands bzc ON bzc.zkapp_command_id = zc.id
          LEFT JOIN blocks b ON b.id = bzc.block_id
@@ -459,5 +429,160 @@ FROM zkapp_commands zc
          LEFT JOIN whois pr ON pr.public_key_id = pb.public_key_id;
 
 alter table public.v_zkapp_commands
+    owner to mina;
+
+create or replace view public.v_ledger_staking
+            (public_key_id, account_key, balance, delegate_key_id, delegate_key, nonce, receipt_chain_hash, voting_for,
+             token_id, token, initial_balance, initial_minimum_balance, cliff_time, cliff_amount, vesting_period,
+             vesting_increment, epoch_since_genesis, epoch_since_hard_fork)
+as
+SELECT l.public_key_id,
+       pk1.value AS account_key,
+       l.balance,
+       l.delegate_key_id,
+       pk2.value AS delegate_key,
+       l.nonce,
+       l.receipt_chain_hash,
+       l.voting_for,
+       l.token_id,
+       t.value   AS token,
+       l.initial_balance,
+       l.initial_minimum_balance,
+       l.cliff_time,
+       l.cliff_amount,
+       l.vesting_period,
+       l.vesting_increment,
+       l.epoch_since_genesis,
+       l.epoch_since_hard_fork
+FROM ledger l
+         LEFT JOIN public_keys pk1 ON pk1.id = l.public_key_id
+         LEFT JOIN public_keys pk2 ON pk2.id = l.delegate_key_id
+         LEFT JOIN tokens t ON t.id = l.token_id
+WHERE l.epoch_since_genesis::double precision = ((SELECT e.epoch_since_genesis
+                                                  FROM v_epoch e));
+
+alter table public.v_ledger_staking
+    owner to mina;
+
+create or replace view public.v_ledger_next
+            (public_key_id, account_key, balance, delegate_key_id, delegate_key, nonce, receipt_chain_hash, voting_for,
+             token_id, token, initial_balance, initial_minimum_balance, cliff_time, cliff_amount, vesting_period,
+             vesting_increment, epoch_since_genesis, epoch_since_hard_fork)
+as
+SELECT l.public_key_id,
+       pk1.value AS account_key,
+       l.balance,
+       l.delegate_key_id,
+       pk2.value AS delegate_key,
+       l.nonce,
+       l.receipt_chain_hash,
+       l.voting_for,
+       l.token_id,
+       t.value   AS token,
+       l.initial_balance,
+       l.initial_minimum_balance,
+       l.cliff_time,
+       l.cliff_amount,
+       l.vesting_period,
+       l.vesting_increment,
+       l.epoch_since_genesis,
+       l.epoch_since_hard_fork
+FROM ledger l
+         LEFT JOIN public_keys pk1 ON pk1.id = l.public_key_id
+         LEFT JOIN public_keys pk2 ON pk2.id = l.delegate_key_id
+         LEFT JOIN tokens t ON t.id = l.token_id
+WHERE l.epoch_since_genesis::double precision = (((SELECT e.epoch_since_genesis
+                                                   FROM v_epoch e)) + 1::double precision);
+
+alter table public.v_ledger_next
+    owner to mina;
+
+create or replace view public.v_accounts
+            (id, key, name, logo, site, telegram, twitter, github, discord, description, token_id, balance,
+             delegate_key, delegate_name, receipt_chain_hash, locked)
+as
+SELECT pk.id,
+       pk.value                                            AS key,
+       COALESCE(wh.name, ''::character varying)            AS name,
+       COALESCE(wh.logo, ''::character varying)            AS logo,
+       COALESCE(wh.site, ''::character varying)            AS site,
+       COALESCE(wh.telegram, ''::character varying)        AS telegram,
+       COALESCE(wh.twitter, ''::character varying)         AS twitter,
+       COALESCE(wh.github, ''::character varying)          AS github,
+       COALESCE(wh.discord, ''::character varying)         AS discord,
+       COALESCE(wh.description, ''::text)                  AS description,
+       ai.token_id,
+       COALESCE(((SELECT aa.balance
+                  FROM accounts_accessed aa
+                  WHERE aa.account_identifier_id = ai.id
+                    AND aa.token_symbol_id = ai.token_id
+                  ORDER BY aa.block_id DESC
+                  LIMIT 1))::bigint, l.balance, 0::bigint) AS balance,
+       l.delegate_key,
+       COALESCE(wh2.name, ''::character varying)           AS delegate_name,
+       l.receipt_chain_hash,
+       COALESCE(l.cliff_amount, 0::bigint) > 0             AS locked
+FROM public_keys pk
+         LEFT JOIN whois wh ON wh.public_key_id = pk.id
+         LEFT JOIN account_identifiers ai ON ai.public_key_id = pk.id AND ai.token_id = 1
+         LEFT JOIN v_ledger_staking l ON l.public_key_id = pk.id
+         LEFT JOIN whois wh2 ON wh2.public_key_id = l.delegate_key_id;
+
+alter table public.v_accounts
+    owner to mina;
+
+create or replace view public.v_account_info
+            (id, key, name, logo, site, telegram, twitter, github, discord, description, blocks_produced,
+             blocks_produced_in_epoch, balance, receipt_chain_hash, voting_for, token_id, token,
+             initial_minimum_balance, initial_balance, cliff_time, cliff_amount, vesting_period, vesting_increment)
+as
+WITH blocks_producing AS (SELECT b.creator_id,
+                                 count(b.id) AS blocks_produced
+                          FROM blocks b
+                          WHERE b.chain_status = 'canonical'::chain_status_type
+                          GROUP BY b.creator_id),
+     blocks_producing_in_epoch AS (SELECT b.creator_id,
+                                          count(b.id) AS blocks_produced
+                                   FROM v_blocks b
+                                   WHERE b.chain_status = 'canonical'::chain_status_type
+                                     AND b.epoch_since_genesis = ((SELECT e.epoch_since_genesis
+                                                                   FROM v_epoch e))
+                                   GROUP BY b.creator_id)
+SELECT pk.id,
+       pk.value                                            AS key,
+       COALESCE(wh.name, ''::character varying)            AS name,
+       COALESCE(wh.logo, ''::character varying)            AS logo,
+       COALESCE(wh.site, ''::character varying)            AS site,
+       COALESCE(wh.telegram, ''::character varying)        AS telegram,
+       COALESCE(wh.twitter, ''::character varying)         AS twitter,
+       COALESCE(wh.github, ''::character varying)          AS github,
+       COALESCE(wh.discord, ''::character varying)         AS discord,
+       COALESCE(wh.description, ''::text)                  AS description,
+       COALESCE(bp.blocks_produced, 0::bigint)             AS blocks_produced,
+       COALESCE(bpe.blocks_produced, 0::bigint)            AS blocks_produced_in_epoch,
+       COALESCE(((SELECT aa.balance
+                  FROM accounts_accessed aa
+                  WHERE aa.account_identifier_id = ai.id
+                    AND aa.token_symbol_id = ai.token_id
+                  ORDER BY aa.block_id DESC
+                  LIMIT 1))::bigint, l.balance, 0::bigint) AS balance,
+       l.receipt_chain_hash,
+       l.voting_for,
+       l.token_id,
+       l.token,
+       l.initial_minimum_balance,
+       l.initial_balance,
+       l.cliff_time,
+       l.cliff_amount,
+       l.vesting_period,
+       l.vesting_increment
+FROM public_keys pk
+         LEFT JOIN whois wh ON wh.public_key_id = pk.id
+         LEFT JOIN account_identifiers ai ON ai.public_key_id = pk.id AND ai.token_id = 1
+         LEFT JOIN blocks_producing bp ON bp.creator_id = pk.id
+         LEFT JOIN blocks_producing_in_epoch bpe ON bpe.creator_id = pk.id
+         LEFT JOIN v_ledger_staking l ON l.public_key_id = pk.id;
+
+alter table public.v_account_info
     owner to mina;
 
