@@ -1,6 +1,6 @@
 import {query} from "./postgres.js";
 import {debug} from "../Helpers/log.js";
-import {on_new_block} from "./events.js";
+import {on_new_block, on_new_user_tx_memo} from "./events.js";
 import {decodeMemo} from "../Helpers/memo.js";
 
 export const CHAIN_STATUS = {
@@ -25,14 +25,19 @@ export const listen_notifies = async () => {
     const client = await globalThis.postgres.connect()
 
     client.query('LISTEN new_block')
-    client.on('notification', async (data) => {
-        if (config.debug) {
-            debug(`${data.channel} notification:`, 'info', data.payload)
-        }
-        if (data.channel === 'new_block') {
-            globalThis.broadcast.new_block = JSON.parse(data.payload)
+    client.query('LISTEN new_user_tx_memo')
 
-            on_new_block()
+    client.on('notification', async (data) => {
+        const payload = JSON.parse(data.payload)
+        const channel = data.channel
+        if (config.debug) debug("pg_notify: ", channel)
+        if (channel === 'new_block') {
+            globalThis.broadcast.new_block = payload
+            on_new_block(payload)
+        }
+        if (channel === 'new_user_tx_memo') {
+            console.log(payload)
+            on_new_user_tx_memo(payload)
         }
     })
 }
@@ -371,9 +376,7 @@ export const db_get_trans_info = async hash => {
         where (b.chain_status = 'canonical' or b.chain_status = 'pending') and t.hash = $1
     `
     const result = (await query(sql, [hash])).rows[0]
-    console.log(sql, hash)
     result.memo = decodeMemo(result.memo)
-
     return result
 }
 
@@ -514,8 +517,6 @@ export const db_get_blocks_for_account = async ({
     sql = sql.replace("%BLOCK_SEARCH%", search && search.block ? `and height = ${search.block}` : "")
     sql = sql.replace("%HASH_SEARCH%", search && search.hash ? `and hash = '${search.hash}'` : "")
     sql = sql.replace("%COINBASE_SEARCH%", search && search.coinbase ? `and coinbase = ${search.coinbase}` : "")
-
-    console.log(sql)
 
     return (await query(sql, [Array.isArray(type) ? type : [type], account, limit, offset])).rows
 }
