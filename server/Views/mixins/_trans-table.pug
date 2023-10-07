@@ -39,6 +39,7 @@ mixin trans-table(tableId)
     script.
         ;const drawTransTable = data => {
             const rows = []
+            const showBlockInfo = $("#trans-show-block").is(":checked")
 
             if (data.length === 0) {
                 return [$("<tr>").html(`
@@ -50,11 +51,11 @@ mixin trans-table(tableId)
             for (let row of data) {
                 let tr
 
-                if (showBlockNumber && row.height !== block_height) {
+                if (showBlockInfo && row.height !== block_height) {
                     block_height = row.height
                     tr = $("<tr>")
                     tr.html(`
-                        <td colspan="7" class="enlarge-2">
+                        <td colspan="8" class="enlarge-2">
                             <div class="d-flex flex-align-center">
                                 <span>Block: </span>
                                 <a href="/block/${row.block_hash}" class="link ml-2">${row.height}</a>

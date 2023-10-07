@@ -141,6 +141,14 @@ const updateAccountLedger = data => {
     }
 }
 
-const updateAccountDelegators = data => {
-    // console.log(data)
+const updateAccountStats = data => {
+    const {blocks_canonical, blocks_canonical_epoch, blocks_total, blocks_win, tx_failed, tx_try, tx_sent, tx_received} = data
+    $("#account-tx-try").html(num2fmt(tx_try))
+    $("#account-tx-fails").html(num2fmt(tx_failed))
+    $("#account-tx-sent").html(num2fmt(tx_sent))
+    $("#account-tx-received").html(num2fmt(tx_received))
+    $("#account-blocks-total").html(num2fmt(blocks_total))
+    $("#account-blocks-produced").html("<span class='reduce-6 text-muted'>ALL:</span>"+num2fmt(blocks_canonical))
+    $("#account-blocks-produced-epoch").html("<span class='reduce-6 text-muted'>EPOCH:</span>"+num2fmt(blocks_canonical_epoch))
+    $("#account-blocks-win").html(num2fmt(blocks_win))
 }

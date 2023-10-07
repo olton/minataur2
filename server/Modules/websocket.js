@@ -4,7 +4,7 @@ import {
     db_get_account_delegators_count,
     db_get_account_info,
     db_get_account_ledger,
-    db_get_account_stake,
+    db_get_account_stake, db_get_account_stats,
     db_get_accounts,
     db_get_accounts_count,
     db_get_block_info,
@@ -165,6 +165,10 @@ export const create_websocket_server = (httpServer) => {
                     const rows = await db_get_account_delegators({...data})
                     const length = await db_get_account_delegators_count({...data})
                     response(ws, channel, {rows, length})
+                    break
+                }
+                case "account_stats": {
+                    response(ws, channel, await db_get_account_stats(data.account_id))
                     break
                 }
                 case "peers": {

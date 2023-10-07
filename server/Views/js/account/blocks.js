@@ -42,6 +42,7 @@ const updateBlocksTable = (data) => {
     })
 
     $("#found-blocks").html(num2fmt(data.length))
+    $("#account-block-count").html(`(${num2fmt(data.length)})`)
 
     const target = $("#blocks-table tbody").clear()
     const rows = drawBlocksTable(data.rows)

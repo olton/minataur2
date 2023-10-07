@@ -19,6 +19,7 @@ globalThis.wsController = (ws, res) => {
             request("account_transactions", createTransRequest())
             request("account_blocks", createBlockRequest())
             request("account_ledger", {account_id: accountID})
+            request("account_stats", {account_id: accountID})
             request("account_delegators", createDelegatorsRequest())
             setTimeout(request, 60000, "price")
             break
@@ -37,6 +38,10 @@ globalThis.wsController = (ws, res) => {
         }
         case "account_delegators": {
             updateDelegatorsTable(data)
+            break
+        }
+        case "account_stats": {
+            updateAccountStats(data)
             break
         }
     }

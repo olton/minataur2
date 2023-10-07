@@ -42,6 +42,8 @@ const updateDelegatorsTable = (data) => {
     })
 
     $("#found-delegators").html(num2fmt(data.length))
+    $("#account-delegators-count").html(`(${num2fmt(data.length)})`)
+    $("#account-delegators").html(num2fmt(data.length))
 
     const target = $("#delegators-table tbody").clear()
     const rows = drawDelegatorsTable(data.rows)

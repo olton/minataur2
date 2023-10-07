@@ -564,7 +564,7 @@ SELECT pk.id,
        COALESCE(wh.twitter, ''::character varying)         AS twitter,
        COALESCE(wh.github, ''::character varying)          AS github,
        COALESCE(wh.discord, ''::character varying)         AS discord,
-       COALESCE(wh.description, ''::text)                  AS description,
+       COALESCE(wh."desc", ''::text)                       AS description,
        COALESCE(bp.blocks_produced, 0::bigint)             AS blocks_produced,
        COALESCE(bpe.blocks_produced, 0::bigint)            AS blocks_produced_in_epoch,
        COALESCE(((SELECT aa.balance
@@ -591,5 +591,75 @@ FROM public_keys pk
          LEFT JOIN v_ledger_staking l ON l.public_key_id = pk.id;
 
 alter table public.v_account_info
+    owner to mina;
+
+create view public.v_account_stats
+            (account_id, account_key, blocks_win, blocks_total, blocks_canonical, blocks_canonical_epoch, tx_try,
+             tx_sent, tx_received, tx_failed)
+as
+WITH blocks_win AS (SELECT b.block_winner_id,
+                           count(b.id) AS blocks_win
+                    FROM blocks b
+                    GROUP BY b.block_winner_id),
+     blocks_total AS (SELECT b.creator_id,
+                             count(b.id) AS blocks_produced
+                      FROM blocks b
+                      GROUP BY b.creator_id),
+     blocks_canonical AS (SELECT b.creator_id,
+                                 count(b.id) AS blocks_produced
+                          FROM blocks b
+                          WHERE b.chain_status = 'canonical'::chain_status_type
+                          GROUP BY b.creator_id),
+     blocks_canonical_epoch AS (SELECT b.creator_id,
+                                       count(b.id) AS blocks_produced
+                                FROM v_blocks b
+                                WHERE b.chain_status = 'canonical'::chain_status_type
+                                  AND b.epoch_since_genesis = ((SELECT e.epoch_since_genesis
+                                                                FROM v_epoch e))
+                                GROUP BY b.creator_id),
+     transactions_try AS (SELECT u.source_id,
+                                 count(u.id) AS tx_count
+                          FROM user_commands u
+                                   LEFT JOIN blocks_user_commands b ON b.user_command_id = u.id
+                          GROUP BY u.source_id),
+     transactions_sent AS (SELECT u.source_id,
+                                  count(u.id) AS tx_count
+                           FROM user_commands u
+                                    LEFT JOIN blocks_user_commands b ON b.user_command_id = u.id
+                           WHERE b.status = 'applied'::transaction_status
+                           GROUP BY u.source_id),
+     transactions_failed AS (SELECT u.source_id,
+                                    count(u.id) AS tx_count
+                             FROM user_commands u
+                                      LEFT JOIN blocks_user_commands b ON b.user_command_id = u.id
+                             WHERE b.status = 'failed'::transaction_status
+                             GROUP BY u.source_id),
+     transactions_received AS (SELECT u.receiver_id,
+                                      count(u.id) AS tx_count
+                               FROM user_commands u
+                                        LEFT JOIN blocks_user_commands b ON b.user_command_id = u.id
+                               WHERE b.status = 'applied'::transaction_status
+                               GROUP BY u.receiver_id)
+SELECT pk.id                                   AS account_id,
+       pk.value                                AS account_key,
+       COALESCE(bw.blocks_win, 0::bigint)      AS blocks_win,
+       COALESCE(bt.blocks_produced, 0::bigint) AS blocks_total,
+       COALESCE(bc.blocks_produced, 0::bigint) AS blocks_canonical,
+       COALESCE(be.blocks_produced, 0::bigint) AS blocks_canonical_epoch,
+       COALESCE(ty.tx_count, 0::bigint)        AS tx_try,
+       COALESCE(ts.tx_count, 0::bigint)        AS tx_sent,
+       COALESCE(tr.tx_count, 0::bigint)        AS tx_received,
+       COALESCE(tf.tx_count, 0::bigint)        AS tx_failed
+FROM public_keys pk
+         LEFT JOIN blocks_win bw ON bw.block_winner_id = pk.id
+         LEFT JOIN blocks_total bt ON bt.creator_id = pk.id
+         LEFT JOIN blocks_canonical bc ON bc.creator_id = pk.id
+         LEFT JOIN blocks_canonical_epoch be ON be.creator_id = pk.id
+         LEFT JOIN transactions_try ty ON ty.source_id = pk.id
+         LEFT JOIN transactions_sent ts ON ts.source_id = pk.id
+         LEFT JOIN transactions_received tr ON tr.receiver_id = pk.id
+         LEFT JOIN transactions_failed tf ON tf.source_id = pk.id;
+
+alter table public.v_account_stats
     owner to mina;
 

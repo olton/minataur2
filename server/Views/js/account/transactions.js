@@ -5,6 +5,7 @@ globalThis.transSearch = ""
 globalThis.transPage = 1
 globalThis.searchThreshold = 500
 globalThis.showError = false
+globalThis.showBlockNumber = false
 globalThis.updateInterval = null
 globalThis.accountID = null
 
@@ -58,6 +59,7 @@ const updateTransTable = data => {
     })
 
     $("#found-trans").html(num2fmt(data.length))
+    $("#account-tx-count").html(`(${num2fmt(data.length)})`)
 
     const target = $("#trans-table tbody").clear()
     const rows = drawTransTable(data.rows)
@@ -102,6 +104,10 @@ function transApplyRowsCount(selected){
 }
 
 $("#trans-status-applied, #trans-status-failed, #trans-type-payment, #trans-type-delegation").on("click", () => {
+    refreshTransTable()
+})
+
+$("#trans-show-block").on("click", function() {
     refreshTransTable()
 })
 

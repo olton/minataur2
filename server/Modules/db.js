@@ -658,3 +658,12 @@ export const db_get_coinbase_count = async ({
 
     return (await query(sql, [Array.isArray(status) ? status : [status]])).rows[0].length
 }
+
+export const db_get_account_stats = async (account_id) => {
+    const sql = `
+        select *
+        from v_account_stats
+        where account_id = $1
+    `
+    return (await query(sql, [account_id])).rows[0]
+}
