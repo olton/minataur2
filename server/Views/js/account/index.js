@@ -16,8 +16,11 @@ const updateAccount = data => {
     $("#account-balance").html(num2fmt(mina, ",") + `<span class="reduce-2 text-muted">.${dec_mina}</span>`)
     $("#account-balance-usd").html("~ $" + num2fmt(usd, ",") + `<span class="reduce-2 text-muted">.${dec_usd}</span>`)
     $("#account-rate-usd").html(globalThis.price.current_price)
-    $("#balance-liquid").html(normMina(ql ? ql.balance.liquid : 0), ",")
-    $("#balance-locked").html(normMina(ql ? ql.balance.locked : 0), ",")
+
+    const [liquid = 0, liquid_dec = 0] = normMina(ql ? ql.balance.liquid : 0, "string").split(".")
+    const [locked = 0, locked_dec = 0] = normMina(ql ? ql.balance.locked : 0, "string").split(".")
+    $("#balance-liquid").html(`${num2fmt(liquid, ",")}.<span class="reduce-3">${liquid_dec}</span>`)
+    $("#balance-locked").html(`${num2fmt(locked, ",")}.<span class="reduce-3">${locked_dec}</span>`)
 
     $("#account-name").html(db && db.name || UNKNOWN)
     $("#account-site").html(db && db.site || UNKNOWN)
