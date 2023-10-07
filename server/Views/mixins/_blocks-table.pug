@@ -74,8 +74,10 @@ script.
                     <div class="text-muted text-small">${timelapse === 'less a hour' ? '< hour' : timelapse}</div>
                 </td>
                 <td>
-                    <a class="link" href="/block/${row.hash}">${shorten(row.hash, 12)}</a>
-                    <span title="Copy hash to clipboard" class="reduce-1 mif-copy copy-data-to-clipboard c-pointer" data-value="${row.hash}"></span>
+                    <div class="d-flex flex-nowrap">
+                        <a class="link" href="/block/${row.hash}">${shorten(row.hash, 12)}</a>
+                        <span title="Copy hash to clipboard" class="ml-2 reduce-1 mif-copy copy-data-to-clipboard c-pointer" data-value="${row.hash}"></span>
+                    </div>
                     <div class="text-muted text-small">${datetime(+row.timestamp).format(config.format.datetime)}</div>
                 </td>
                 <td>
