@@ -28,9 +28,7 @@ import {
 } from "./db.js";
 import {ql_get_account_info, ql_get_pool, ql_get_snark_jobs} from "./graphql.js";
 
-export const create_websocket_server = (httpServer) => {
-    globalThis.wss = new WebSocketServer({ server: httpServer })
-
+export const websocket = () => {
     wss.on('connection', (ws, req) => {
         const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress
 

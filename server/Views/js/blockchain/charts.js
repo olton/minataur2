@@ -21,6 +21,7 @@ const updateChartCoinbase = data => {
                 show: false
             },
             animations: {
+                enabled: false,
                 speed: 300
             },
             height: 150,
@@ -62,6 +63,7 @@ const updateChartTrans = data => {
                 show: false
             },
             animations: {
+                enabled: false,
                 speed: 300
             },
             height: 150,
@@ -103,6 +105,7 @@ const updateChartFee = data => {
                 show: false
             },
             animations: {
+                enabled: false,
                 speed: 300
             },
             height: 150,
@@ -144,6 +147,7 @@ const updateChartSlots = data => {
                 show: false
             },
             animations: {
+                enabled: false,
                 speed: 300
             },
             height: 150,

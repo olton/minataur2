@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node .",
-    "dev": "nodemon ."
+    "dev": "nodemon -e js,graphql,json,pug ."
   },
   "repository": {
     "type": "git",
@@ -16,7 +16,8 @@
     "mina",
     "archive",
     "api",
-    "manager"
+    "manager",
+    "explorer"
   ],
   "author": "Serhii Pimenov <serhii@pimenov.com.ua>",
   "license": "MIT",
@@ -26,15 +27,21 @@
   "homepage": "https://github.com/olton/minataur2#readme",
   "dependencies": {
     "@faustbrian/node-base58": "^1.0.0",
+    "@graphql-tools/graphql-file-loader": "^8.0.0",
+    "@graphql-tools/load": "^8.0.0",
+    "@graphql-tools/schema": "^10.0.0",
     "@olton/datetime": "^3.0.2",
     "esm": "^3.2.25",
     "express": "^4.18.2",
+    "graphql": "^16.8.1",
+    "graphql-type-json": "^0.3.2",
+    "graphql-yoga": "4.0.5",
     "node-fetch": "^3.3.2",
-    "node-html-parser": "^6.1.6",
+    "node-html-parser": "^6.1.10",
     "pg": "^8.11.3",
     "pg-cursor": "^2.10.3",
     "pug": "^3.0.2",
     "serve-favicon": "^2.5.0",
-    "ws": "^8.13.0"
+    "ws": "^8.14.2"
   }
 }

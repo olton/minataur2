@@ -16,6 +16,7 @@ const updateChartTransInBlock = data => {
                 show: false
             },
             animations: {
+                enabled: false,
                 speed: 300
             },
             height: 150,
@@ -64,6 +65,7 @@ const updateChartFees = data => {
                 show: false
             },
             animations: {
+                enabled: false,
                 speed: 300
             },
             height: 150,
@@ -106,6 +108,7 @@ const updateChartAmount = data => {
                 show: false
             },
             animations: {
+                enabled: false,
                 speed: 300
             },
             height: 150,
@@ -147,6 +150,7 @@ const updateChartStatus = data => {
                 show: false
             },
             animations: {
+                enabled: false,
                 speed: 300
             },
             height: 172,

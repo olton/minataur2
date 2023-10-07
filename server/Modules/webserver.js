@@ -1,19 +1,16 @@
 import path from "path";
-import http from "http";
+import http, {createServer} from "http";
 import express from "express";
 import favicon from "serve-favicon"
-import {create_websocket_server} from "./websocket.js";
+import {websocket} from "./websocket.js";
 import {log} from "../Helpers/log.js";
+import {WebSocketServer} from "ws";
+import { createYoga } from 'graphql-yoga'
+import {schema} from "../GraphQL/schema.js";
 
 const app = express()
 
 const routes = () => {
-    app.use(express.static(path.join(appPath, 'Views')))
-    app.use(favicon(path.join(appPath, 'Views', 'favicon.ico')))
-    app.locals.pretty = true
-    app.set('views', path.resolve(appPath, 'Views'))
-    app.set('view engine', 'pug')
-
     const client = {...config.client, version: packageJson.version}
 
     app.get('/', async (req, res) => {
@@ -127,11 +124,29 @@ export const create_web_server  = () => {
     const {name, host = "localhost", port = 3000} = config.server
     const httpServer = http.createServer({}, app)
 
+    app.use(express.static(path.join(appPath, 'Views')))
+    app.use(favicon(path.join(appPath, 'Views', 'favicon.ico')))
+    app.use(express.json())
+    app.use(express.urlencoded({ extended: true }))
+
+    app.locals.pretty = true
+
+    app.set('views', path.resolve(appPath, 'Views'))
+    app.set('view engine', 'pug')
+
     routes()
 
     httpServer.listen(port, host, () => {
-        log(`Minataur running on http://${host}:${port} [${name}]`)
+        log(`Minataur WebServer is running on http://${host}:${port} [${name}]`)
     })
 
-    create_websocket_server(httpServer)
+    const yoga = createYoga({schema})
+    const graphqlServer = createServer(yoga)
+    graphqlServer.listen(config.graphql.port, config.graphql.host,() => {
+        log(`Minataur GraphQL Server is running on http://${config.graphql.host}:${config.graphql.port}/graphql`)
+    })
+
+    globalThis.wss = new WebSocketServer({ server: httpServer })
+
+    websocket()
 }

@@ -1,0 +1,8 @@
+scalar JSON
+scalar JSONObject
+
+schema {
+    query: Query
+    mutation: Mutation
+    subscription: Subscription
+}

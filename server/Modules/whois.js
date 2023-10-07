@@ -13,7 +13,6 @@ export const MINATAUR_ADDRESS = 'B62qrGrWgsHRp1GuHbz2YSdk7DgXTBYwaov7TwWVP58f36u
  */
 export const updateWhois = async ({f1: sender_id, f2: receiver_key, f3, f4: amount}) => {
     try {
-        console.log("Receiver Key:", receiver_key, receiver_key === MINATAUR_ADDRESS)
         //if (+amount < 1) return
         if (receiver_key !== MINATAUR_ADDRESS) return
         const memo = decodeMemo(f3)

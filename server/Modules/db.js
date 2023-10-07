@@ -36,7 +36,6 @@ export const listen_notifies = async () => {
             on_new_block(payload)
         }
         if (channel === 'new_user_tx_memo') {
-            console.log(payload)
             on_new_user_tx_memo(payload)
         }
     })

@@ -6,6 +6,7 @@ const lineChartOptions = {
             show: false
         },
         animations: {
+            enabled: false,
             speed: 300
         },
         height: 150,
