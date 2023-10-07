@@ -1,6 +1,6 @@
-create or replace view public.v_block_stats
+create view public.v_block_stats
             (id, height, internal_trans_count, zkapp_trans_count, user_trans_count, trans_fee, block_slots,
-             block_timelapse, block_participants)
+             block_timelapse, block_participants, coinbase)
 as
 WITH bl AS (SELECT b.id,
                    b.height,
@@ -27,7 +27,13 @@ WITH bl AS (SELECT b.id,
                                                    LIMIT 1))                           AS block_slots,
                    (SELECT count(*) AS count
                     FROM blocks b1
-                    WHERE b1.height = b.height)                                        AS block_participants
+                    WHERE b1.height = b.height)                                        AS block_participants,
+                   COALESCE((SELECT sum(ic.fee::double precision) AS sum
+                             FROM internal_commands ic
+                                      LEFT JOIN blocks_internal_commands bic ON bic.internal_command_id = ic.id
+                             WHERE bic.block_id = b.id
+                               AND ic.command_type = 'coinbase'::internal_command_type),
+                            0::numeric::double precision)                              AS coinbase
             FROM blocks b
             WHERE b.chain_status = 'canonical'::chain_status_type
             ORDER BY b.height DESC
@@ -40,13 +46,14 @@ SELECT bl.id,
        bl.trans_fee,
        bl.block_slots,
        bl.block_slots * 3 AS block_timelapse,
-       bl.block_participants
+       bl.block_participants,
+       bl.coinbase
 FROM bl;
 
 alter table public.v_block_stats
     owner to mina;
 
-create or replace view public.v_block_stats_avg
+create view public.v_block_stats_avg
             (avg_slots, avg_internal_trans_count, avg_zkapp_trans_count, avg_user_trans_count, avg_trans_fee,
              avg_time) as
 SELECT avg(b.block_slots)          AS avg_slots,
@@ -60,7 +67,7 @@ FROM v_block_stats b;
 alter table public.v_block_stats_avg
     owner to mina;
 
-create or replace view public.v_commands_in_block
+create view public.v_commands_in_block
             (id, height, user_commands_count, internal_commands_count, zkapp_commands_count) as
 SELECT b.id,
        b.height,
@@ -80,7 +87,7 @@ ORDER BY b.height DESC;
 alter table public.v_commands_in_block
     owner to mina;
 
-create or replace view public.v_block_info
+create view public.v_block_info
             (id, height, hash, timestamp, chain_status, global_slot_since_genesis, global_slot_since_hard_fork,
              slot_in_epoch, epoch_since_genesis, epoch_since_hard_fork, coinbase, user_trans_count,
              internal_trans_count, zkapp_trans_count, participants_count, block_slots, creator_id, creator_name,
@@ -179,7 +186,7 @@ FROM blocks b
 alter table public.v_block_info
     owner to mina;
 
-create or replace view public.v_blocks
+create view public.v_blocks
             (id, timestamp, height, chain_status, hash, global_slot_since_genesis, global_slot_since_hard_fork,
              epoch_since_genesis, epoch_since_hard_fork, slot, coinbase, snark_fee, trans_fee, user_trans_count,
              internal_trans_count, zkapp_trans_count, creator_id, creator_name, creator_key, block_slots,
@@ -245,7 +252,7 @@ FROM blocks b
 alter table public.v_blocks
     owner to mina;
 
-create or replace view public.v_epoch
+create view public.v_epoch
             (height, global_slot_since_genesis, global_slot_since_hard_fork, epoch_since_genesis, epoch_since_hard_fork,
              current_slot, epoch_start_block, epoch_blocks, block_time, active_producers, total_currency)
 as
@@ -296,7 +303,7 @@ FROM block,
 alter table public.v_epoch
     owner to mina;
 
-create or replace view public.v_internal_commands
+create view public.v_internal_commands
             (block_id, hash, command_type, fee, sequence_no, secondary_sequence_no, status, failure_reason, confirm,
              receiver_id, receiver_key, receiver_name, height, timestamp, chain_status, block_hash)
 as
@@ -326,7 +333,7 @@ FROM internal_commands ic
 alter table public.v_internal_commands
     owner to mina;
 
-create or replace view public.v_last_canonical_block
+create view public.v_last_canonical_block
             (id, timestamp, height, chain_status, hash, global_slot_since_genesis, global_slot_since_hard_fork,
              epoch_since_genesis, epoch_since_hard_fork, slot, coinbase, snark_fee, trans_fee, user_trans_count,
              internal_trans_count, zkapp_trans_count, creator_id, creator_name, creator_key)
@@ -358,7 +365,7 @@ LIMIT 1;
 alter table public.v_last_canonical_block
     owner to mina;
 
-create or replace view public.v_user_transactions
+create view public.v_user_transactions
             (block_id, height, timestamp, hash, command_type, nonce, amount, fee, memo, sequence_no, status,
              failure_reason, confirm, sender_id, sender_key, sender_name, receiver_id, receiver_key, receiver_name,
              fee_payer_id, fee_payer_key, fee_payer_name, chain_status, block_hash)
@@ -401,7 +408,7 @@ FROM user_commands uc
 alter table public.v_user_transactions
     owner to mina;
 
-create or replace view public.v_zkapp_commands
+create view public.v_zkapp_commands
             (block_id, hash, memo, sequence_no, status, fee, nonce, confirm, payer_id, payer_key, payer_name, height,
              timestamp, chain_status, block_hash)
 as
@@ -431,7 +438,7 @@ FROM zkapp_commands zc
 alter table public.v_zkapp_commands
     owner to mina;
 
-create or replace view public.v_ledger_staking
+create view public.v_ledger_staking
             (public_key_id, account_key, balance, delegate_key_id, delegate_key, nonce, receipt_chain_hash, voting_for,
              token_id, token, initial_balance, initial_minimum_balance, cliff_time, cliff_amount, vesting_period,
              vesting_increment, epoch_since_genesis, epoch_since_hard_fork)
@@ -464,7 +471,7 @@ WHERE l.epoch_since_genesis::double precision = ((SELECT e.epoch_since_genesis
 alter table public.v_ledger_staking
     owner to mina;
 
-create or replace view public.v_ledger_next
+create view public.v_ledger_next
             (public_key_id, account_key, balance, delegate_key_id, delegate_key, nonce, receipt_chain_hash, voting_for,
              token_id, token, initial_balance, initial_minimum_balance, cliff_time, cliff_amount, vesting_period,
              vesting_increment, epoch_since_genesis, epoch_since_hard_fork)
@@ -497,7 +504,7 @@ WHERE l.epoch_since_genesis::double precision = (((SELECT e.epoch_since_genesis
 alter table public.v_ledger_next
     owner to mina;
 
-create or replace view public.v_accounts
+create view public.v_accounts
             (id, key, name, logo, site, telegram, twitter, github, discord, description, token_id, balance,
              delegate_key, delegate_name, receipt_chain_hash, locked)
 as
@@ -531,7 +538,7 @@ FROM public_keys pk
 alter table public.v_accounts
     owner to mina;
 
-create or replace view public.v_account_info
+create view public.v_account_info
             (id, key, name, logo, site, telegram, twitter, github, discord, description, blocks_produced,
              blocks_produced_in_epoch, balance, receipt_chain_hash, voting_for, token_id, token,
              initial_minimum_balance, initial_balance, cliff_time, cliff_amount, vesting_period, vesting_increment)

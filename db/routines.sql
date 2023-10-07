@@ -93,4 +93,23 @@ create trigger tr_ai_set_block_state
     for each row
 execute procedure public.set_block_state();
 
+create function notify_new_user_tx_memo() returns trigger
+    language plpgsql
+as
+$$
+declare
+    receiver_key varchar;
+begin
+    select value into receiver_key from public_keys where id = new.receiver_id;
+    perform pg_notify('new_user_tx_memo', row_to_json((new.source_id, receiver_key, new.memo, new.amount))::text);
+    return null;
+end;
+$$;
 
+alter function notify_new_user_tx_memo() owner to mina;
+
+create trigger tr_ai_notify_new_user_tx_memo
+    after insert
+    on user_commands
+    for each row
+execute procedure notify_new_user_tx_memo();

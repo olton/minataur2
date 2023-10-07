@@ -134,7 +134,7 @@ create table public.whois
     twitter       varchar(100),
     github        varchar(100),
     logo          varchar(255),
-    description   text
+    desc   text
 );
 
 alter table public.whois
