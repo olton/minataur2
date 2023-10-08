@@ -12,8 +12,59 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                             div
                                 span.h1 Daemon Status
 
-        section.container-fluid.mt-4
+        section.container-fluid.mt-4.mb-10
             div.container
+                div
+                    table.table.striped.row-hover.monospace
+                        tbody
+                            tr
+                                td: span Global number of accounts:
+                                td.text-right: span#num_accounts 0
+                            tr
+                                td: span Block height:
+                                td.text-right: span#blockchain_length 0
+                            tr
+                                td: span Max observed block height:
+                                td.text-right: span#highest_block_length_received 0
+                            tr
+                                td: span Max observed unvalidated block height:
+                                td.text-right: span#highest_unvalidated_block_length_received 0
+                            tr
+                                td: span Local uptime:
+                                td.text-right: span#uptime_secs 0
+                            tr
+                                td: span Ledger Merkle root:
+                                td.text-right: span#ledger_merkle_root 0
+                            tr
+                                td: span Protocol state hash:
+                                td.text-right: span#state_hash 0
+                            tr
+                                td: span Chain id:
+                                td.text-right: span#chain_id 0
+                            tr
+                                td: span Git SHA-1:
+                                td.text-right: span#commit_id 0
+                            tr
+                                td: span Peers:
+                                td.text-right: span#peers 0
+                            tr
+                                td: span User commands sent:
+                                td.text-right: span#user_commands_sent 0
+                            tr
+                                td: span Sync status:
+                                td.text-right: span#sync_status 0
+                            tr
+                                td: span Best tip consensus time:
+                                td.text-right: span#consensus_time_best_tip 0
+                            tr
+                                td: span Best tip global slot (across all hard-forks):
+                                td.text-right: span#global_slot_since_genesis_best_tip 0
+                            tr
+                                td: span Consensus time now:
+                                td.text-right: span#consensus_time_now 0
+                            tr
+                                td: span Consensus mechanism:
+                                td.text-right: span#consensus_mechanism 0
 
 
         include partials/_footer

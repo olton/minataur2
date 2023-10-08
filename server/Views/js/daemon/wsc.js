@@ -10,6 +10,9 @@ globalThis.wsController = (ws, res) => {
         }
         case "daemon": {
             updateDaemonStatus(data)
+            setTimeout(()=>{
+                request("daemon")
+            }, 60000)
             break
         }
     }
