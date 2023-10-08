@@ -185,6 +185,9 @@ export const websocket = () => {
                     response(ws, channel, {rows, length})
                     break
                 }
+                case "daemon": {
+                    response(ws, channel, cache.daemon)
+                }
             }
         })
     })

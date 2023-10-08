@@ -11,6 +11,7 @@ import {get_price_info} from "./price.js"
 import {ql_get_peers, ql_get_runtime, ql_get_snark_pool, ql_get_transaction_in_pool} from "./graphql.js";
 import {testPort} from "../Helpers/test-port.js";
 import {ip_location_batch} from "../Helpers/ip-location.js";
+import {exec_mina_client_status} from "./shell.js";
 
 export const cache_epoch = async () => {
     cache.epoch = await db_get_epoch()
@@ -106,4 +107,11 @@ export const cache_snark_pool = async () => {
             }
         }
     }
+}
+
+export const cache_mina_client_status = () => {
+    exec_mina_client_status((res)=>{
+        cache.daemon = res
+    })
+    setTimeout(cache_mina_client_status, parseTime('1m'))
 }

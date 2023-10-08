@@ -126,7 +126,6 @@ export const db_get_blocks = async ({
     sql = sql.replace("%HASH_SEARCH%", search && search.hash ? `and (hash = '${search.hash}' or lower(creator_name) like '%${search.hash.toLowerCase()}%' or hash = '${search.hash}')` : "")
     sql = sql.replace("%COINBASE_SEARCH%", search && search.coinbase !== null ? `and coinbase = ${search.coinbase}` : "")
 
-    console.log(sql)
     return (await query(sql, [Array.isArray(type) ? type : [type], limit, offset])).rows
 }
 
