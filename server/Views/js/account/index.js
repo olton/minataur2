@@ -10,15 +10,15 @@ function showWhoisHelp(){
         title: "<span class='mif-help'></span> Whois Help",
         content: `
             <div class="text-small">
-            Minataur 2 [For Mina Berkeley] contains a table whois with additional data for accounts such as name, site, discord, etc. 
-            To set these fields, you must send a transaction (with a small amount) to the special address 
-            <strong>B62qrGrWgsHRp1GuHbz2YSdk7DgXTBYwaov7TwWVP58f36ubAQGJg2E</strong> with a memo where the specified field and value are separated <kbd>:</kbd>. 
-            You should take into account that the length of the memo field should not exceed 32 characters.  
+            <b>Minataur 2</b> [For Mina Berkeley] contains a table <b>whois</b> with additional data for accounts such as <i>name, site, discord, etc</i>. 
+            To set these fields, you must send a transaction to the special address 
+            <b>B62qrGrWgsHRp1GuHbz2YSdk7DgXTBYwaov7TwWVP58f36ubAQGJg2E</b> with a memo where the specified field and value are separated <kbd>:</kbd>. 
+            You should take into account that the length of the <span class="fg-red">memo field should not exceed 32 characters</span>.  
             For example: 
             <pre class="mt-2"><code class="bg-light">
 mina client send-payment -amount 0.001 -receiver B62q...AQGJg2E -fee 0.08 -memo 'site:domain.com' -sender B62q...
             </code></pre> 
-            This command set field site for address <strong>B62q...</strong> to value <strong>domain.com</strong>
+            This command set field <b>site</b> for address <b>B62q...</b> to value <b>domain.com</b>
             </div>
         `
     })
