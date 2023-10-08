@@ -5,6 +5,25 @@ globalThis.ledger = {
     next: null
 }
 
+function showWhoisHelp(){
+    Metro.dialog.create({
+        title: "<span class='mif-help'></span> Whois Help",
+        content: `
+            <div class="text-small">
+            Minataur 2 [For Mina Berkeley] contains a table whois with additional data for accounts such as name, site, discord, etc. 
+            To set these fields, you must send a transaction (with a small amount) to the special address 
+            <strong>B62qrGrWgsHRp1GuHbz2YSdk7DgXTBYwaov7TwWVP58f36ubAQGJg2E</strong> with a memo where the specified field and value are separated <kbd>:</kbd>. 
+            You should take into account that the length of the memo field should not exceed 32 characters.  
+            For example: 
+            <pre class="mt-2"><code class="bg-light">
+mina client send-payment -amount 0.001 -receiver B62q...AQGJg2E -fee 0.08 -memo 'site:domain.com' -sender B62q...
+            </code></pre> 
+            This command set field site for address <strong>B62q...</strong> to value <strong>domain.com</strong>
+            </div>
+        `
+    })
+}
+
 const updateAccount = data => {
     const {db, ql} = data
     const [mina = 0, dec_mina = 0] = (""+normMina(ql ? ql.balance.total : db.balance)).split(".")

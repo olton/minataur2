@@ -149,6 +149,8 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                         div.border.bd-default.p-2
                             table.table.row-border
                                 tr
+                                    td(colspan=2): div.text-muted ACCOUNT WHOIS
+                                tr
                                     td.reduce-3 NAME
                                     td: div.box-value4.flex-justify-end#account-name XXX
                                 tr
@@ -168,6 +170,10 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                                     td: div.box-value4.flex-justify-end#account-discord XXX
                                 tr
                                     td(colspan=2)
+                                        div.place-right
+                                            button.button(onclick="showWhoisHelp()")
+                                                span.mif-help
+                                                span Whois Help
                                         div.reduce-4.text-muted DESC
                                         div.box-value4#account-description XXX
 
