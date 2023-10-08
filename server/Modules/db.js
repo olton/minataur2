@@ -123,9 +123,10 @@ export const db_get_blocks = async ({
 
     sql = sql.replace("%CURRENT_EPOCH%", currentEpoch ? `and epoch_since_genesis = (select epoch_since_genesis from v_epoch)` : "")
     sql = sql.replace("%BLOCK_SEARCH%", search && search.block ? `and height = ${search.block}` : "")
-    sql = sql.replace("%HASH_SEARCH%", search && search.hash ? `and (hash = 'creator_key = '${search.hash}' or lower(creator_name) like '%${search.hash.toLowerCase()}%' or hash = '${search.hash}')` : "")
-    sql = sql.replace("%COINBASE_SEARCH%", search && !isNaN(search.coinbase) ? `and coinbase = ${search.coinbase}` : "")
+    sql = sql.replace("%HASH_SEARCH%", search && search.hash ? `and (hash = '${search.hash}' or lower(creator_name) like '%${search.hash.toLowerCase()}%' or hash = '${search.hash}')` : "")
+    sql = sql.replace("%COINBASE_SEARCH%", search && search.coinbase !== null ? `and coinbase = ${search.coinbase}` : "")
 
+    console.log(sql)
     return (await query(sql, [Array.isArray(type) ? type : [type], limit, offset])).rows
 }
 

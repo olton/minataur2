@@ -48,8 +48,12 @@ section.container-fluid.pos-fixed.fixed-top.z-top.bg-darkViolet.fg-white
                 a.dropdown-toggle.marker-light(href="#") Network
                 ul.d-menu.place-right(data-role="dropdown")
                     li
-                        a(href="/config")
+                        a(href="/daemon")
                             span.icon.mif-cog
+                            span Daemon Status
+                    li
+                        a(href="/config")
+                            span.icon.mif-equalizer
                             span Config
                     li
                         a(href="/peers")
