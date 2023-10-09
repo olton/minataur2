@@ -10,11 +10,8 @@ mixin accounts-table(tableId)
                         div.text-small Name
 
                     th
-                        div Token ID
-
-                    th(style="width: 30px;")
-                        div Token
-                        div.text-small Name
+                        div Receipt Chain
+                        div.text-small Hash
 
                     th.text-right(style="width: 220px;")
                         div Balance
@@ -64,10 +61,8 @@ mixin accounts-table(tableId)
                         <div class="text-muted">${row.name}</div>
                     </td>
                     <td>
-                        <span>${shorten(row.token_key, 12)}</span>
-                    </td>
-                    <td>
-                        <span>${row.token_symbol}</span>
+                        <span>${shorten(row.receipt_chain_hash || '', 12)}</span>
+                        <span title="Copy hash to clipboard" class="ml-1 reduce-1 mif-copy copy-data-to-clipboard c-pointer ${row.receipt_chain_hash ? '' : 'd-none'}" data-value="${row.receipt_chain_hash}"></span>
                     </td>
                     <td class="text-right">
                         <div class="fg-cyan no-wrap">
