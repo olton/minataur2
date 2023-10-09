@@ -51,6 +51,27 @@ query ($publicKey: String!, $token: String!) {
 }
 `;
 
+const qAccountExt = `
+query ($publicKey: String!, $token: String!) {
+  account(publicKey: $publicKey, token: $token) {
+    balance {
+      total
+      locked
+      blockHeight
+      liquid
+      stateHash
+      unknown
+    }
+    receiptChainHash
+    token
+    votingFor
+    zkappState
+    zkappUri
+  }
+}
+`;
+
+
 const qPaymentStatus = `
 query ($payment: String!) {
   version
@@ -333,6 +354,14 @@ export const ql_get_address_balance = async (publicKey, token = 'wSHV2S4qX9jFsLj
             unknown: 0,
             error: e.message
         }
+    }
+}
+export const ql_get_account_ext = async (publicKey, token = 'wSHV2S4qX9jFsLjQo8r1BsMLH2ZRKsZx6EJd1sbozGPieEC4Jf') => {
+    try {
+        let result = await fetchGraphQL(qAccountExt, {publicKey, token})
+        return result.data.account
+    } catch (e) {
+        return null
     }
 }
 
