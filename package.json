@@ -17,7 +17,8 @@
     "archive",
     "api",
     "manager",
-    "explorer"
+    "explorer",
+    "minanavigators"
   ],
   "author": "Serhii Pimenov <serhii@pimenov.com.ua>",
   "license": "MIT",
