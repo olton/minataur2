@@ -9,6 +9,13 @@ mixin accounts-table(tableId)
                         div Account Key
                         div.text-small Name
 
+                    th
+                        div Token ID
+
+                    th(style="width: 30px;")
+                        div Token
+                        div.text-small Name
+
                     th.text-right(style="width: 220px;")
                         div Balance
                         div.text-small MINA
@@ -33,7 +40,7 @@ mixin accounts-table(tableId)
 
             if (data.length === 0) {
                 return [$("<tr>").html(`
-                    <td colspan="5" class="text-center">Nothing to show</td>
+                    <td colspan="6" class="text-center">Nothing to show</td>
                 `)]
             }
 
@@ -55,6 +62,12 @@ mixin accounts-table(tableId)
                             <span title="Copy hash to clipboard" class="ml-1 reduce-1 mif-copy copy-data-to-clipboard c-pointer" data-value="${row.key}"></span>
                         </div>
                         <div class="text-muted">${row.name}</div>
+                    </td>
+                    <td>
+                        <span>${shorten(row.token_key, 12)}</span>
+                    </td>
+                    <td>
+                        <span>${row.token_symbol}</span>
                     </td>
                     <td class="text-right">
                         <div class="fg-cyan no-wrap">
