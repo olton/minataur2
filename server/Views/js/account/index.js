@@ -92,7 +92,7 @@ const updateAccount = data => {
         $("#cliff").hide()
         if (+vesting_increment) {
             $("#balance-unlock").html(`
-                <span>Unlock <strong>${vesting_increment/10**9}</strong> each <strong>${vesting_period}</strong> slot(s)</span>
+                <span>Unlock <strong>${vesting_increment}</strong> each <strong>${vesting_period}</strong> slot(s)</span>
             `)
         } else {
             $("#balance-unlock").html(`Nothing to unlock`)

@@ -2,7 +2,7 @@ import {query} from "./postgres.js";
 import {debug} from "../Helpers/log.js";
 import {on_new_block, on_new_user_tx_memo} from "./events.js";
 import {decodeMemo} from "../Helpers/memo.js";
-import {ql_get_account_ext} from "./graphql.js";
+import {ql_get_account_balance} from "./graphql.js";
 
 export const CHAIN_STATUS = {
     PENDING: "pending",
@@ -405,10 +405,10 @@ export const db_get_accounts = async ({
 
     for(let r of rows) {
         if (!+r.balance) {
-            const ext = await ql_get_account_ext(r.key)
-            if (ext) {
-                r.balance = +ext.balance.total
-                r.locked = +ext.balance.locked > 0
+            const bal = await ql_get_account_balance(r.key)
+            if (bal) {
+                r.balance = +bal.total
+                r.locked = +bal.locked > 0
             }
         }
     }
