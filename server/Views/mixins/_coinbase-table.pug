@@ -13,12 +13,16 @@ mixin coinbase-table(tableId)
                     th(style="width: 150px;")
                         div Time
 
-                    th.text-center(style="width: 60px;")
+                    th.text-center(style="width: 100px;")
                         div Coinbase
                         div.text-small MINA
 
                     th
                         div Coinbase Receiver
+                        div.text-small Name
+
+                    th
+                        div Block Creator
                         div.text-small Name
 
                     th.text-center(style="width: 30px;")
@@ -64,7 +68,7 @@ mixin coinbase-table(tableId)
                         <div class="text-muted reduce-2">${datetime(+row.timestamp).format(config.format.datetime)}</div>
                     </td>
                     <td class="text-center">
-                        <div class="">${normMina(row.coinbase)}</div>
+                        <div class="enlarge-2 text-light">${normMina(row.coinbase)}</div>
                     </td>
                     <td>
                         <div class="flex-nowrap flex-align-center ${row.receiver_key ? 'd-flex' : 'd-none'}">
@@ -72,6 +76,13 @@ mixin coinbase-table(tableId)
                             <span class="ml-2 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${row.receiver_key}"></span>
                         </div>
                         <div class="text-muted reduce-2">${row.receiver_name}</div>
+                    </td>
+                    <td>
+                        <div class="flex-nowrap flex-align-center ${row.creator_key ? 'd-flex' : 'd-none'}">
+                            <a data-role="hint" data-hint-text="${row.creator_name}" class="link" href="/account/${row.creator_key}">${shorten(row.creator_key, 12)}</a>
+                            <span class="ml-2 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${row.creator_key}"></span>
+                        </div>
+                        <div class="text-muted reduce-2">${row.creator_name}</div>
                     </td>
                     <td class="text-center">${row.sequence_no || 0}</td>
                     <td class="text-center">${row.secondary_sequence_no || 0}</td>
