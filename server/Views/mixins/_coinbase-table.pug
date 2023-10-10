@@ -9,9 +9,11 @@ mixin coinbase-table(tableId)
 
                     th(style="width: 30px;")
                         div Block
+                        div.text-small Height
 
                     th(style="width: 150px;")
-                        div Time
+                        div Block Hash
+                        div.text-small Time
 
                     th.text-center(style="width: 100px;")
                         div Coinbase
@@ -68,7 +70,7 @@ mixin coinbase-table(tableId)
                         <div class="text-muted reduce-2">${datetime(+row.timestamp).format(config.format.datetime)}</div>
                     </td>
                     <td class="text-center">
-                        <div class="enlarge-2 text-light">${normMina(row.coinbase)}</div>
+                        <div class="enlarge-1 text-light">${normMina(row.coinbase)}</div>
                     </td>
                     <td>
                         <div class="flex-nowrap flex-align-center ${row.receiver_key ? 'd-flex' : 'd-none'}">
