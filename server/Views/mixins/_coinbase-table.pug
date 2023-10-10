@@ -1,4 +1,4 @@
-mixin internal-table(tableId)
+mixin coinbase-table(tableId)
     div.scroll-table-container
         table.table.data-table.row-border.monospace.row-hover.mt-2.mb-2(id=tableId)
             thead
@@ -50,27 +50,31 @@ mixin internal-table(tableId)
 
                 tr.html(`
                     <td class="text-center">
-                        <div class="${row.command_type === 'coinbase' ? 'bg-blue' : row.command_type === 'fee_transfer' ? 'bg-pink' : 'bg-orange'} fg-white reduce-3 text-upper pl-1 pr-1">${row.command_type === 'fee_transfer_via_coinbase' ? 'fee_coinbase' : row.command_type}</div>
-                        <div class="${row.status === 'pending' ? 'bg-cyan' : row.status === 'applied' ? 'bg-green' : 'bg-red'} fg-white reduce-3 text-upper">${row.status}</div>
+                        <div class="${row.command_type === 'coinbase' ? 'bg-blue' : row.command_type === 'fee_transfer' ? 'bg-pink' : 'bg-orange'} fg-white reduce-3 text-upper pl-1 pr-1">${row.command_type === 'fee_transfer_via_coinbase' ? 'fee_coinbase' : row.command_type ? row.command_type : 'ZERO'}</div>
+                        <div class="${row.tx_status === 'pending' ? 'bg-cyan' : row.tx_status === 'applied' ? 'bg-green' : 'bg-red'} fg-white reduce-3 text-upper">${row.tx_status ? row.tx_status : 'COINBASE'}</div>
                     </td>
                     <td>
                         <a class="link" href="/block/${row.block_hash}">${num2fmt(row.height)}</a>
                     </td>
                     <td class="text-center">
-                        <div class="">${normMina(row.fee)}</div>
+                        <div class="">${normMina(row.coinbase)}</div>
                     </td>
                     <td>
-                        <a class="link enlarge-1" href="/internal-command/${row.hash}">${shorten(row.hash, 12)}</a>
-                        <span title="Copy hash to clipboard" class="reduce-1 mif-copy copy-data-to-clipboard c-pointer" data-value="${row.hash}"></span>
+                        <div class="flex-nowrap ${row.tx_hash ? 'd-flex' : 'd-none'}">
+                            <a class="link enlarge-1" href="/internal-command/${row.tx_hash}">${shorten(row.tx_hash, 12)}</a>
+                            <span title="Copy hash to clipboard" class="reduce-1 mif-copy copy-data-to-clipboard c-pointer" data-value="${row.tx_hash}"></span>
+                        </div>
                         <div class="reduce-2 text-muted">${datetime(+row.timestamp).format(config.format.datetime)}</div>
                     </td>
                     <td>
-                        <a data-role="hint" data-hint-text="${row.receiver_name}" class="link" href="/account/${row.receiver_key}">${shorten(row.receiver_key, 12)}</a>
-                        <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${row.receiver_key}"></span>
+                        <div class="flex-nowrap ${row.receiver_key ? 'd-flex' : 'd-none'}">
+                            <a data-role="hint" data-hint-text="${row.receiver_name}" class="link" href="/account/${row.receiver_key}">${shorten(row.receiver_key, 12)}</a>
+                            <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${row.receiver_key}"></span>
+                        </div>
                         <div class="text-muted reduce-2">${row.receiver_name}</div>
                     </td>
-                    <td class="text-center">${row.sequence_no}</td>
-                    <td class="text-center">${row.secondary_sequence_no}</td>
+                    <td class="text-center">${row.sequence_no || 0}</td>
+                    <td class="text-center">${row.secondary_sequence_no || 0}</td>
                     <td class="text-center">
                         <div>${row.confirm}</div>
                     </td>

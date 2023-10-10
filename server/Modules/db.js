@@ -625,14 +625,12 @@ export const db_get_coinbase = async ({
                                     }) => {
     let sql = `
         select *
-        from v_internal_commands i
-        where chain_status = 'canonical' and command_type = 'coinbase'
-        and status = ANY($1::transaction_status[])
+        from v_coinbase
+        where 1=1
         %BLOCK_HEIGHT%
         %RECEIVER_HASH%
         %TRANS_HASH%
-        order by height desc
-        limit $2 offset $3
+        limit $1 offset $2
     `
     sql = sql.replace("%BLOCK_HEIGHT%", search && search.block ? `and height = ${search.block}` : "")
     sql = sql.replace("%TRANS_HASH%", search && search.hash ? `and (hash = '${search.hash}' || block_hash = '${search.hash}')` : "")
@@ -643,18 +641,16 @@ export const db_get_coinbase = async ({
     )
     ` : "")
 
-    return (await query(sql, [Array.isArray(status) ? status : [status], limit, offset])).rows
+    return (await query(sql, [limit, offset])).rows
 }
 
 export const db_get_coinbase_count = async ({
-                                              search = null,
-                                              status = [TRANS_STATUS.APPLIED, TRANS_STATUS.FAILED]
+                                              search = null
                                           }) => {
     let sql = `
         select count(*) as length
-        from v_internal_commands i
-        where chain_status = 'canonical' and command_type = 'coinbase'
-        and status = ANY($1::transaction_status[])
+        from v_coinbase
+        where 1=1
         %BLOCK_HEIGHT%
         %RECEIVER_HASH%
         %TRANS_HASH%
@@ -668,7 +664,7 @@ export const db_get_coinbase_count = async ({
     )
     ` : "")
 
-    return (await query(sql, [Array.isArray(status) ? status : [status]])).rows[0].length
+    return (await query(sql)).rows[0].length
 }
 
 export const db_get_account_stats = async (account_id) => {

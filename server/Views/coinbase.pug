@@ -1,4 +1,4 @@
-include mixins/_internal-table
+include mixins/_coinbase-table
 
 html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
     include partials/_head
@@ -42,7 +42,7 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                             span.ml-1.text-bold(style="font-size: 24px; line-height: 1")#found-coinbase 0
 
                 div.scroll-table-container.border.bd-default
-                    +internal-table("coinbase-table")
+                    +coinbase-table("coinbase-table")
 
                 div.mt-4#pagination-bottom
 
