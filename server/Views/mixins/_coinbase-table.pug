@@ -10,15 +10,14 @@ mixin coinbase-table(tableId)
                     th(style="width: 30px;")
                         div Block
 
-                    th.text-center(style="width: 30px;")
+                    th(style="width: 150px;")
+                        div Time
+
+                    th.text-center(style="width: 60px;")
                         div Coinbase
 
-                    th(style="width: 260px;")
-                        div Tx Hash
-                        div.text-small Time
-
                     th
-                        div Receiver
+                        div Coinbase Receiver
                         div.text-small Name
 
                     th.text-center(style="width: 30px;")
@@ -56,15 +55,15 @@ mixin coinbase-table(tableId)
                     <td>
                         <a class="link" href="/block/${row.block_hash}">${num2fmt(row.height)}</a>
                     </td>
+                    <td>
+                        <div class="flex-nowrap flex-align-center d-flex">
+                            <a class="link" href="/block/${row.block_hash}">${shorten(row.block_hash, 12)}</a>
+                            <span class="ml-2 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${row.block_hash}"></span>
+                        </div>
+                        <div class="text-muted reduce-2">${datetime(+row.timestamp).format(config.format.datetime)}</div>
+                    </td>
                     <td class="text-center">
                         <div class="">${normMina(row.coinbase)}</div>
-                    </td>
-                    <td>
-                        <div class="flex-nowrap flex-align-center ${row.tx_hash ? 'd-flex' : 'd-none'}">
-                            <a class="link enlarge-1" href="/internal-command/${row.tx_hash}">${shorten(row.tx_hash, 12)}</a>
-                            <span title="Copy hash to clipboard" class="ml-2 reduce-1 mif-copy copy-data-to-clipboard c-pointer" data-value="${row.tx_hash}"></span>
-                        </div>
-                        <div class="reduce-2 text-muted">${datetime(+row.timestamp).format(config.format.datetime)}</div>
                     </td>
                     <td>
                         <div class="flex-nowrap flex-align-center ${row.receiver_key ? 'd-flex' : 'd-none'}">
