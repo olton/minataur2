@@ -620,8 +620,7 @@ export const db_get_zkapps_count = async ({
 export const db_get_coinbase = async ({
                                         limit = 50,
                                         offset = 0,
-                                        search = null,
-                                        status = [TRANS_STATUS.APPLIED, TRANS_STATUS.FAILED]
+                                        search = null
                                     }) => {
     let sql = `
         select *
@@ -633,7 +632,7 @@ export const db_get_coinbase = async ({
         limit $1 offset $2
     `
     sql = sql.replace("%BLOCK_HEIGHT%", search && search.block ? `and height = ${search.block}` : "")
-    sql = sql.replace("%TRANS_HASH%", search && search.hash ? `and (hash = '${search.hash}' || block_hash = '${search.hash}')` : "")
+    sql = sql.replace("%TRANS_HASH%", search && search.hash ? `and (tx_hash = '${search.hash}' or block_hash = '${search.hash}')` : "")
     sql = sql.replace("%RECEIVER_HASH%", search && search.payer ? `
     and (
         receiver_key = '${search.payer}'
@@ -656,7 +655,7 @@ export const db_get_coinbase_count = async ({
         %TRANS_HASH%
     `
     sql = sql.replace("%BLOCK_HEIGHT%", search && search.block ? `and height = ${search.block}` : "")
-    sql = sql.replace("%TRANS_HASH%", search && search.hash ? `and (hash = '${search.hash}' || block_hash = '${search.hash}')` : "")
+    sql = sql.replace("%TRANS_HASH%", search && search.hash ? `and (tx_hash = '${search.hash}' or block_hash = '${search.hash}')` : "")
     sql = sql.replace("%RECEIVER_HASH%", search && search.payer ? `
     and (
         receiver_key = '${search.payer}'

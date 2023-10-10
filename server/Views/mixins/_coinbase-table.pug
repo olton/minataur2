@@ -60,16 +60,16 @@ mixin coinbase-table(tableId)
                         <div class="">${normMina(row.coinbase)}</div>
                     </td>
                     <td>
-                        <div class="flex-nowrap ${row.tx_hash ? 'd-flex' : 'd-none'}">
+                        <div class="flex-nowrap flex-align-center ${row.tx_hash ? 'd-flex' : 'd-none'}">
                             <a class="link enlarge-1" href="/internal-command/${row.tx_hash}">${shorten(row.tx_hash, 12)}</a>
-                            <span title="Copy hash to clipboard" class="reduce-1 mif-copy copy-data-to-clipboard c-pointer" data-value="${row.tx_hash}"></span>
+                            <span title="Copy hash to clipboard" class="ml-2 reduce-1 mif-copy copy-data-to-clipboard c-pointer" data-value="${row.tx_hash}"></span>
                         </div>
                         <div class="reduce-2 text-muted">${datetime(+row.timestamp).format(config.format.datetime)}</div>
                     </td>
                     <td>
-                        <div class="flex-nowrap ${row.receiver_key ? 'd-flex' : 'd-none'}">
+                        <div class="flex-nowrap flex-align-center ${row.receiver_key ? 'd-flex' : 'd-none'}">
                             <a data-role="hint" data-hint-text="${row.receiver_name}" class="link" href="/account/${row.receiver_key}">${shorten(row.receiver_key, 12)}</a>
-                            <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${row.receiver_key}"></span>
+                            <span class="ml-2 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${row.receiver_key}"></span>
                         </div>
                         <div class="text-muted reduce-2">${row.receiver_name}</div>
                     </td>
