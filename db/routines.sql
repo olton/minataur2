@@ -113,3 +113,24 @@ create trigger tr_ai_notify_new_user_tx_memo
     on user_commands
     for each row
 execute procedure notify_new_user_tx_memo();
+
+
+create function notify_canonical_block() returns trigger
+    language plpgsql
+as
+$$
+begin
+    if (new.chain_status = 'canonical') then
+        perform pg_notify('canonical_block', row_to_json(new)::text);
+    end if;
+    return null;
+end;
+$$;
+
+alter function notify_canonical_block() owner to mina;
+
+create trigger tr_ai_notify_canonical_block
+    after update
+    on blocks
+    for each row
+execute procedure notify_canonical_block();

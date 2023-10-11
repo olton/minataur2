@@ -1,6 +1,6 @@
 import {query} from "./postgres.js";
 import {debug} from "../Helpers/log.js";
-import {on_new_block, on_new_user_tx_memo} from "./events.js";
+import {on_canonical_block, on_new_block, on_new_user_tx_memo} from "./events.js";
 import {decodeMemo} from "../Helpers/memo.js";
 import {ql_get_account_balance} from "./graphql.js";
 
@@ -27,6 +27,7 @@ export const listen_notifies = async () => {
 
     client.query('LISTEN new_block')
     client.query('LISTEN new_user_tx_memo')
+    client.query('LISTEN canonical_block')
 
     client.on('notification', async (data) => {
         const payload = JSON.parse(data.payload)
@@ -38,6 +39,9 @@ export const listen_notifies = async () => {
         }
         if (channel === 'new_user_tx_memo') {
             on_new_user_tx_memo(payload)
+        }
+        if (channel === 'canonical_block') {
+            on_canonical_block(payload)
         }
     })
 }

@@ -3,6 +3,7 @@ mixin snarks-table(tableId)
         table.table.data-table.row-border.monospace.row-hover.mt-2.mb-2(id=tableId)
             thead
                 tr
+                    th(style="width: 30px"): div #
                     th: div Prover
                     th: div Work IDs
                     th(style="width: 30px;"): div Fee
@@ -27,9 +28,14 @@ mixin snarks-table(tableId)
                 let tr = $("<tr>")
 
                 tr.html(`
+                    <td class="text-center">
+                        <span>${index}</span>
+                    </td>
                     <td>
-                        <span>${shorten(row.prover, 12)}</span>
-                        <span class="mif-copy copy-data-to-clipboard c-pointer ml-2" data-value="${row.prover}"></span>
+                        <div class="d-flex flex-align-center">
+                            <a class="link" href="/account/${row.prover}">${shorten(row.prover, 12)}</a>
+                            <span class="ml-2 mif-copy copy-data-to-clipboard c-pointer ml-2" data-value="${row.prover}"></span>
+                        </div>
                     </td>
                     <td class="">
                         <div class="">${row.workIds.map( id => '<span class="ml-1">'+id+'</span>')}</div>

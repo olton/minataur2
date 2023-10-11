@@ -115,6 +115,7 @@ const drawChartSPB = data => {
         tx.push(+r.block_slots)
         bl.push(+r.height)
     }
+    // console.log(tx)
     const chart = new ApexCharts(document.querySelector("#chart-spb"), merge({}, lineChartOptions, {
         series: [{
             name: 'Slots',

@@ -23,7 +23,7 @@ WITH bl AS (SELECT b.id,
                    b.global_slot_since_genesis - ((SELECT b2.global_slot_since_genesis
                                                    FROM blocks b2
                                                    WHERE b2.height = (b.height - 1)
-                                                     AND b.chain_status = 'canonical'::chain_status_type
+                                                     AND b2.chain_status = 'canonical'::chain_status_type
                                                    LIMIT 1))                           AS block_slots,
                    (SELECT count(*) AS count
                     FROM blocks b1
@@ -504,40 +504,6 @@ WHERE l.epoch_since_genesis::double precision = (((SELECT e.epoch_since_genesis
 alter table public.v_ledger_next
     owner to mina;
 
-create view public.v_accounts
-            (id, key, name, logo, site, telegram, twitter, github, discord, description, token_id, balance,
-             delegate_key, delegate_name, receipt_chain_hash, locked)
-as
-SELECT pk.id,
-       pk.value                                            AS key,
-       COALESCE(wh.name, ''::character varying)            AS name,
-       COALESCE(wh.logo, ''::character varying)            AS logo,
-       COALESCE(wh.site, ''::character varying)            AS site,
-       COALESCE(wh.telegram, ''::character varying)        AS telegram,
-       COALESCE(wh.twitter, ''::character varying)         AS twitter,
-       COALESCE(wh.github, ''::character varying)          AS github,
-       COALESCE(wh.discord, ''::character varying)         AS discord,
-       COALESCE(wh.description, ''::text)                  AS description,
-       ai.token_id,
-       COALESCE(((SELECT aa.balance
-                  FROM accounts_accessed aa
-                  WHERE aa.account_identifier_id = ai.id
-                    AND aa.token_symbol_id = ai.token_id
-                  ORDER BY aa.block_id DESC
-                  LIMIT 1))::bigint, l.balance, 0::bigint) AS balance,
-       l.delegate_key,
-       COALESCE(wh2.name, ''::character varying)           AS delegate_name,
-       l.receipt_chain_hash,
-       COALESCE(l.cliff_amount, 0::bigint) > 0             AS locked
-FROM public_keys pk
-         LEFT JOIN whois wh ON wh.public_key_id = pk.id
-         LEFT JOIN account_identifiers ai ON ai.public_key_id = pk.id AND ai.token_id = 1
-         LEFT JOIN v_ledger_staking l ON l.public_key_id = pk.id
-         LEFT JOIN whois wh2 ON wh2.public_key_id = l.delegate_key_id;
-
-alter table public.v_accounts
-    owner to mina;
-
 create view public.v_account_info
             (id, key, name, logo, site, telegram, twitter, github, discord, description, blocks_produced,
              blocks_produced_in_epoch, balance, receipt_chain_hash, voting_for, token_id, token,
@@ -661,5 +627,86 @@ FROM public_keys pk
          LEFT JOIN transactions_failed tf ON tf.source_id = pk.id;
 
 alter table public.v_account_stats
+    owner to mina;
+
+create view public.v_accounts
+            (id, key, name, logo, site, telegram, twitter, github, discord, description, token_id, balance,
+             delegate_key, delegate_name, receipt_chain_hash, locked, token_key, token_symbol)
+as
+SELECT pk.id,
+       pk.value                                            AS key,
+       COALESCE(wh.name, ''::character varying)            AS name,
+       COALESCE(wh.logo, ''::character varying)            AS logo,
+       COALESCE(wh.site, ''::character varying)            AS site,
+       COALESCE(wh.telegram, ''::character varying)        AS telegram,
+       COALESCE(wh.twitter, ''::character varying)         AS twitter,
+       COALESCE(wh.github, ''::character varying)          AS github,
+       COALESCE(wh.discord, ''::character varying)         AS discord,
+       COALESCE(wh."desc", ''::text)                       AS description,
+       ai.token_id,
+       COALESCE(((SELECT aa.balance
+                  FROM accounts_accessed aa
+                  WHERE aa.account_identifier_id = ai.id
+                    AND aa.token_symbol_id = ai.token_id
+                  ORDER BY aa.block_id DESC
+                  LIMIT 1))::bigint, l.balance, 0::bigint) AS balance,
+       l.delegate_key,
+       COALESCE(wh2.name, ''::character varying)           AS delegate_name,
+       l.receipt_chain_hash,
+       COALESCE(l.cliff_amount, 0::bigint) > 0             AS locked,
+       COALESCE(t.value, (SELECT tokens.value
+                          FROM tokens
+                          WHERE tokens.id = 1))            AS token_key,
+       COALESCE(ts.value, (SELECT token_symbols.value
+                           FROM token_symbols
+                           WHERE token_symbols.id = 1))    AS token_symbol
+FROM public_keys pk
+         LEFT JOIN whois wh ON wh.public_key_id = pk.id
+         LEFT JOIN account_identifiers ai ON ai.public_key_id = pk.id AND ai.token_id = 1
+         LEFT JOIN v_ledger_staking l ON l.public_key_id = pk.id
+         LEFT JOIN whois wh2 ON wh2.public_key_id = l.delegate_key_id
+         LEFT JOIN tokens t ON t.id = ai.token_id
+         LEFT JOIN token_symbols ts ON ts.id = t.id;
+
+alter table public.v_accounts
+    owner to mina;
+
+create view public.v_coinbase
+            (block_id, height, block_hash, chain_status, timestamp, command_type, tx_hash, coinbase, sequence_no,
+             secondary_sequence_no, tx_status, failure_reason, confirm, receiver_id, receiver_key, receiver_name,
+             creator_id, creator_key, creator_name)
+as
+SELECT b.id                                            AS block_id,
+       b.height,
+       b.state_hash                                    AS block_hash,
+       b.chain_status,
+       b."timestamp",
+       ic.command_type,
+       ic.hash                                         AS tx_hash,
+       COALESCE(ic.fee, 0::text)                       AS coinbase,
+       bic.sequence_no,
+       bic.secondary_sequence_no,
+       bic.status                                      AS tx_status,
+       bic.failure_reason,
+       ((SELECT max(blocks.height) AS max
+         FROM blocks)) - b.height                      AS confirm,
+       ic.receiver_id,
+       pk.value                                        AS receiver_key,
+       COALESCE(wh.name, 'noname'::character varying)  AS receiver_name,
+       b.creator_id,
+       pk2.value                                       AS creator_key,
+       COALESCE(wh2.name, 'noname'::character varying) AS creator_name
+FROM blocks b
+         LEFT JOIN blocks_internal_commands bic ON bic.block_id = b.id
+         LEFT JOIN internal_commands ic ON ic.id = bic.internal_command_id
+         LEFT JOIN public_keys pk ON pk.id = ic.receiver_id
+         LEFT JOIN whois wh ON wh.public_key_id = ic.receiver_id
+         LEFT JOIN public_keys pk2 ON pk2.id = b.creator_id
+         LEFT JOIN whois wh2 ON wh2.public_key_id = b.creator_id
+WHERE b.chain_status = 'canonical'::chain_status_type
+  AND (ic.command_type = 'coinbase'::internal_command_type OR ic.command_type IS NULL)
+ORDER BY b.height DESC;
+
+alter table public.v_coinbase
     owner to mina;
 

@@ -1,5 +1,5 @@
 import {log} from "../Helpers/log.js";
-import {checkMemoForScam, decodeMemo} from "../Helpers/memo.js";
+import {decodeMemo} from "../Helpers/memo.js";
 
 const fetchGraphQL = async (query, variables = {}) => {
     try {

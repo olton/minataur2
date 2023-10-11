@@ -59,10 +59,9 @@ create index idx_ledger_delegate_key_id
 
 create table public.peers
 (
-    rownum    integer              not null
+    id        varchar(100)         not null
         constraint pk_peers
             primary key,
-    id        varchar(100)         not null,
     host      varchar(50)          not null,
     port      integer default 8302 not null,
     location  varchar(100),
@@ -80,8 +79,6 @@ create index idx_peers_coordinates
 create index idx_peers_location
     on public.peers (location);
 
-create unique index ui_peers_id
-    on public.peers (id);
 
 create table public.uptime_sidecar
 (
@@ -142,4 +139,19 @@ alter table public.whois
 
 create unique index ui_address_public_key
     on public.whois (public_key_id);
+
+create table public.balances
+(
+    public_key_id bigint not null,
+    block_id      bigint not null,
+    total         text,
+    liquid        text,
+    locked        text,
+    unknown       text,
+    constraint balances_pk
+        primary key (public_key_id, block_id)
+);
+
+alter table public.balances
+    owner to mina;
 
