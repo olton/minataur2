@@ -151,7 +151,7 @@ SELECT b.id,
        cb.receiver_id,
        COALESCE(p3.name, 'noname'::character varying)                                                      AS coinbase_receiver_name,
        pk3.value                                                                                           AS coinbase_receiver_key,
-       concat(pv.major, '.', pv.minor, '.', pv.patch)                                                      AS version,
+       concat(pv.network, '.', pv.transaction, '.', pv.patch)                                                      AS version,
        sn.value                                                                                            AS snarked_ledger_hash,
        b.last_vrf_output                                                                                   AS vrf_output,
        b.total_currency                                                                                    AS block_total_currency,
@@ -629,48 +629,6 @@ FROM public_keys pk
 alter table public.v_account_stats
     owner to mina;
 
-create view public.v_accounts
-            (id, key, name, logo, site, telegram, twitter, github, discord, description, token_id, balance,
-             delegate_key, delegate_name, receipt_chain_hash, locked, token_key, token_symbol)
-as
-SELECT pk.id,
-       pk.value                                            AS key,
-       COALESCE(wh.name, ''::character varying)            AS name,
-       COALESCE(wh.logo, ''::character varying)            AS logo,
-       COALESCE(wh.site, ''::character varying)            AS site,
-       COALESCE(wh.telegram, ''::character varying)        AS telegram,
-       COALESCE(wh.twitter, ''::character varying)         AS twitter,
-       COALESCE(wh.github, ''::character varying)          AS github,
-       COALESCE(wh.discord, ''::character varying)         AS discord,
-       COALESCE(wh."desc", ''::text)                       AS description,
-       ai.token_id,
-       COALESCE(((SELECT aa.balance
-                  FROM accounts_accessed aa
-                  WHERE aa.account_identifier_id = ai.id
-                    AND aa.token_symbol_id = ai.token_id
-                  ORDER BY aa.block_id DESC
-                  LIMIT 1))::bigint, l.balance, 0::bigint) AS balance,
-       l.delegate_key,
-       COALESCE(wh2.name, ''::character varying)           AS delegate_name,
-       l.receipt_chain_hash,
-       COALESCE(l.cliff_amount, 0::bigint) > 0             AS locked,
-       COALESCE(t.value, (SELECT tokens.value
-                          FROM tokens
-                          WHERE tokens.id = 1))            AS token_key,
-       COALESCE(ts.value, (SELECT token_symbols.value
-                           FROM token_symbols
-                           WHERE token_symbols.id = 1))    AS token_symbol
-FROM public_keys pk
-         LEFT JOIN whois wh ON wh.public_key_id = pk.id
-         LEFT JOIN account_identifiers ai ON ai.public_key_id = pk.id AND ai.token_id = 1
-         LEFT JOIN v_ledger_staking l ON l.public_key_id = pk.id
-         LEFT JOIN whois wh2 ON wh2.public_key_id = l.delegate_key_id
-         LEFT JOIN tokens t ON t.id = ai.token_id
-         LEFT JOIN token_symbols ts ON ts.id = t.id;
-
-alter table public.v_accounts
-    owner to mina;
-
 create view public.v_coinbase
             (block_id, height, block_hash, chain_status, timestamp, command_type, tx_hash, coinbase, sequence_no,
              secondary_sequence_no, tx_status, failure_reason, confirm, receiver_id, receiver_key, receiver_name,
@@ -708,5 +666,59 @@ WHERE b.chain_status = 'canonical'::chain_status_type
 ORDER BY b.height DESC;
 
 alter table public.v_coinbase
+    owner to mina;
+
+create view public.v_accounts
+            (id, key, name, logo, site, telegram, twitter, github, discord, description, balance, locked,
+             balance_block_id, balance_block_height, balance_block_hash, delegate_key, delegate_name,
+             receipt_chain_hash)
+as
+SELECT pk.id,
+       pk.value                                     AS key,
+       COALESCE(wh.name, ''::character varying)     AS name,
+       COALESCE(wh.logo, ''::character varying)     AS logo,
+       COALESCE(wh.site, ''::character varying)     AS site,
+       COALESCE(wh.telegram, ''::character varying) AS telegram,
+       COALESCE(wh.twitter, ''::character varying)  AS twitter,
+       COALESCE(wh.github, ''::character varying)   AS github,
+       COALESCE(wh.discord, ''::character varying)  AS discord,
+       COALESCE(wh."desc", ''::text)                AS description,
+       COALESCE(((SELECT b.total
+                  FROM balances b
+                  WHERE b.public_key_id = pk.id
+                  ORDER BY b.block_id DESC
+                  LIMIT 1))::bigint, 0::bigint)     AS balance,
+       COALESCE(((SELECT b.locked
+                  FROM balances b
+                  WHERE b.public_key_id = pk.id
+                  ORDER BY b.block_id DESC
+                  LIMIT 1))::bigint, 0::bigint)     AS locked,
+       (SELECT b.block_id
+        FROM balances b
+        WHERE b.public_key_id = pk.id
+        ORDER BY b.block_id DESC
+        LIMIT 1)                                    AS balance_block_id,
+       (SELECT bl.height
+        FROM balances b
+                 LEFT JOIN blocks bl ON bl.id = b.block_id
+        WHERE b.public_key_id = pk.id
+        ORDER BY b.block_id DESC
+        LIMIT 1)                                    AS balance_block_height,
+       (SELECT bl.state_hash
+        FROM balances b
+                 LEFT JOIN blocks bl ON bl.id = b.block_id
+        WHERE b.public_key_id = pk.id
+        ORDER BY b.block_id DESC
+        LIMIT 1)                                    AS balance_block_hash,
+       l.delegate_key,
+       COALESCE(wh2.name, ''::character varying)    AS delegate_name,
+       l.receipt_chain_hash
+FROM public_keys pk
+         LEFT JOIN whois wh ON wh.public_key_id = pk.id
+         LEFT JOIN account_identifiers ai ON ai.public_key_id = pk.id AND ai.token_id = 1
+         LEFT JOIN v_ledger_staking l ON l.public_key_id = pk.id
+         LEFT JOIN whois wh2 ON wh2.public_key_id = l.delegate_key_id;
+
+alter table public.v_accounts
     owner to mina;
 

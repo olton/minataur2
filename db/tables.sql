@@ -1,3 +1,18 @@
+create table public.balances
+(
+    public_key_id bigint not null,
+    block_id      bigint not null,
+    total         text,
+    liquid        text,
+    locked        text,
+    unknown       text,
+    constraint balances_pk
+        primary key (public_key_id, block_id)
+);
+
+alter table public.balances
+    owner to mina;
+
 create table public.ip
 (
     ip   varchar(50)                      not null,
@@ -79,7 +94,6 @@ create index idx_peers_coordinates
 create index idx_peers_location
     on public.peers (location);
 
-
 create table public.uptime_sidecar
 (
     public_key_id bigint    not null,
@@ -131,7 +145,7 @@ create table public.whois
     twitter       varchar(100),
     github        varchar(100),
     logo          varchar(255),
-    desc   text
+    "desc"        text
 );
 
 alter table public.whois
@@ -139,19 +153,4 @@ alter table public.whois
 
 create unique index ui_address_public_key
     on public.whois (public_key_id);
-
-create table public.balances
-(
-    public_key_id bigint not null,
-    block_id      bigint not null,
-    total         text,
-    liquid        text,
-    locked        text,
-    unknown       text,
-    constraint balances_pk
-        primary key (public_key_id, block_id)
-);
-
-alter table public.balances
-    owner to mina;
 
