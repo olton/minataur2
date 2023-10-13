@@ -177,7 +177,8 @@ export const db_get_blocks_crt = async (deep = 100) => {
          blocks_canonical,
          blocks_pending
     `
-    return (await query(sql, [deep])).rows[0].crt
+    const result = (await query(sql, [deep])) //[0].crt
+    return result && result.rows.length ? result.rows[0].crt : 0
 }
 
 export const db_get_block_info = async (hash) => {

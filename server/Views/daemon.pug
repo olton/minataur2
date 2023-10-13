@@ -18,6 +18,9 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                     table.table.striped.row-hover.monospace
                         tbody
                             tr
+                                td: span Sync status:
+                                td.text-right: span#sync_status 0
+                            tr
                                 td: span Global number of accounts:
                                 td.text-right: span#num_accounts 0
                             tr
@@ -50,9 +53,6 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                             tr
                                 td: span User commands sent:
                                 td.text-right: span#user_commands_sent 0
-                            tr
-                                td: span Sync status:
-                                td.text-right: span#sync_status 0
                             tr
                                 td: span Best tip consensus time:
                                 td.text-right: span#consensus_time_best_tip 0
