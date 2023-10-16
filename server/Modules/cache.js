@@ -21,7 +21,6 @@ import {exec_mina_client_status} from "./shell.js";
 
 export const cache_graphql_state = async () => {
     cache.state = await ql_get_version()
-    console.log("V: " + cache.state)
     setTimeout(cache_graphql_state, 10000)
 }
 
@@ -79,7 +78,6 @@ export const cache_price_info = async () => {
 export const cache_transaction_in_pool = async () => {
     try {
         if (cache.state) {
-            console.log(`Cache transaction pool`)
             cache.pool = await ql_get_transaction_in_pool()
         }
     } finally {
@@ -90,7 +88,6 @@ export const cache_transaction_in_pool = async () => {
 export const cache_runtime = async () => {
     try {
         if (cache.state) {
-            console.log(`Cache runtime`)
             cache.runtime = await ql_get_runtime()
         }
     } finally {
@@ -107,7 +104,6 @@ export const cache_peers = async () => {
         } else {
             peers = []
         }
-        console.log(cache.state, peers)
         const ips = new Set()
 
         peers.map(async p => {
