@@ -36,8 +36,11 @@ mixin peers-table(tableId)
                         <div class="">${index}</div>
                     </td>
                     <td>
-                        <span>${shorten(row.peerId, 12)}</span>
-                        <span class="mif-copy copy-data-to-clipboard c-pointer ml-2" data-value="${row.peerId}"></span>
+                        <div class="d-flex flex-nowrap">
+                            <span class="d-block-lg d-none">${shorten(row.peerId, 12)}</span>
+                            <span class="d-block-fs d-none-lg">${row.peerId}</span>
+                            <span class="mif-copy copy-data-to-clipboard c-pointer ml-2" data-value="${row.peerId}"></span>
+                        </div>
                     </td>
                     <td class="">
                         <div class="">${loc[row.host].country}</div>

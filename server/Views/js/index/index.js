@@ -1,6 +1,7 @@
 ;
 
 const updateRuntime = data => {
+    console.log(data)
     if (data) {
         $("#version").html(shorten(data.version, 7) + `<span class="ml-auto text-muted reduce-2">${data.runtimeConfig.ledger.name}</span>`)
         $("#genesis-timestamp").html(datetime(data.genesisConstants.genesisTimestamp).format(config.format.datetime))
