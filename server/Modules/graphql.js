@@ -244,6 +244,23 @@ query ($height: Int!) {
 }
 `
 
+const qMinaVersion = `
+query MyQuery {
+  version
+}
+`
+
+export const ql_get_version = async () => {
+    try {
+        let result = await fetchGraphQL(qMinaVersion)
+        if (!result.data) {
+            new Error(`No data!`)
+        }
+        return result.data.version
+    } catch (e) {
+        return null
+    }
+}
 export const ql_get_snark_jobs = async (height = 1) => {
     try {
         let result = await fetchGraphQL(qSnarkJobs, {height})

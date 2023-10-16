@@ -33,6 +33,7 @@ const init = () => {
         pool: [],
         lastBlock: null,
         runtime: null,
+        state: null
     }, {
         set(target, p, value, receiver) {
             target[p] = value
