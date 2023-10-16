@@ -121,5 +121,5 @@ export const cache_mina_client_status = () => {
     exec_mina_client_status((res)=>{
         cache.daemon = res
     })
-    setTimeout(cache_mina_client_status, parseTime('1m'))
+    setTimeout(cache_mina_client_status, parseTime('30s'))
 }
