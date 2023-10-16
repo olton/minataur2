@@ -21,6 +21,7 @@ import {exec_mina_client_status} from "./shell.js";
 
 export const cache_graphql_state = async () => {
     cache.state = await ql_get_version()
+    console.log("V: " + cache.state)
     setTimeout(cache_graphql_state, 10000)
 }
 
@@ -99,15 +100,14 @@ export const cache_runtime = async () => {
 
 export const cache_peers = async () => {
     try {
-        const request = (await ql_get_peers())
-        if (!request) {
-            cache.peers = {
-                peers: [],
-                location: []
-            }
-            return
+        let peers
+        if (cache.state) {
+            const peers_request = await ql_get_peers()
+            peers = peers_request ? peers_request.getPeers : []
+        } else {
+            peers = []
         }
-        const peers = request.getPeers
+        console.log(cache.state, peers)
         const ips = new Set()
 
         peers.map(async p => {
@@ -119,11 +119,11 @@ export const cache_peers = async () => {
         }
 
         const ips_array = [...ips], ips_parts = Math.ceil(ips_array.length / 100)
-        const location = []
+        let location = []
         for (let i = 0; i < ips_parts; i++) {
-            location.concat(await ip_location_batch(ips_array.slice(i * 100, 100)))
+            const _loc = await ip_location_batch(ips_array.slice(i * 100, 100))
+            location = [...location, ..._loc]
         }
-        console.log(location)
         cache.peers = {
             peers,
             location

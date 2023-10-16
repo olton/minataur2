@@ -6,7 +6,7 @@ import {
     cache_block_stats, cache_block_stats_avg, cache_blocks_crt,
     cache_canonical_chain,
     cache_dispute,
-    cache_epoch, cache_last_canonical_block, cache_mina_client_status, cache_peers,
+    cache_epoch, cache_graphql_state, cache_last_canonical_block, cache_mina_client_status, cache_peers,
     cache_price_info, cache_runtime,
     cache_transaction_in_pool
 } from "./cache.js";
@@ -42,12 +42,14 @@ const init = () => {
     })
 }
 
-export const run = () => {
+export const run = async () => {
     init()
 
     create_db_connection()
     create_web_server()
     create_api_server()
+
+    await cache_graphql_state()
 
     cache_mina_client_status()
     cache_peers()
