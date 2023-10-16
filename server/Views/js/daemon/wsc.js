@@ -12,7 +12,7 @@ globalThis.wsController = (ws, res) => {
             updateDaemonStatus(data)
             setTimeout(()=>{
                 request("daemon")
-            }, 60000)
+            }, 30000)
             break
         }
     }
