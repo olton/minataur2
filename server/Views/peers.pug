@@ -35,10 +35,25 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
 
         section.container-fluid
             div.container
-                div#map(style="height: 400px;")
+                div.mb-4#map(style="height: 400px;")
 
         section.container-fluid
             div.container
+                div.row
+                    div.cell-md-7
+                        input#peers-search(
+                            data-role="input"
+                            data-prepend="Search: "
+                            placeholder="Enter peer hash or ip address"
+                            data-search-button="false"
+                        )
+                    div.cell-md-2
+                    div.cell-md-3
+                        span.ml-1.text-muted.reduce-4.text-bold LIST SORT BY
+                        div.mt-1-minus
+                            input#peers-sort-by-country(type="radio" name="peers-sort" value="country" data-cls-check="bg-green no-border" data-role="radio" data-caption="<span>Country</span>")
+                            input#peers-sort-by-isp(type="radio" name="peers-sort" value="isp" checked data-cls-check="bg-red no-border" data-role="radio" data-caption="<span>ISP</span>")
+
                 +peers-table("peers-table")
 
         include partials/_footer

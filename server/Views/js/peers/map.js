@@ -11,11 +11,20 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map)
 
-const addMapMarkers = loc => {
+
+const clearMarkers = () => {
     for(let i = 0; i < markers.length; i++) {
         map.removeLayer(markers[i])
     }
-    for(let l of Object.values(loc)) {
-        markers.push(new L.marker([l.lat, l.lon]).addTo(map))
+    markers.length = 0
+}
+
+const addMapMarkers = peers => {
+    clearMarkers()
+    for(let l of peers) {
+        if(l.loc) {
+            const marker = L.marker([l.loc.lat, l.loc.lon]).addTo(map)
+            markers.push(marker)
+        }
     }
 }

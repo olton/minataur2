@@ -170,7 +170,10 @@ export const websocket = () => {
                     break
                 }
                 case "peers": {
-                    response(ws, channel, cache.peers)
+                    const peers = cache.peers ? cache.peers.peers.filter( r => {
+                        return data.search === "" ? true : r.peerId.includes(data.search ) || r.host.includes( data.search )
+                    }) : []
+                    response(ws, channel, {peers, location: cache.peers ? cache.peers.location : []})
                     break
                 }
                 case "zkapps": {

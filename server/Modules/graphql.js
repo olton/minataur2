@@ -1,4 +1,4 @@
-import {log} from "../Helpers/log.js";
+import {error, log} from "../Helpers/log.js";
 import {decodeMemo} from "../Helpers/memo.js";
 
 const fetchGraphQL = async (query, variables = {}) => {
@@ -19,7 +19,7 @@ const fetchGraphQL = async (query, variables = {}) => {
 
         return result.ok ? await result.json() : null
     } catch (e) {
-        log(`The Request to GraphQL was aborted! ${e.message}`, 'error', e.stack)
+        error(`The GraphQL server is unavailable!`)
         return null
     }
 }

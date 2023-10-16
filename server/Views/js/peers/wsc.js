@@ -5,16 +5,14 @@ globalThis.wsController = (ws, res) => {
         case "welcome": {
             $(".live").show((el)=>$(el).css("display", "flex"))
             log(`Welcome to Minataur Server!`)
-            request("peers")
+            request("peers", createPeersRequest())
             break
         }
         case "peers": {
-            if (data) {
-                updatePeers(data)
-                setTimeout(request, 60000, "peers")
-            } else {
-                setTimeout(request, 10000, "peers")
-            }
+            updatePeers(data)
+            setTimeout(()=>{
+                request("peers", createPeersRequest())
+            }, 30000)
         }
     }
 }
