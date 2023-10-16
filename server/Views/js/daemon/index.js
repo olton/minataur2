@@ -29,8 +29,8 @@ const updateDaemonStatus = (data) => {
     $("#consensus_mechanism").html(status.consensus_mechanism)
     $("#ledger_merkle_root").html(shorten(status.ledger_merkle_root, 12))
     $("#state_hash").html(shorten(status.state_hash, 12))
-    $("#consensus_time_best_tip").html(`epoch: ${Math.floor(status.consensus_time_best_tip.slot_number/status.consensus_time_best_tip.slots_per_epoch)}, slot: ${status.consensus_time_best_tip.slot_number - status.consensus_time_best_tip.slots_per_epoch}`)
-    $("#consensus_time_now").html(`epoch: ${Math.floor(status.consensus_time_now.slot_number/status.consensus_time_now.slots_per_epoch)}, slot: ${status.consensus_time_now.slot_number - status.consensus_time_now.slots_per_epoch}`)
+    $("#consensus_time_best_tip").html(`epoch: ${Math.floor((status.consensus_time_best_tip.slot_number || 0)/status.consensus_time_best_tip.slots_per_epoch)}, slot: ${status.consensus_time_best_tip.slot_number - status.consensus_time_best_tip.slots_per_epoch}`)
+    $("#consensus_time_now").html(`epoch: ${Math.floor((status.consensus_time_now.slot_number || 0)/status.consensus_time_now.slots_per_epoch)}, slot: ${status.consensus_time_now.slot_number - status.consensus_time_now.slots_per_epoch}`)
 
     const uptime = Metro.utils.secondsToTime(status.uptime_secs)
     $("#uptime_secs").html(`${uptime.d}d, ${uptime.h}h ${uptime.m}m`)
