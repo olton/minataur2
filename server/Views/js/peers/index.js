@@ -39,6 +39,19 @@ const updatePeers = (data) => {
         return 0
     })
 
+    const chart_data = {}
+
+    let key = ""
+    peers.map(r => {
+        if (r.loc && key !== r.loc[peersSortBy]) {
+            key = r.loc[peersSortBy]
+            chart_data[key] = 0
+        }
+        ++chart_data[key]
+    })
+
+    drawPeersChart(chart_data)
+
     addMapMarkers(peers)
 
     const target = $("#peers-table tbody").clear()
