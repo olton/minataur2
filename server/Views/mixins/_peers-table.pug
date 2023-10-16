@@ -43,10 +43,10 @@ mixin peers-table(tableId)
                         </div>
                     </td>
                     <td class="">
-                        <div class="">${loc[row.host].country}</div>
+                        <div class="">${loc[row.host] ? loc[row.host].country : 'UNKNOWN'}</div>
                     </td>
                     <td class="">
-                        <div class="">${loc[row.host].isp}</div>
+                        <div class="">${loc[row.host] ? loc[row.host].isp : 'UNKNOWN'}</div>
                     </td>
                     <td class="">
                         <div class="">${row.host}</div>

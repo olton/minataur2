@@ -22,6 +22,7 @@ export const ip_location_batch = async (ips) => {
             method: "POST",
             body: JSON.stringify(ips)
         })
+        console.log(response.headers)
         if (!response.ok) {
             return null
         }

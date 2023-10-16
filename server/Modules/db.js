@@ -157,7 +157,7 @@ export const db_get_blocks_count = async ({
     return (await query(sql, [Array.isArray(type) ? type : [type]])).rows[0].length
 }
 
-export const db_get_blocks_crt = async (deep = 100) => {
+export const db_get_blocks_crt = async (deep = 1000) => {
     const sql = `
     WITH blocks_100 AS (SELECT b.id,
                            b.chain_status
@@ -172,7 +172,7 @@ export const db_get_blocks_crt = async (deep = 100) => {
          blocks_pending AS (SELECT count(1) AS value
                             FROM blocks_100
                             WHERE blocks_100.chain_status = 'pending'::chain_status_type)
-    SELECT blocks_canonical.value * 100 / (blocks_total.value - blocks_pending.value) AS crt
+    SELECT coalesce(blocks_canonical.value * 100 / nullif(blocks_total.value - blocks_pending.value, 0), 0) AS crt
     FROM blocks_total,
          blocks_canonical,
          blocks_pending

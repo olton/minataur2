@@ -94,14 +94,18 @@ export const cache_peers = async () => {
         ips.add(p.host)
     }
 
-    const location = await ip_location_batch([...ips])
-
+    const ips_array = [...ips], ips_parts = Math.ceil(ips_array.length / 100)
+    const location = []
+    for(let i = 0; i < ips_parts; i++) {
+        location.concat(await ip_location_batch(ips_array.slice(i * 100, 100)))
+    }
+    console.log(location)
     cache.peers = {
         peers,
         location
     }
 
-    setTimeout(cache_peers, parseTime('5m'))
+    setTimeout(cache_peers, parseTime('1m'))
 }
 
 export const cache_snark_pool = async () => {
