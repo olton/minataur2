@@ -1,19 +1,14 @@
 ;
 
-let daemonActivity = null
 
 const updateDaemonStatus = (data) => {
     // console.log(JSON.parse(daemonStatus))
     if (!data) {
         $("#daemon-status-container").css("opacity", .2)
-        daemonActivity = Metro.activity.open({
-            type: 'cycle',
-            overlayColor: '#fff',
-            overlayAlpha: .3
-        })
+        $("#loader").show()
         return
     }
-    if (daemonActivity) Metro.activity.close(daemonActivity)
+    $("#loader").hide()
     $("#daemon-status-container").css("opacity", 1)
     const status = JSON.parse(data)
     $("#num_accounts").html(num2fmt(status.num_accounts))
