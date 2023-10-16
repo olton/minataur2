@@ -75,7 +75,15 @@ export const cache_runtime = async () => {
 }
 
 export const cache_peers = async () => {
-    const peers = (await ql_get_peers()).getPeers
+    const request = (await ql_get_peers())
+    if (!request) {
+        cache.peers = {
+            peers: [],
+            location: []
+        }
+        return
+    }
+    const peers = request.getPeers
     const ips = new Set()
 
     peers.map(async p => {

@@ -1,13 +1,16 @@
 ;
 
 const updateRuntime = data => {
-    $("#version").html(shorten(data.version, 7) + `<span class="ml-auto text-muted reduce-2">${data.runtimeConfig.ledger.name}</span>`)
-    $("#genesis-timestamp").html(datetime(data.genesisConstants.genesisTimestamp).format(config.format.datetime))
-    $("#coinbase").html(normMina(data.genesisConstants.coinbase))
-    $("#supercharge").html(normMina(data.genesisConstants.coinbase * data.runtimeConfig.proof.supercharged_coinbase_factor))
+    if (data) {
+        $("#version").html(shorten(data.version, 7) + `<span class="ml-auto text-muted reduce-2">${data.runtimeConfig.ledger.name}</span>`)
+        $("#genesis-timestamp").html(datetime(data.genesisConstants.genesisTimestamp).format(config.format.datetime))
+        $("#coinbase").html(normMina(data.genesisConstants.coinbase))
+        $("#supercharge").html(normMina(data.genesisConstants.coinbase * data.runtimeConfig.proof.supercharged_coinbase_factor))
+    }
 }
 
-const updateEpoch = ({active_producers, block_time, epoch_blocks, height, epoch_since_genesis, epoch_since_hard_fork, epoch_start_block, current_slot, global_slot_since_genesis, global_slot_since_hard_fork}) => {
+const updateEpoch = ({active_producers, block_time, epoch_blocks, height, epoch_since_genesis, epoch_since_hard_fork, epoch_start_block, current_slot, global_slot_since_genesis, global_slot_since_hard_fork} = {}) => {
+    if (typeof height === "undefined") return
     const epochTimer = $("#epoch-timer")
     const epochEnd = datetime(HARD_FORK_START).addSecond(EPOCH_DURATION/1000 * (+epoch_since_hard_fork + 1))
     const epochEndFormatted = epochEnd.format("MM/DD/YYYY HH:mm")
@@ -77,10 +80,12 @@ const updatePrice = (data) => {
 }
 
 const updatePool = data => {
+    if (!data) return
     $("#pool-size").html(num2fmt(data.length))
 }
 
 const updateBlockStatsAvg = data => {
+    if (!data) return
     const {avg_slots, avg_user_trans_count, avg_trans_fee, avg_time} = data
     $("#avg-slots").html((+avg_slots).toFixed(2))
     $("#avg-time").html((+avg_time).toFixed(2))
@@ -89,10 +94,12 @@ const updateBlockStatsAvg = data => {
 }
 
 const updateBlocksCrt = data => {
+    if (!data) return
     $("#blocks-crt").html(num2fmt(data) + "%")
 }
 
 const updateLastCanonicalBlock = data => {
+    if (!data) return
     $("#height-slot").html(num2fmt(data.slot))
     $("#height-slot-global").html("("+num2fmt(data.global_slot_since_genesis) + " / " + num2fmt(data.global_slot_since_hard_fork)+")")
 }
