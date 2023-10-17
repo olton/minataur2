@@ -181,7 +181,7 @@ const drawChartPAR = data => {
 const drawChartCoinbase = data => {
     $("#chart-coinbase").clear()
     const tx = [], bl = []
-    for(let r of data.reverse()) {
+    for(let r of data) {
         tx.push(+r.coinbase/10**9)
         bl.push(+r.height)
     }
