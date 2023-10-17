@@ -216,7 +216,6 @@ const drawPriceChart = data => {
                 enabled: true
             },
             height: 35,
-            width: 124,
         },
         series: [{
             name: "Price",
