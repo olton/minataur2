@@ -19,7 +19,7 @@ const fetchGraphQL = async (query, variables = {}) => {
 
         return result.ok ? await result.json() : null
     } catch (e) {
-        error(`The GraphQL server is unavailable!`)
+        // error(`The GraphQL server is unavailable!`)
         return null
     }
 }

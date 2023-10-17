@@ -117,7 +117,7 @@ export const cache_peers = async () => {
         const ips_array = [...ips], ips_parts = Math.ceil(ips_array.length / 100)
         let location = []
         for (let i = 0; i < ips_parts; i++) {
-            const _loc = await ip_location_batch(ips_array.slice(i * 100, 100))
+            const _loc = await ip_location_batch(ips_array.slice(i * 100, i * 100 + 100))
             location = [...location, ..._loc]
         }
         cache.peers = {
