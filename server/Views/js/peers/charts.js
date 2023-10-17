@@ -18,7 +18,9 @@ const drawPeersChart = (data) => {
         labels: Object.keys(data),
         legend: {
             show: true,
-            position: 'bottom'
+            position: 'bottom',
+            height: 100,
+            fontSize: '12px',
         },
         colors: [
             '#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6',
