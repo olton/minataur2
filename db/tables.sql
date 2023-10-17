@@ -154,3 +154,17 @@ alter table public.whois
 create unique index ui_address_public_key
     on public.whois (public_key_id);
 
+create table public.price
+(
+    timestamp timestamp not null
+        constraint price_pk
+            primary key,
+    low       numeric,
+    high      numeric,
+    value     numeric,
+    total     numeric
+);
+
+alter table public.price
+    owner to mina;
+

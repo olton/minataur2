@@ -49,8 +49,6 @@ export const run = async () => {
     create_web_server()
     create_api_server()
 
-    await cache_graphql_state()
-
     cache_mina_client_status()
     cache_peers()
     cache_runtime()

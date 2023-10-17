@@ -18,6 +18,7 @@ import {
 import {testPort} from "../Helpers/test-port.js";
 import {ip_location_batch} from "../Helpers/ip-location.js";
 import {exec_mina_client_status} from "./shell.js";
+import {query} from "./postgres.js";
 
 export const cache_graphql_state = async () => {
     cache.state = await ql_get_version()
@@ -63,12 +64,13 @@ export const cache_price_info = async () => {
             data[0].currency = currency
             data[0].delta = data[0].current_price - (cache.price ? cache.price.current_price : 0)
             cache.price = data[0]
-            //broadcast.price = data[0]
 
-            // if (saveToDB) query(`
-            //     insert into price (currency, value, timestamp, provider)
-            //     values ($1, $2, $3, $4)
-            // `, [currency, data[0].current_price, data[0].last_updated, 'coingecko.com'])
+            const {last_updated, low_24h, high_24h, current_price, total_supply} = data[0]
+
+            query(`
+                insert into price (timestamp, low, high, value, total)
+                values ($1, $2, $3, $4, $5) on conflict do nothing 
+            `, [last_updated, low_24h, high_24h, current_price, total_supply])
         }
     } finally {
         setTimeout(cache_price_info, _updateInterval)
@@ -77,9 +79,7 @@ export const cache_price_info = async () => {
 
 export const cache_transaction_in_pool = async () => {
     try {
-        if (cache.state) {
-            cache.pool = await ql_get_transaction_in_pool()
-        }
+        cache.pool = await ql_get_transaction_in_pool()
     } finally {
         setTimeout(cache_transaction_in_pool, parseTime("30s"))
     }
@@ -87,9 +87,7 @@ export const cache_transaction_in_pool = async () => {
 
 export const cache_runtime = async () => {
     try {
-        if (cache.state) {
-            cache.runtime = await ql_get_runtime()
-        }
+        cache.runtime = await ql_get_runtime()
     } finally {
         setTimeout(cache_runtime, parseTime('30s'))
     }
@@ -97,13 +95,8 @@ export const cache_runtime = async () => {
 
 export const cache_peers = async () => {
     try {
-        let peers
-        if (cache.state) {
-            const peers_request = await ql_get_peers()
-            peers = peers_request ? peers_request.getPeers : []
-        } else {
-            peers = []
-        }
+        const peers_request = await ql_get_peers()
+        const peers = peers_request ? peers_request.getPeers : []
         const ips = new Set()
 
         peers.map(async p => {

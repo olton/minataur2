@@ -1,7 +1,6 @@
 ;
 
 const updateRuntime = data => {
-    console.log(data)
     if (data) {
         $("#version").html(shorten(data.version, 7) + `<span class="ml-auto text-muted reduce-2">${data.runtimeConfig.ledger.name}</span>`)
         $("#genesis-timestamp").html(datetime(data.genesisConstants.genesisTimestamp).format(config.format.datetime))
@@ -64,17 +63,7 @@ const updatePrice = (data) => {
 
     const {current_price, currency, last_updated, total_supply, delta} = data
 
-    if (delta !== 0) {
-        const minaPriceDelta = $("#mina-price-delta").clear()
-        if (delta > 0) {
-            minaPriceDelta.html(`<span class="mif-arrow-up fg-green">`)
-        }
-        if (delta < 0) {
-            minaPriceDelta.html(`<span class="mif-arrow-down fg-red">`)
-        }
-    }
-
-    $("#mina-price").html(current_price)
+    $("#mina-price").html(current_price.toFixed(4))
     $("#mina-price-currency").html(currency)
     $("#mina-price-update").html(datetime(last_updated).format(config.format.datetime))
     $("#mina-total-supply").html(Math.round(total_supply).format(0, null, " ", "."))

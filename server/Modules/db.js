@@ -679,3 +679,10 @@ export const db_get_account_stats = async (account_id) => {
     `
     return (await query(sql, [account_id])).rows[0]
 }
+
+export const db_get_price_line = async (limit = 50) => {
+    const sql = `
+        select * from price order by timestamp desc limit $1
+    `
+    return (await query(sql, [limit])).rows
+}

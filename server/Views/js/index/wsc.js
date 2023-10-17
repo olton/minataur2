@@ -10,6 +10,7 @@ globalThis.wsController = (ws, res) => {
             request("dispute")
             request("canonical")
             request("price")
+            request("price_line", {limit: 50})
             request("block_stats")
             request("block_stats_avg")
             request("pool")
@@ -50,6 +51,13 @@ globalThis.wsController = (ws, res) => {
         case "price": {
             updatePrice(data)
             setTimeout(request, 60000, "price")
+            break
+        }
+        case "price_line": {
+            drawPriceChart(data)
+            setTimeout(() => {
+                request("price_line", {limit: 50})
+            }, 60000)
             break
         }
         case "block_stats": {

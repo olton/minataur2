@@ -202,3 +202,57 @@ const drawChartCoinbase = data => {
     }))
     chart.render()
 }
+
+const drawPriceChart = data => {
+    $("#price-chart-sparkle").clear()
+    const tx = [], bl = []
+    for(let r of data.reverse()) {
+        tx.push(+r.value)
+        bl.push(datetime(r.timestamp).time())
+    }
+    const chart = new ApexCharts($("#price-chart-sparkle")[0], merge({}, lineChartOptions, {
+        chart: {
+            sparkline: {
+                enabled: true
+            },
+            height: 35,
+            width: 124,
+        },
+        series: [{
+            name: "Price",
+            data: tx
+        }],
+        xaxis: {
+            categories: bl,
+        },
+        yaxis: {
+            // min: 0,
+            decimalsInFloat: 4,
+            labels: {
+                formatter: function (val) {
+                    return val.toFixed(4)
+                }
+            }
+        },
+        colors: ['#50a8ff'],
+        tooltip: {
+            fixed: {
+                enabled: false
+            },
+            x: {
+                show: false
+            },
+            y: {
+                title: {
+                    formatter: function (seriesName) {
+                        return ''
+                    }
+                }
+            },
+            marker: {
+                show: false
+            }
+        }
+    }))
+    chart.render()
+}

@@ -16,7 +16,7 @@ import {
     db_get_blocks_count_for_account,
     db_get_blocks_for_account,
     db_get_coinbase,
-    db_get_coinbase_count,
+    db_get_coinbase_count, db_get_price_line,
     db_get_trans_info,
     db_get_transactions,
     db_get_transactions_count,
@@ -69,6 +69,10 @@ export const websocket = () => {
                 }
                 case "price": {
                     response(ws, channel, cache.price)
+                    break
+                }
+                case "price_line": {
+                    response(ws, channel, await db_get_price_line(data.limit))
                     break
                 }
                 case "block_stats": {
