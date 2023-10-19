@@ -49,7 +49,7 @@ const getData = (data) => {
     const timeOffset = new Date().getTimezoneOffset()
 
     for(let r of data) {
-        const date = datetime(r.timestamp).addMinute(-timeOffset)
+        const date = datetime(r.timestamp)//.addMinute(-timeOffset)
         categories.push(date.format("MM/DD/YYYY HH:mm"))
         values.push(+r.value)
     }
