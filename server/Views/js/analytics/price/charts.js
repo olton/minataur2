@@ -32,7 +32,11 @@ const getOptions = (values, categories, title) => {
             tickAmount: 10
         },
         stroke: {
-            width: 1
+            width: 2,
+            curve: 'smooth',
+        },
+        markers: {
+            size: 4
         },
         title: {
             text: title
