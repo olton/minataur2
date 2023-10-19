@@ -20,7 +20,7 @@ globalThis.wsController = (ws, res) => {
         }
         case "runtime": {
             updateRuntime(data)
-            if (!data) setTimeout(request, 60000, "runtime")
+            if (!data) setTimeout(request, 10000, "runtime")
             break
         }
         case "epoch": {

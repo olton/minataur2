@@ -686,3 +686,21 @@ export const db_get_price_line = async (limit = 50) => {
     `
     return (await query(sql, [limit])).rows
 }
+
+export const db_get_price_minutes = async (minutes = 24) => {
+    const sql = `
+        select *
+        from price
+        where timestamp >= NOW() - INTERVAL '${minutes} MINUTE'
+    `
+    return (await query(sql)).rows
+}
+export const db_get_price_hours = async (hours = 24) => {
+    const sql = `
+        select date_trunc('hour', timestamp) as timestamp, value 
+        from price 
+        where timestamp in (select max(timestamp) from price group by date_trunc('hour', timestamp))
+        and timestamp >= NOW() - INTERVAL '${hours} HOURS'
+    `
+    return (await query(sql)).rows
+}

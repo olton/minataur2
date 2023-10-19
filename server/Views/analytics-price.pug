@@ -1,0 +1,81 @@
+html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
+    head
+        meta(charset="utf-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no")
+        link(rel='stylesheet', href='https://cdn.metroui.org.ua/v4-dev/css/metro-all.min.css')
+        link(rel='stylesheet', href='/css/index.css')
+
+        //include favicon
+
+        title= title
+
+    body.m4-cloak
+        include partials/_appbar
+
+        section.container-fluid.mt-10
+            div.container
+                h1 Mina Price (USD)
+
+        section.container-fluid
+            div.container
+                div.row
+                    div.cell-lg-4
+                        div
+                            div(style="height: 350px")#price-chart-hour.d-flex.flex-align-center.flex-justify-center
+                                div(data-role="activity" data-type="cycle" data-style="dark")
+                    div.cell-lg-4
+                        div
+                            div(style="height: 350px")#price-chart-24h.d-flex.flex-align-center.flex-justify-center
+                                div(data-role="activity" data-type="cycle" data-style="dark")
+                    div.cell-lg-4
+                        div
+                            div(style="height: 350px")#price-chart-48h.d-flex.flex-align-center.flex-justify-center
+                                div(data-role="activity" data-type="cycle" data-style="dark")
+                    div.cell-lg-8
+                        div
+                            div(style="height: 350px")#price-chart-month.d-flex.flex-align-center.flex-justify-center
+                                div(data-role="activity" data-type="cycle" data-style="dark")
+
+                    div.cell-lg-4
+                        div.pt-10.pl-10
+                            div
+                                div.row
+                                    div.cell-6
+                                        div.reduce-3.text-muted CURRENT PRICE USD
+                                        div.h3.mt-0.text-bold.fg-cyan#current_price
+                                    div.cell-6
+                                        div.reduce-3.text-muted CHANGE 24h
+                                            div.d-flex.flex-row.flex-nowrap
+                                                div.h3.mt-0.text-bold.fg-orange#price_change_24h
+                                                div.mt-0.text-bold#price_change_percentage_24h
+                            div
+                                div.row
+                                    div.cell-6
+                                        div.reduce-3.text-muted MAXIMUM 24h
+                                        div.h3.mt-0.text-bold.fg-green#high_24h
+                                    div.cell-6
+                                        div.reduce-3.text-muted MAXIMUM ALL TIME
+                                        div.h3.mt-0.text-bold.fg-green#ath
+                                div.row
+                                    div.cell-6
+                                        div.reduce-3.text-muted MINIMUM 24h
+                                        div.h3.mt-0.text-bold.fg-red#low_24h
+                                    div.cell-6
+                                        div.reduce-3.text-muted MINIMUM ALL TIME
+                                        div.h3.mt-0.text-bold.fg-red#atl
+
+                                div.remark
+                                    span Information provided by
+                                    a.ml-1(href="https://www.coingecko.com/") CoinGecko.com
+
+
+        include partials/_footer
+
+        include partials/_scripts
+
+        script
+            include js/analytics/price/wsc.js
+            include js/analytics/price/index.js
+            include js/analytics/price/charts.js
+
+

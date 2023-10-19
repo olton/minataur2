@@ -11,6 +11,8 @@ section.container-fluid.pos-fixed.fixed-top.z-top.bg-darkViolet.fg-white
             li
                 a(href="/blockchain") Blockchain
             li
+                a(href="/accounts") Accounts
+            li
                 a.dropdown-toggle.marker-light(href="#") Transactions
                 ul.d-menu.place-right(data-role="dropdown")
                     li
@@ -41,9 +43,13 @@ section.container-fluid.pos-fixed.fixed-top.z-top.bg-darkViolet.fg-white
                             span.icon.mif-clipboard
                             span Check Payment Status
             li
-                a(href="/accounts") Accounts
-            li.disabled
-                a(href="/uptime") Uptime
+                a.dropdown-toggle.marker-light(href="#") Analytics
+                ul.d-menu(data-role="dropdown")
+                    li
+                        a(href="/analytics/price")
+                            span.icon.mif-dollar
+                            span Mina Price
+
             li
                 a.dropdown-toggle.marker-light(href="#") Network
                 ul.d-menu.place-right(data-role="dropdown")
@@ -59,6 +65,9 @@ section.container-fluid.pos-fixed.fixed-top.z-top.bg-darkViolet.fg-white
                         a(href="/peers")
                             span.icon.mif-broadcast
                             span Peers
+                    li.disabled
+                        a(href="/uptime") Uptime
+
 
             li.disabled
                 a(href="#").live

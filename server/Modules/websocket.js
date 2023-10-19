@@ -16,7 +16,7 @@ import {
     db_get_blocks_count_for_account,
     db_get_blocks_for_account,
     db_get_coinbase,
-    db_get_coinbase_count, db_get_price_line,
+    db_get_coinbase_count, db_get_price_hours, db_get_price_line, db_get_price_minutes,
     db_get_trans_info,
     db_get_transactions,
     db_get_transactions_count,
@@ -73,6 +73,22 @@ export const websocket = () => {
                 }
                 case "price_line": {
                     response(ws, channel, await db_get_price_line(data.limit))
+                    break
+                }
+                case "price_hour": {
+                    response(ws, channel, await db_get_price_minutes(60))
+                    break
+                }
+                case "price_24h": {
+                    response(ws, channel, await db_get_price_hours(24))
+                    break
+                }
+                case "price_48h": {
+                    response(ws, channel, await db_get_price_hours(48))
+                    break
+                }
+                case "price_month": {
+                    response(ws, channel, await db_get_price_hours(720))
                     break
                 }
                 case "block_stats": {

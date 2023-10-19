@@ -126,6 +126,14 @@ const routes = () => {
         })
     })
 
+    app.get('/analytics/price', async (req, res) => {
+        res.render('analytics-price', {
+            title: 'Mina Price Analytics :: Minataur - The Fastest block explorer for Mina Blockchain',
+            appTitle: 'Mina Price Analytics',
+            client: JSON.stringify(client)
+        })
+    })
+
 }
 
 export const create_web_server  = () => {
