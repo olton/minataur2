@@ -3,7 +3,7 @@ const updatePrice = data => {
     console.log(data)
     $("#current_price").html(data.current_price)
     $("#last_updated").html(datetime(data.last_updated).format(config.format.datetime))
-    $("#ath").html(data.ath)
+    $("#ath").html((data.ath).toFixed(6))
     $("#ath_date").html(datetime(data.ath_date).format(config.format.datetime))
     $("#atl").html(data.atl)
     $("#atl_date").html(datetime(data.atl_date).format(config.format.datetime))

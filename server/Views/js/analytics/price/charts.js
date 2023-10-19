@@ -61,7 +61,11 @@ const drawPriceHour = data => {
 
     const [values, categories] = getData(data)
 
-    const chartLine = new ApexCharts(container[0], getOptions(values, categories, 'Last Hour'));
+    const chartLine = new ApexCharts(container[0], merge({}, getOptions(values, categories, 'Last Hour'), {
+        xaxis: {
+            tickAmount: 10
+        }
+    }));
     chartLine.render();
 }
 
@@ -70,7 +74,11 @@ const drawPrice24h = data => {
 
     const [values, categories] = getData(data)
 
-    const chartLine = new ApexCharts(container[0], getOptions(values, categories, 'Last 24H'));
+    const chartLine = new ApexCharts(container[0], merge({}, getOptions(values, categories, 'Last 24H'), {
+        xaxis: {
+            tickAmount: 10
+        }
+    }));
     chartLine.render();
 }
 
@@ -79,7 +87,11 @@ const drawPrice48h = data => {
 
     const [values, categories] = getData(data)
 
-    const chartLine = new ApexCharts(container[0], getOptions(values, categories, 'Last 48H'));
+    const chartLine = new ApexCharts(container[0], merge({}, getOptions(values, categories, 'Last 48H'), {
+        xaxis: {
+            tickAmount: 10
+        }
+    }));
     chartLine.render();
 }
 
@@ -88,6 +100,10 @@ const drawPriceMonth = data => {
 
     const [values, categories] = getData(data)
 
-    const chartLine = new ApexCharts(container[0], getOptions(values, categories, 'Last Month'));
+    const chartLine = new ApexCharts(container[0], merge({}, getOptions(values, categories, 'Last Month'), {
+        xaxis: {
+            tickAmount: 30
+        }
+    }));
     chartLine.render();
 }
