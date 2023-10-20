@@ -27,6 +27,7 @@ import {
     db_save_ip
 } from "./db.js";
 import {ql_get_account_info, ql_get_pool, ql_get_snark_jobs} from "./graphql.js";
+import {tools_check_ports} from "./tools.js";
 
 export const websocket = () => {
     wss.on('connection', (ws, req) => {
@@ -210,6 +211,11 @@ export const websocket = () => {
                 }
                 case "daemon": {
                     response(ws, channel, cache.daemon)
+                    break
+                }
+                case "check_ports": {
+                    response(ws, channel, await tools_check_ports(data.ip))
+                    break
                 }
             }
         })

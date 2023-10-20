@@ -1,0 +1,46 @@
+html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
+    include partials/_head
+
+    body.m4-cloak
+        include partials/_appbar
+
+        section.container-fluid
+            div.container
+                div.row
+                    div.cell-md-6
+                        div.d-flex.flex-nowrap.flex-align-center.pt-4
+                            div
+                                span.h1 Check Ports
+
+        section.container-fluid.mt-4
+            div.container
+                div.row
+                    div.cell-md-3
+                    div.cell-md-6
+                        form(action="javascript:")
+                            textarea(name="ips" data-role="text-area" placeholder="Enter IPs to check, each ip on new row...")
+                            div.remark.info Minotaur will check the next ports for accessibility <b>3089</b>, <b>8302</b>
+                            div.row
+                                div.cell-4
+                                    button#check-button.button.primary(onclick="checkPorts(this.form)") Check Ports
+                                div.cell-8.d-flex.flex-align-center
+                                    div#loader(data-role="activity" data-type="metro" data-style="color" style="display: none")
+
+                    div.cell-md-3
+
+                div.row
+                    div.cell-md-3
+                    div.cell-md-6
+                        table#check-ports-result.table.row-border
+                            tbody
+                    div.cell-md-3
+
+
+        include partials/_footer
+
+        include partials/_scripts
+
+        script
+            include js/tools/check-ports/wsc.js
+            include js/tools/check-ports/index.js
+

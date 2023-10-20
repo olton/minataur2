@@ -72,6 +72,14 @@ const routes = () => {
         })
     })
 
+    app.get('/tools/check-ports', async (req, res) => {
+        res.render('check-ports', {
+            title: 'Check Ports :: Minataur - The Fastest block explorer for Mina Blockchain',
+            appTitle: 'Check Ports',
+            client: JSON.stringify(client)
+        })
+    })
+
     app.get('/transactions', async (req, res) => {
         res.render('transactions', {
             title: 'User Transactions :: Minataur - The Fastest block explorer for Mina Blockchain',
