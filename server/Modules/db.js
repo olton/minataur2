@@ -121,7 +121,6 @@ export const db_get_blocks = async ({
         %CURRENT_EPOCH%
         %BLOCK_SEARCH%
         %HASH_SEARCH%
-        %COINBASE_SEARCH%
         order by height desc
         limit $2 offset $3        
     `
@@ -129,7 +128,6 @@ export const db_get_blocks = async ({
     sql = sql.replace("%CURRENT_EPOCH%", currentEpoch ? `and epoch_since_genesis = (select epoch_since_genesis from v_epoch)` : "")
     sql = sql.replace("%BLOCK_SEARCH%", search && search.block ? `and height = ${search.block}` : "")
     sql = sql.replace("%HASH_SEARCH%", search && search.hash ? `and (hash = '${search.hash}' or lower(creator_name) like '%${search.hash.toLowerCase()}%' or hash = '${search.hash}')` : "")
-    sql = sql.replace("%COINBASE_SEARCH%", search && search.coinbase !== null ? `and coinbase = ${search.coinbase}` : "")
 
     return (await query(sql, [Array.isArray(type) ? type : [type], limit, offset])).rows
 }
@@ -146,13 +144,11 @@ export const db_get_blocks_count = async ({
         %CURRENT_EPOCH%
         %BLOCK_SEARCH%
         %HASH_SEARCH%
-        %COINBASE_SEARCH%
     `
 
     sql = sql.replace("%CURRENT_EPOCH%", currentEpoch ? `and epoch_since_genesis = (select epoch_since_genesis from v_epoch)` : "")
     sql = sql.replace("%BLOCK_SEARCH%", search && search.block ? `and height = ${search.block}` : "")
     sql = sql.replace("%HASH_SEARCH%", search && search.hash ? `and (creator_key = '${search.hash}' or lower(creator_name) like '%${search.hash.toLowerCase()}%' or hash = '${search.hash}')` : "")
-    sql = sql.replace("%COINBASE_SEARCH%", search && !isNaN(search.coinbase) ? `and coinbase = ${search.coinbase}` : "")
 
     return (await query(sql, [Array.isArray(type) ? type : [type]])).rows[0].length
 }
@@ -402,8 +398,11 @@ export const db_get_accounts = async ({
     and (
         key = '${search}'
         or lower(name) like '%${search}%'
-        or delegate_key = '${search}'
-        or lower(delegate_name) like '%${search}%'
+        or lower(site) like '%${search}%'
+        or lower(discord) like '%${search}%'
+        or lower(telegram) like '%${search}%'
+        or lower(twitter) like '%${search}%'
+        or lower(github) like '%${search}%'
     )
     ` : "")
     const rows = (await query(sql, [limit, offset])).rows
@@ -434,8 +433,11 @@ export const db_get_accounts_count = async ({
     and (
         key = '${search}'
         or lower(name) like '%${search}%'
-        or delegate_key = '${search}'
-        or lower(delegate_name) like '%${search}%'
+        or lower(site) like '%${search}%'
+        or lower(discord) like '%${search}%'
+        or lower(telegram) like '%${search}%'
+        or lower(twitter) like '%${search}%'
+        or lower(github) like '%${search}%'
     )
     ` : "")
     return (await query(sql)).rows[0].length
