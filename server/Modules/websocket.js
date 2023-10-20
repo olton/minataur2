@@ -28,6 +28,7 @@ import {
 } from "./db.js";
 import {ql_get_account_info, ql_get_pool, ql_get_snark_jobs} from "./graphql.js";
 import {tools_check_ports} from "./tools.js";
+import {search} from "./search.js";
 
 export const websocket = () => {
     wss.on('connection', (ws, req) => {
@@ -215,6 +216,10 @@ export const websocket = () => {
                 }
                 case "check_ports": {
                     response(ws, channel, await tools_check_ports(data.ip))
+                    break
+                }
+                case "search": {
+                    response(ws, channel, await search(data.query))
                     break
                 }
             }

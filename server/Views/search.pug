@@ -1,0 +1,47 @@
+html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
+    head
+        meta(charset="utf-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no")
+        link(rel='stylesheet', href='https://cdn.metroui.org.ua/v4-dev/css/metro-all.min.css')
+        link(rel='stylesheet', href='/css/index.css')
+
+        //include favicon
+
+        title= title
+
+    body.m4-cloak
+        include partials/_appbar
+
+        section.container-fluid.mt-10
+            div.container
+                div.row
+                    div.cell-lg-3
+                    div.cell-lg-6
+                        div.d-flex.flex-nowrap.flex-align-center.flex-justify-center
+                            img(src="images/bull.webp" height="72")
+                            img.mb-1(src="images/mina.svg" height="36")
+                            div(style="font-size: 50px; top: -4px;").fg-red TAUR
+                    div.cell-lg-3
+
+                div.row
+                    div.cell-lg-3.cell-md-2
+                    div.cell-lg-6.cell-md-8
+                        include partials/_search
+                    div.cell-lg-3.cell-md-2
+                    div.cell-lg-12.mt-10
+                        div.text-center: div.text-leader#search-result-title
+
+                div.mb-10
+                    table.table.row-border.monospace#search-result
+                        tbody
+
+        include partials/_footer
+
+        include partials/_scripts
+
+        script.
+            globalThis.searchQuery = `!{query}`
+
+        script
+            include js/search/wsc.js
+            include js/search/index.js

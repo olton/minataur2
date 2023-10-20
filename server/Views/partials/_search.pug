@@ -1,9 +1,19 @@
-form.disabled(action="javascript:" onsubmit="searchInBlockchain(this.elements[0].value.trim())")
+form(action="javascript:" onsubmit="searchInBlockchain(this.elements[0].value.trim())")
     - var searchValue = query ? query : ""
-    input.input-large.no-overflow(
+    input.input-large.no-overflow.border.border-radius-20(
         data-role="input"
         placeholder="Search for block, address, transaction, ..."
         data-search-button="true"
         name="search_value"
         value=searchValue
     )
+
+script.
+    function searchInBlockchain(query){
+        if (!query) {
+            Metro.toast.create("Please define a search request!")
+            return
+        }
+
+        window.location.href = `/search?q=${query}`
+    }

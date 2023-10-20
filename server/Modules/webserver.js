@@ -142,6 +142,21 @@ const routes = () => {
         })
     })
 
+    app.get('/search', async (req, res) => {
+        const query = req.query
+        const queryString = []
+
+        for(let key in query) {
+            queryString.push(query[key].trim())
+        }
+
+        res.render('search', {
+            title: 'Search in Blockchain :: Minataur - The Fastest block explorer for Mina Blockchain',
+            appTitle: 'Search in Blockchain',
+            client: JSON.stringify(client),
+            query: queryString.join(", ")
+        })
+    })
 }
 
 export const create_web_server  = () => {
