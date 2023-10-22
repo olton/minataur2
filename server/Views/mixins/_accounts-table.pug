@@ -65,8 +65,10 @@ mixin accounts-table(tableId)
                         <div class="text-muted">${row.name}</div>
                     </td>
                     <td>
-                        <span>${shorten(row.receipt_chain_hash || '', 12)}</span>
-                        <span title="Copy hash to clipboard" class="ml-1 reduce-1 mif-copy copy-data-to-clipboard c-pointer ${row.receipt_chain_hash ? '' : 'd-none'}" data-value="${row.receipt_chain_hash}"></span>
+                        <div class="d-flex flex-align-center">
+                            <span>${shorten(row.receipt_chain_hash || '', 12)}</span>
+                            <span title="Copy hash to clipboard" class="ml-1 reduce-1 mif-copy copy-data-to-clipboard c-pointer ${row.receipt_chain_hash ? '' : 'd-none'}" data-value="${row.receipt_chain_hash}"></span>
+                        </div>
                     </td>
                     <td class="text-right">
                         <div class="fg-cyan no-wrap">
