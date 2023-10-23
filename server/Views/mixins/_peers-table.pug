@@ -20,7 +20,7 @@ mixin peers-table(tableId)
     script.
         ;const drawPeersTable = (data) => {
             const rows = []
-
+            console.log(data)
             if (data.length === 0) {
                 return [$("<tr>").html(`
                     <td colspan="7" class="text-center">Nothing to show</td>
@@ -43,7 +43,10 @@ mixin peers-table(tableId)
                         </div>
                     </td>
                     <td class="">
-                        <div class="">${row.loc ? row.loc.country : 'UNKNOWN'}</div>
+                        <div class="" title="${row.loc ? row.loc.country : 'UNKNOWN'}">
+                            <img src="https://flagcdn.com/48x36/${row.loc ? row.loc.countryCode.toLowerCase() : 'UNKNOWN'}.png" style="height: 14px">
+                            ${row.loc ? row.loc.countryCode : 'UNKNOWN'}
+                        </div>
                     </td>
                     <td class="">
                         <div class="">${row.loc ? row.loc.isp : 'UNKNOWN'}</div>
