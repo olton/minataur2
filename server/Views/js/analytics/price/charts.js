@@ -23,7 +23,7 @@ const getOptions = (values, categories, title) => {
             labels: {
                 rotateAlways: true,
                 formatter: (value) => {
-                    const [_, time] = (""+value).split(" ")
+                    const [date, time] = (""+value).split(" ")
                     return time
                 }
             }
@@ -36,7 +36,7 @@ const getOptions = (values, categories, title) => {
             curve: 'smooth',
         },
         markers: {
-            size: 4
+            size: 2
         },
         title: {
             text: title
@@ -102,7 +102,13 @@ const drawPriceMonth = data => {
 
     const chartLine = new ApexCharts(container[0], merge({}, getOptions(values, categories, 'Last Month'), {
         xaxis: {
-            tickAmount: 30
+            tickAmount: 10,
+            labels: {
+                rotateAlways: true,
+                formatter: (value) => {
+                    return value ? datetime(value).format("DD, MMM, HH:mm") : ""
+                }
+            }
         }
     }));
     chartLine.render();
