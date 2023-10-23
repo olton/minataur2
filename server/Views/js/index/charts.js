@@ -215,7 +215,7 @@ const drawPriceChart = data => {
             sparkline: {
                 enabled: true
             },
-            height: 35,
+            height: 20,
         },
         series: [{
             name: "Price",

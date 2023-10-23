@@ -56,13 +56,6 @@ body {
 .epoch-number-container #current-epoch-number {
   font-size: 36px;
 }
-#mina-price-delta {
-  position: absolute;
-  right: 4px;
-  bottom: 6px;
-  font-weight: bold;
-  font-size: 24px;
-}
 #account-balance-locked {
   position: absolute;
   top: 10px;
@@ -76,12 +69,12 @@ body {
 }
 #price-chart-sparkle {
   position: absolute;
-  bottom: 0;
+  top: 20px;
   right: 4px;
-  height: 50px;
+  height: 30px;
   width: 100px;
   padding: 4px 8px;
-  border: 1px solid #dedede;
+  background: #e6f5fc;
 }
 @media screen and (min-width: 768px) {
   .epoch-number-container {
