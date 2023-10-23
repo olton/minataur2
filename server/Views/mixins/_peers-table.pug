@@ -5,7 +5,7 @@ mixin peers-table(tableId)
                 tr
                     th.text-center: div #
                     th: div Peer ID
-                    th: div Country
+                    th(style="width: 30px;"): div Country
                     th: div ISP
                     th: div Host
                     th: div Port
@@ -20,7 +20,7 @@ mixin peers-table(tableId)
     script.
         ;const drawPeersTable = (data) => {
             const rows = []
-            console.log(data)
+
             if (data.length === 0) {
                 return [$("<tr>").html(`
                     <td colspan="7" class="text-center">Nothing to show</td>
