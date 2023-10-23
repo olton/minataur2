@@ -36,7 +36,8 @@ const getOptions = (values, categories, title) => {
             curve: 'smooth',
         },
         markers: {
-            size: 2
+            size: 3,
+            colors: "#468cff"
         },
         title: {
             text: title
@@ -109,6 +110,10 @@ const drawPriceMonth = data => {
                     return value ? datetime(value).format("DD, MMM, HH:mm") : ""
                 }
             }
+        },
+        markers: {
+            size: 2,
+            strokeWidth: 1
         }
     }));
     chartLine.render();
