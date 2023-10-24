@@ -54,7 +54,7 @@ const drawChartTPB = data => {
 const drawChartZkappTPB = data => {
     $("#chart-zkapp-tpb").clear()
     const tx = [], bl = []
-    for(let r of data.reverse()) {
+    for(let r of data) {
         tx.push(+r.zkapp_trans_count)
         bl.push(+r.height)
     }
@@ -73,7 +73,7 @@ const drawChartZkappTPB = data => {
 const drawChartIntTPB = data => {
     $("#chart-int-tpb").clear()
     const tx = [], bl = []
-    for(let r of data.reverse()) {
+    for(let r of data) {
         tx.push(+r.internal_trans_count)
         bl.push(+r.height)
     }
@@ -92,7 +92,7 @@ const drawChartIntTPB = data => {
 const drawChartUserTPB = data => {
     $("#chart-user-tpb").clear()
     const tx = [], bl = []
-    for(let r of data.reverse()) {
+    for(let r of data) {
         tx.push(+r.user_trans_count)
         bl.push(+r.height)
     }
@@ -111,7 +111,7 @@ const drawChartUserTPB = data => {
 const drawChartSPB = data => {
     $("#chart-spb").clear()
     const tx = [], bl = []
-    for(let r of data.reverse()) {
+    for(let r of data) {
         tx.push(+r.block_slots)
         bl.push(+r.height)
     }
@@ -132,7 +132,7 @@ const drawChartSPB = data => {
 const drawChartFPB = data => {
     $("#chart-fpb").clear()
     const tx = [], bl = []
-    for(let r of data.reverse()) {
+    for(let r of data) {
         tx.push(+r.trans_fee/10**9)
         bl.push(+r.height)
     }
@@ -155,7 +155,7 @@ const drawChartFPB = data => {
 const drawChartPAR = data => {
     $("#chart-par").clear()
     const tx = [], bl = []
-    for(let r of data.reverse()) {
+    for(let r of data) {
         tx.push(+r.block_participants)
         bl.push(+r.height)
     }
