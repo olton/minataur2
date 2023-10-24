@@ -70,19 +70,6 @@ const drawPriceHour = data => {
     chartLine.render();
 }
 
-const drawPrice24h = data => {
-    const container = $("#price-chart-24h").clear()
-
-    const [values, categories] = getData(data)
-
-    const chartLine = new ApexCharts(container[0], merge({}, getOptions(values, categories, 'Last 24H'), {
-        xaxis: {
-            tickAmount: 10
-        }
-    }));
-    chartLine.render();
-}
-
 const drawPrice48h = data => {
     const container = $("#price-chart-48h").clear()
 
@@ -90,7 +77,13 @@ const drawPrice48h = data => {
 
     const chartLine = new ApexCharts(container[0], merge({}, getOptions(values, categories, 'Last 48H'), {
         xaxis: {
-            tickAmount: 10
+            tickAmount: 10,
+            labels: {
+                rotateAlways: true,
+                formatter: (value) => {
+                    return value ? datetime(value).format("DD, MMM, HH:mm") : ""
+                }
+            }
         }
     }));
     chartLine.render();

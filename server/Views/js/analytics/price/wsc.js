@@ -7,7 +7,6 @@ globalThis.wsController = (ws, res) => {
             log(`Welcome to Minataur Server!`)
             request("price")
             request("price_hour")
-            request("price_24h")
             request("price_48h")
             request("price_month")
             break
@@ -25,11 +24,6 @@ globalThis.wsController = (ws, res) => {
         case "price_48h": {
             drawPrice48h(data)
             setTimeout(request, 60000, "price_48h")
-            break
-        }
-        case "price_24h": {
-            drawPrice24h(data)
-            setTimeout(request, 60000, "price_24h")
             break
         }
         case "price_month": {

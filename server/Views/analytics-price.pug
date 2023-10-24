@@ -19,24 +19,12 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
         section.container-fluid
             div.container
                 div.row
-                    div.cell-lg-4
+                    div.cell-lg-6
                         div
                             div(style="height: 350px")#price-chart-hour.d-flex.flex-align-center.flex-justify-center
                                 div(data-role="activity" data-type="cycle" data-style="dark")
-                    div.cell-lg-4
-                        div
-                            div(style="height: 350px")#price-chart-24h.d-flex.flex-align-center.flex-justify-center
-                                div(data-role="activity" data-type="cycle" data-style="dark")
-                    div.cell-lg-4
-                        div
-                            div(style="height: 350px")#price-chart-48h.d-flex.flex-align-center.flex-justify-center
-                                div(data-role="activity" data-type="cycle" data-style="dark")
-                    div.cell-lg-8
-                        div
-                            div(style="height: 350px")#price-chart-month.d-flex.flex-align-center.flex-justify-center
-                                div(data-role="activity" data-type="cycle" data-style="dark")
 
-                    div.cell-lg-4
+                    div.cell-lg-6
                         div.pt-10.pl-10
                             div
                                 div.row
@@ -67,6 +55,17 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                                 div.remark
                                     span Information provided by
                                     a.ml-1(href="https://www.coingecko.com/") CoinGecko.com
+
+
+                    div.cell-lg-6
+                        div
+                            div(style="height: 350px")#price-chart-48h.d-flex.flex-align-center.flex-justify-center
+                                div(data-role="activity" data-type="cycle" data-style="dark")
+                    div.cell-lg-6
+                        div
+                            div(style="height: 350px")#price-chart-month.d-flex.flex-align-center.flex-justify-center
+                                div(data-role="activity" data-type="cycle" data-style="dark")
+
 
 
         include partials/_footer

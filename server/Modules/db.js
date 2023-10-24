@@ -697,12 +697,30 @@ export const db_get_price_minutes = async (minutes = 24) => {
     `
     return (await query(sql)).rows
 }
+
 export const db_get_price_hours = async (hours = 24) => {
     const sql = `
         select date_trunc('hour', timestamp) as timestamp, value 
         from price 
         where timestamp in (select max(timestamp) from price group by date_trunc('hour', timestamp))
         and timestamp >= NOW() - INTERVAL '${hours} HOURS'
+    `
+    return (await query(sql)).rows
+}
+
+export const db_get_price_days = async (days = 30, from = 0, to = 20, step = 4) => {
+    const sql = `
+        select date_trunc('hour', timestamp) as timestamp, value
+        from price
+        where timestamp in (select max(timestamp)
+            from price p
+            where timestamp >= NOW() - INTERVAL '${days} days'
+          and extract(hour from timestamp) in (select * from generate_series(${from}, ${to}, ${step}))
+            group by date_trunc('hour', timestamp))
+        union
+        select date_trunc('hour', timestamp) as timestamp, value
+        from price where timestamp = (select max(timestamp) from price)
+        order by 1
     `
     return (await query(sql)).rows
 }
