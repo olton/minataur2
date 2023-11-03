@@ -1,6 +1,6 @@
 ;
 
-const getOptions = (values, categories, title) => {
+const getOptions = (values, title) => {
     return {
         series: [{
             data: values
@@ -18,7 +18,6 @@ const getOptions = (values, categories, title) => {
         },
         xaxis: {
             type: "category",
-            categories: categories,
             tickAmount: 10,
             labels: {
                 rotateAlways: true,
@@ -36,7 +35,7 @@ const getOptions = (values, categories, title) => {
             curve: 'smooth',
         },
         markers: {
-            size: 3,
+            size: 0,
             colors: "#468cff"
         },
         title: {
@@ -46,68 +45,87 @@ const getOptions = (values, categories, title) => {
 }
 
 const getData = (data) => {
-    const categories = [], values = []
+    const values = []
     const timeOffset = new Date().getTimezoneOffset()
 
     for(let r of data) {
-        const date = datetime(r.timestamp)//.addMinute(-timeOffset)
-        categories.push(date.format("MM/DD/YYYY HH:mm"))
-        values.push(+r.value)
+        const date = datetime(r.timestamp)
+        values.push({
+            x: date.format("MM/DD/YYYY HH:mm"),
+            y: +r.value
+        })
     }
-    return [values, categories]
+    return values
 }
 
+let chartHour, chart48H, chartMonth
+
 const drawPriceHour = data => {
-    const container = $("#price-chart-hour").clear()
+    const container = $("#price-chart-hour")
+    const values = getData(data)
 
-    const [values, categories] = getData(data)
-
-    const chartLine = new ApexCharts(container[0], merge({}, getOptions(values, categories, 'Last Hour'), {
-        xaxis: {
-            tickAmount: 10
-        }
-    }));
-    chartLine.render();
+    if (!chartHour) {
+        chartHour = new ApexCharts(container[0], merge({}, getOptions(values, 'Last Hour'), {
+            xaxis: {
+                tickAmount: 10
+            }
+        }));
+        chartHour.render();
+    } else {
+        chartHour.updateSeries([{
+            data: values
+        }])
+    }
 }
 
 const drawPrice48h = data => {
-    const container = $("#price-chart-48h").clear()
+    const container = $("#price-chart-48h")
+    const values = getData(data)
 
-    const [values, categories] = getData(data)
-
-    const chartLine = new ApexCharts(container[0], merge({}, getOptions(values, categories, 'Last 48H'), {
-        xaxis: {
-            tickAmount: 10,
-            labels: {
-                rotateAlways: true,
-                formatter: (value) => {
-                    return value ? datetime(value).format("DD, MMM, HH:mm") : ""
+    if (!chart48H) {
+        chart48H = new ApexCharts(container[0], merge({}, getOptions(values, 'Last 48H'), {
+            xaxis: {
+                tickAmount: 10,
+                labels: {
+                    rotateAlways: true,
+                    formatter: (value) => {
+                        return value ? datetime(value).format("DD, MMM, HH:mm") : ""
+                    }
                 }
             }
-        }
-    }));
-    chartLine.render();
+        }));
+        chart48H.render();
+    } else {
+        chart48H.updateSeries([{
+            data: values
+        }])
+    }
 }
 
 const drawPriceMonth = data => {
-    const container = $("#price-chart-month").clear()
+    const container = $("#price-chart-month")
+    const values = getData(data)
 
-    const [values, categories] = getData(data)
-
-    const chartLine = new ApexCharts(container[0], merge({}, getOptions(values, categories, 'Last Month'), {
-        xaxis: {
-            tickAmount: 10,
-            labels: {
-                rotateAlways: true,
-                formatter: (value) => {
-                    return value ? datetime(value).format("DD, MMM, HH:mm") : ""
+    if (!chartMonth) {
+        chartMonth = new ApexCharts(container[0], merge({}, getOptions(values, 'Last Month'), {
+            xaxis: {
+                tickAmount: 10,
+                labels: {
+                    rotateAlways: true,
+                    formatter: (value) => {
+                        return value ? datetime(value).format("DD, MMM, HH:mm") : ""
+                    }
                 }
+            },
+            markers: {
+                size: 0,
+                strokeWidth: 1
             }
-        },
-        markers: {
-            size: 2,
-            strokeWidth: 1
-        }
-    }));
-    chartLine.render();
+        }));
+        chartMonth.render();
+    } else {
+        chartMonth.updateSeries([{
+            data: values
+        }])
+    }
 }
