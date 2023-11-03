@@ -19,6 +19,21 @@ const lineChartOptions = {
     },
     stroke: {
         width: 1
+    },
+    noData: {
+        text: 'Loading...'
+    },
+    tooltip: {
+        x: {
+            formatter: (val, obj) => {
+                return `${obj.w.globals.categoryLabels[val - 1]}`
+            }
+        },
+        y: {
+            formatter: (val, obj) => {
+                return `${val}`
+            }
+        },
     }
 }
 
@@ -33,225 +48,282 @@ const updateCharts = data => {
     drawChartCoinbase(data)
 }
 
+let chartTPB,
+    chartZkappTPB,
+    chartIntTPB,
+    chartUserTPB,
+    chartSPB,
+    chartFPB,
+    chartPAR,
+    chartCoinbase,
+    chartPrice
+
 const drawChartTPB = data => {
-    $("#chart-tpb").clear()
-    const tx = [], bl = []
+    const dd = []
     for(let r of data.reverse()) {
-        tx.push(+r.user_trans_count + +r.internal_trans_count + +r.zkapp_trans_count)
-        bl.push(+r.height)
+        dd.push({
+            y: +r.user_trans_count + +r.internal_trans_count + +r.zkapp_trans_count,
+            x: +r.height
+        })
     }
-    const chart = new ApexCharts(document.querySelector("#chart-tpb"), merge({}, lineChartOptions, {
-        series: [{
+    if (!chartTPB) {
+        chartTPB = new ApexCharts(document.querySelector("#chart-tpb"), merge({}, lineChartOptions, {
+            series: [{
+                name: 'Trans',
+                data: dd
+            }]
+        }))
+        chartTPB.render();
+    } else {
+        chartTPB.updateSeries([{
             name: 'Trans',
-            data: tx
-        }],
-        xaxis: {
-            categories: bl
-        }
-    })).render();
+            data: dd
+        }])
+    }
 }
 
 const drawChartZkappTPB = data => {
-    $("#chart-zkapp-tpb").clear()
-    const tx = [], bl = []
+    const dd = []
     for(let r of data) {
-        tx.push(+r.zkapp_trans_count)
-        bl.push(+r.height)
+        dd.push({
+            y: +r.zkapp_trans_count,
+            x: +r.height
+        })
     }
-    const chart = new ApexCharts(document.querySelector("#chart-zkapp-tpb"), merge({}, lineChartOptions, {
-        series: [{
+    if (!chartZkappTPB) {
+        chartZkappTPB = new ApexCharts(document.querySelector("#chart-zkapp-tpb"), merge({}, lineChartOptions, {
+            series: [{
+                name: 'ZkApp Tx',
+                data: dd
+            }],
+            colors: ['#af9528'],
+        }))
+        chartZkappTPB.render();
+    } else {
+        chartZkappTPB.updateSeries([{
             name: 'ZkApp Tx',
-            data: tx
-        }],
-        xaxis: {
-            categories: bl
-        },
-        colors: ['#af9528'],
-    })).render();
+            data: dd
+        }])
+    }
 }
 
 const drawChartIntTPB = data => {
-    $("#chart-int-tpb").clear()
-    const tx = [], bl = []
+    const dd = []
     for(let r of data) {
-        tx.push(+r.internal_trans_count)
-        bl.push(+r.height)
+        dd.push({
+            y: +r.internal_trans_count,
+            x: +r.height
+        })
     }
-    const chart = new ApexCharts(document.querySelector("#chart-int-tpb"), merge({}, lineChartOptions, {
-        series: [{
+    if (!chartIntTPB) {
+        chartIntTPB = new ApexCharts(document.querySelector("#chart-int-tpb"), merge({}, lineChartOptions, {
+            series: [{
+                name: 'Int Tx',
+                data: dd
+            }],
+            colors: ['#ff1841'],
+        }))
+        chartIntTPB.render()
+    } else {
+        chartIntTPB.updateSeries([{
             name: 'Int Tx',
-            data: tx
-        }],
-        xaxis: {
-            categories: bl
-        },
-        colors: ['#ff1841'],
-    })).render();
+            data: dd
+        }])
+    }
 }
 
 const drawChartUserTPB = data => {
-    $("#chart-user-tpb").clear()
-    const tx = [], bl = []
+    const dd = []
     for(let r of data) {
-        tx.push(+r.user_trans_count)
-        bl.push(+r.height)
+        dd.push({
+            y: +r.user_trans_count,
+            x: +r.height
+        })
     }
-    const chart = new ApexCharts(document.querySelector("#chart-user-tpb"), merge({}, lineChartOptions, {
-        series: [{
+    if (!chartUserTPB) {
+        chartUserTPB = new ApexCharts(document.querySelector("#chart-user-tpb"), merge({}, lineChartOptions, {
+            series: [{
+                name: 'User Tx',
+                data: dd
+            }],
+            colors: ['#4ba228'],
+        }))
+        chartUserTPB.render();
+    } else {
+        chartUserTPB.updateSeries([{
             name: 'User Tx',
-            data: tx
-        }],
-        xaxis: {
-            categories: bl
-        },
-        colors: ['#4ba228'],
-    })).render();
+            data: dd
+        }])
+    }
 }
 
 const drawChartSPB = data => {
-    $("#chart-spb").clear()
-    const tx = [], bl = []
+    const dd = []
     for(let r of data) {
-        tx.push(+r.block_slots)
-        bl.push(+r.height)
+        dd.push({
+            y: +r.block_slots,
+            x: +r.height
+        })
     }
-    // console.log(tx)
-    const chart = new ApexCharts(document.querySelector("#chart-spb"), merge({}, lineChartOptions, {
-        series: [{
+    if (!chartSPB) {
+        chartSPB = new ApexCharts(document.querySelector("#chart-spb"), merge({}, lineChartOptions, {
+            series: [{
+                name: 'Slots',
+                data: dd
+            }],
+            colors: ['#ff7f50'],
+        }))
+        chartSPB.render()
+    } else {
+        chartSPB.updateSeries([{
             name: 'Slots',
-            data: tx
-        }],
-        xaxis: {
-            categories: bl,
-        },
-        colors: ['#ff7f50'],
-    }))
-    chart.render()
+            data: dd
+        }])
+    }
 }
 
 const drawChartFPB = data => {
-    $("#chart-fpb").clear()
-    const tx = [], bl = []
+    const dd = []
     for(let r of data) {
-        tx.push(+r.trans_fee/10**9)
-        bl.push(+r.height)
+        dd.push({
+            y: +r.trans_fee/10**9,
+            x: +r.height
+        })
     }
-    const chart = new ApexCharts(document.querySelector("#chart-fpb"), merge({}, lineChartOptions, {
-        series: [{
+    if (!chartFPB) {
+        chartFPB = new ApexCharts(document.querySelector("#chart-fpb"), merge({}, lineChartOptions, {
+            series: [{
+                name: 'Fee',
+                data: dd
+            }],
+            yaxis: {
+                decimalsInFloat: 4
+            },
+            colors: ['#9932cc'],
+        }))
+        chartFPB.render()
+    } else {
+        chartFPB.updateSeries([{
             name: 'Fee',
-            data: tx
-        }],
-        xaxis: {
-            categories: bl,
-        },
-        yaxis: {
-            decimalsInFloat: 4
-        },
-        colors: ['#9932cc'],
-    }))
-    chart.render()
+            data: dd
+        }])
+    }
 }
 
 const drawChartPAR = data => {
-    $("#chart-par").clear()
-    const tx = [], bl = []
+    const dd = []
     for(let r of data) {
-        tx.push(+r.block_participants)
-        bl.push(+r.height)
+        dd.push({
+            y: +r.block_participants,
+            x: +r.height
+        })
     }
-    const chart = new ApexCharts(document.querySelector("#chart-par"), merge({}, lineChartOptions, {
-        series: [{
+    if (!chartPAR) {
+        chartPAR = new ApexCharts(document.querySelector("#chart-par"), merge({}, lineChartOptions, {
+            series: [{
+                name: 'Par',
+                data: dd
+            }],
+            yaxis: {
+                min: 0,
+                decimalsInFloat: 0,
+                forceNiceScale: true,
+                floating: false,
+            },
+            colors: ['#000000']
+        }))
+        chartPAR.render()
+    } else {
+        chartPAR.updateSeries([{
             name: 'Par',
-            data: tx
-        }],
-        xaxis: {
-            categories: bl,
-        },
-        yaxis: {
-            min: 0,
-            decimalsInFloat: 0,
-            forceNiceScale: true,
-            floating: false,
-        },
-        colors: ['#000000']
-    }))
-    chart.render()
+            data: dd
+        }])
+    }
 }
 
 const drawChartCoinbase = data => {
-    $("#chart-coinbase").clear()
-    const tx = [], bl = []
+    const dd = []
     for(let r of data) {
-        tx.push(+r.coinbase/10**9)
-        bl.push(+r.height)
+        dd.push({
+            y: +r.coinbase/10**9,
+            x: +r.height
+        })
     }
-    const chart = new ApexCharts(document.querySelector("#chart-coinbase"), merge({}, lineChartOptions, {
-        series: [{
+    if (!chartCoinbase) {
+        chartCoinbase = new ApexCharts(document.querySelector("#chart-coinbase"), merge({}, lineChartOptions, {
+            series: [{
+                name: 'Coinbase',
+                data: dd
+            }],
+            yaxis: {
+                min: 0,
+                max: 1440,
+                tickAmount: 2
+            },
+            colors: ['#1a12ec']
+        }))
+        chartCoinbase.render()
+    } else {
+        chartCoinbase.updateSeries([{
             name: 'Coinbase',
-            data: tx
-        }],
-        xaxis: {
-            categories: bl,
-        },
-        yaxis: {
-            min: 0,
-            max: 1440,
-            tickAmount: 2
-        },
-        colors: ['#1a12ec']
-    }))
-    chart.render()
+            data: dd
+        }])
+    }
 }
 
 const drawPriceChart = data => {
-    $("#price-chart-sparkle").clear()
-    const tx = [], bl = []
+    const dd = []
     for(let r of data.reverse()) {
-        tx.push(+r.value)
-        bl.push(datetime(r.timestamp).time())
+        dd.push({
+            y: +r.value,
+            x: datetime(r.timestamp).time()
+        })
     }
-    const chart = new ApexCharts($("#price-chart-sparkle")[0], merge({}, lineChartOptions, {
-        chart: {
-            sparkline: {
-                enabled: true
+    if (!chartPrice) {
+        chartPrice = new ApexCharts($("#price-chart-sparkle")[0], merge({}, lineChartOptions, {
+            chart: {
+                sparkline: {
+                    enabled: true
+                },
+                height: 20,
             },
-            height: 20,
-        },
-        series: [{
-            name: "Price",
-            data: tx
-        }],
-        xaxis: {
-            categories: bl,
-        },
-        yaxis: {
-            // min: 0,
-            decimalsInFloat: 4,
-            labels: {
-                formatter: function (val) {
-                    return val.toFixed(4)
-                }
-            }
-        },
-        colors: ['#50a8ff'],
-        tooltip: {
-            fixed: {
-                enabled: false
-            },
-            x: {
-                show: false
-            },
-            y: {
-                title: {
-                    formatter: function (seriesName) {
-                        return ''
+            series: [{
+                name: "Price",
+                data: dd
+            }],
+            yaxis: {
+                decimalsInFloat: 4,
+                labels: {
+                    formatter: function (val) {
+                        return val.toFixed(4)
                     }
                 }
             },
-            marker: {
-                show: false
+            colors: ['#50a8ff'],
+            tooltip: {
+                fixed: {
+                    enabled: false
+                },
+                x: {
+                    show: false
+                },
+                y: {
+                    title: {
+                        formatter: function (seriesName) {
+                            return ''
+                        }
+                    }
+                },
+                marker: {
+                    show: false
+                }
             }
-        }
-    }))
-    chart.render()
+        }))
+        chartPrice.render()
+    } else {
+        chartPrice.updateSeries([{
+            name: "Price",
+            data: dd
+        }])
+    }
 }

@@ -1,46 +1,56 @@
 ;
 
+let chartTrans, chartAmount, chartFee, chartStatus
+
 const updateChartTransInBlock = data => {
-    $("#chart-trans-in-block").clear()
-    const tx = [], bl = []
+    const dd = []
     let index = 0
     for(let r of data.reverse()) {
-        tx.push(+r.user_trans_count)
-        bl.push(+r.height)
+        dd.push({
+            y: +r.user_trans_count,
+            x: +r.height
+        })
         index++
     }
-    const chart = new ApexCharts(document.querySelector("#chart-trans-in-block"), {
-        chart: {
-            type: 'line',
-            toolbar: {
-                show: false
+    if (!chartTrans) {
+        chartTrans = new ApexCharts(document.querySelector("#chart-trans-in-block"), {
+            chart: {
+                type: 'line',
+                toolbar: {
+                    show: false
+                },
+                animations: {
+                    enabled: false,
+                    speed: 300
+                },
+                height: 150,
+                parentHeightOffset: 0,
             },
-            animations: {
-                enabled: false,
-                speed: 300
+            series: [{
+                name: 'Tx',
+                data: dd
+            }],
+            xaxis: {
+                labels: {
+                    show: false
+                }
             },
-            height: 150,
-            parentHeightOffset: 0,
-        },
-        series: [{
-            name: 'Tx',
-            data: tx
-        }],
-        xaxis: {
-            categories: bl,
-            labels: {
-                show: false
-            }
-        },
-        yaxis: {
-            decimalsInFloat: 4
-        },
-        stroke: {
-            width: 1
-        },
-        colors: ['#ff7f50']
+            yaxis: {
+                decimalsInFloat: 4
+            },
+            stroke: {
+                width: 1
+            },
+            colors: ['#ff7f50']
 
-    }).render();
+        })
+        chartTrans.render();
+    } else {
+        chartTrans.updateSeries([{
+            name: 'Tx',
+            data: dd
+        }])
+    }
 }
 
 const updateTransCharts = (data) => {
@@ -50,118 +60,138 @@ const updateTransCharts = (data) => {
 }
 
 const updateChartFees = data => {
-    $("#chart-trans-fee").clear()
-    const tx = [], bl = []
+    const dd = []
     let index = 0
     for(let r of data.reverse()) {
-        tx.push(+r.fee/10**9)
-        bl.push(index)
+        dd.push({
+            y: +r.fee/10**9,
+            x: index
+        })
         index++
     }
-    const chart = new ApexCharts(document.querySelector("#chart-trans-fee"), {
-        chart: {
-            type: 'line',
-            toolbar: {
-                show: false
+    if (!chartFee) {
+        chartFee = new ApexCharts(document.querySelector("#chart-trans-fee"), {
+            chart: {
+                type: 'line',
+                toolbar: {
+                    show: false
+                },
+                animations: {
+                    enabled: false,
+                    speed: 300
+                },
+                height: 150,
+                parentHeightOffset: 0,
             },
-            animations: {
-                enabled: false,
-                speed: 300
+            series: [{
+                name: 'FEE',
+                data: dd
+            }],
+            xaxis: {
+                labels: {
+                    show: false
+                }
             },
-            height: 150,
-            parentHeightOffset: 0,
-        },
-        series: [{
-            name: 'FEE',
-            data: tx
-        }],
-        xaxis: {
-            categories: bl,
-            labels: {
-                show: false
-            }
-        },
-        yaxis: {
-            decimalsInFloat: 4
-        },
-        stroke: {
-            width: 1
-        },
-        colors: ['#7b68ee']
+            yaxis: {
+                decimalsInFloat: 4
+            },
+            stroke: {
+                width: 1
+            },
+            colors: ['#7b68ee']
 
-    }).render();
+        })
+        chartFee.render()
+    } else {
+        chartFee.updateSeries([{
+            name: 'FEE',
+            data: dd
+        }])
+    }
 }
 
 const updateChartAmount = data => {
-    $("#chart-trans-amount").clear()
-    const tx = [], bl = []
+    const dd = []
     let index = 0
     for(let r of data.reverse()) {
-        tx.push(+r.amount/10**9)
-        bl.push(index)
+        dd.push({
+            y: +r.amount/10**9,
+            x: index
+        })
         index++
     }
-    const chart = new ApexCharts(document.querySelector("#chart-trans-amount"), {
-        chart: {
-            type: 'line',
-            toolbar: {
-                show: false
+    if (!chartAmount) {
+        chartAmount = new ApexCharts(document.querySelector("#chart-trans-amount"), {
+            chart: {
+                type: 'line',
+                toolbar: {
+                    show: false
+                },
+                animations: {
+                    enabled: false,
+                    speed: 300
+                },
+                height: 150,
+                parentHeightOffset: 0,
             },
-            animations: {
-                enabled: false,
-                speed: 300
+            series: [{
+                name: 'AMOUNT',
+                data: dd
+            }],
+            xaxis: {
+                labels: {
+                    show: false
+                }
             },
-            height: 150,
-            parentHeightOffset: 0,
-        },
-        series: [{
-            name: 'AMOUNT',
-            data: tx
-        }],
-        xaxis: {
-            categories: bl,
-            labels: {
-                show: false
-            }
-        },
-        yaxis: {
-            decimalsInFloat: 4
-        },
-        stroke: {
-            width: 1
-        },
-        colors: ['#00bfff']
+            yaxis: {
+                decimalsInFloat: 4
+            },
+            stroke: {
+                width: 1
+            },
+            colors: ['#00bfff']
 
-    }).render();
+        })
+        chartAmount.render()
+    } else {
+        chartAmount.updateSeries([{
+            name: 'AMOUNT',
+            data: dd
+        }])
+    }
 }
 
 const updateChartStatus = data => {
-    $("#chart-trans-status").clear()
     let index = 0, applied = 0, failed = 0
     for(let r of data.reverse()) {
         if (r.status === 'applied') applied++
         if (r.status === 'failed') failed++
         index++
     }
-    const chart = new ApexCharts(document.querySelector("#chart-trans-status"), {
-        chart: {
-            type: 'donut',
-            toolbar: {
-                show: false
+    if (!chartStatus) {
+        chartStatus = new ApexCharts(document.querySelector("#chart-trans-status"), {
+            chart: {
+                type: 'donut',
+                toolbar: {
+                    show: false
+                },
+                animations: {
+                    enabled: false,
+                    speed: 300
+                },
+                height: 172,
+                parentHeightOffset: 0,
             },
-            animations: {
-                enabled: false,
-                speed: 300
-            },
-            height: 172,
-            parentHeightOffset: 0,
-        },
-        series: [applied, failed],
-        labels: ['Applied', 'Failed'],
-        colors: ['#94ff6a', '#ff1841'],
-        legend: {
-            show: false,
-            position: 'bottom'
-        }
-    }).render();
+            series: [applied, failed],
+            labels: ['Applied', 'Failed'],
+            colors: ['#94ff6a', '#ff1841'],
+            legend: {
+                show: false,
+                position: 'bottom'
+            }
+        })
+        chartStatus.render()
+    } else {
+        chartStatus.updateSeries([applied, failed])
+    }
 }

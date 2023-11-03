@@ -30,17 +30,17 @@ mixin blocks-table(tableId)
                         span Epoch
                         div.text-small GEN/HF
 
-                    th.text-center(style="width: 100px")
-                        span User Trans
-                        div.text-small Fee
+                    th.text-center(style="width: 30px")
+                        span User
+                        div.text-small Tx
 
                     th.text-center(style="width: 30px")
                         span Int
-                        div.text-small Trans
+                        div.text-small Tx
 
                     th.text-center(style="width: 30px")
                         span ZKAPP
-                        div.text-small Trans
+                        div.text-small Tx
 
 
             tbody
@@ -59,7 +59,6 @@ script.
                 <td colspan="10" class="text-center">Nothing to show</td>
             `)]
         }
-
 
         for (let row of data) {
             let tr = $("<tr>")
@@ -101,7 +100,6 @@ script.
                 </td>
                 <td class="text-center">
                     <span>${row.user_trans_count}</span>
-                    <div class="text-muted text-small">${normMina(row.trans_fee)}</div>
                 </td>
                 <td class="text-center">
                     <span>${row.internal_trans_count}</span>

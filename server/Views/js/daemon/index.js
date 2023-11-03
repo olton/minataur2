@@ -10,7 +10,9 @@ const updateDaemonStatus = (data) => {
     }
     $("#loader").hide()
     $("#daemon-status-container").css("opacity", 1)
+
     const status = JSON.parse(data)
+
     $("#num_accounts").html(num2fmt(status.num_accounts))
     $("#blockchain_length").html(num2fmt(status.blockchain_length))
     $("#peers").html(num2fmt(status.peers.length))
