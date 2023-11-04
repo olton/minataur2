@@ -40,29 +40,28 @@ globalThis.wsController = (ws, res) => {
         }
         case "dispute": {
             updateDispute(data)
-            setTimeout(request, 60000, "dispute")
+            setTimeout(request, 30000, "dispute")
             break
         }
         case "canonical": {
             updateChain(data)
-            setTimeout(request, 60000, "canonical")
+            setTimeout(request, 30000, "canonical")
             break
         }
         case "price": {
             updatePrice(data)
-            setTimeout(request, 60000, "price")
+            setTimeout(request, 30000, "price")
             break
         }
         case "price_line": {
             drawPriceChart(data)
             setTimeout(() => {
                 request("price_line", {limit: 50})
-            }, 60000)
+            }, 30000)
             break
         }
         case "block_stats": {
             updateCharts(data)
-            setTimeout(request, 60000, "block_stats")
             break
         }
         case "pool": {
@@ -72,17 +71,14 @@ globalThis.wsController = (ws, res) => {
         }
         case "block_stats_avg": {
             updateBlockStatsAvg(data)
-            setTimeout(request, 60000, "block_stats_avg")
             break
         }
         case "blocks_crt": {
             updateBlocksCrt(data)
-            setTimeout(request, 60000, "blocks_crt")
             break
         }
         case "last_canonical_block": {
             updateLastCanonicalBlock(data)
-            setTimeout(request, 60000, "last_canonical_block")
             break
         }
     }

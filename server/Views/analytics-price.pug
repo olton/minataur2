@@ -19,42 +19,43 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
         section.container-fluid
             div.container
                 div.row
+                    div.cell-lg-12
+                        div
+                            div(style="height: 350px")#price-chart-candles.d-flex.flex-align-center.flex-justify-center
+                                div(data-role="activity" data-type="cycle" data-style="dark")
+
                     div.cell-lg-6
                         div
                             div(style="height: 350px")#price-chart-hour.d-flex.flex-align-center.flex-justify-center
                                 div(data-role="activity" data-type="cycle" data-style="dark")
 
                     div.cell-lg-6
-                        div.pt-10.pl-10
-                            div
+                        div.m-4.p-10.border.bd-cyan.d-flex.flex-column.flex-justify-center.flex-align-stretch(style="background: #e6f5fc")
+                            div.pl-10
                                 div.row
                                     div.cell-6
-                                        div.reduce-3.text-muted CURRENT PRICE USD
+                                        div.reduce-3 CURRENT PRICE USD
                                         div.h3.mt-0.text-bold1.fg-cyan#current_price
                                     div.cell-6
-                                        div.reduce-3.text-muted CHANGE 24h
+                                        div.reduce-3 CHANGE 24h
                                             div.d-flex.flex-row.flex-nowrap
                                                 div.h3.mt-0.text-bold1.fg-orange#price_change_24h
                                                 div.mt-0.text-bold#price_change_percentage_24h
-                            div
+                            div.pl-10
                                 div.row
                                     div.cell-6
-                                        div.reduce-3.text-muted MAXIMUM 24h
+                                        div.reduce-3 MAXIMUM 24h
                                         div.h3.mt-0.text-bold1.fg-green#high_24h
                                     div.cell-6
-                                        div.reduce-3.text-muted MAXIMUM ALL TIME
+                                        div.reduce-3 MAXIMUM ALL TIME
                                         div.h3.mt-0.text-bold1.fg-green#ath
                                 div.row
                                     div.cell-6
-                                        div.reduce-3.text-muted MINIMUM 24h
+                                        div.reduce-3 MINIMUM 24h
                                         div.h3.mt-0.text-bold1.fg-red#low_24h
                                     div.cell-6
-                                        div.reduce-3.text-muted MINIMUM ALL TIME
+                                        div.reduce-3 MINIMUM ALL TIME
                                         div.h3.mt-0.text-bold1.fg-red#atl
-
-                                div.remark
-                                    span Information provided by
-                                    a.ml-1(href="https://www.coingecko.com/") CoinGecko.com
 
 
                     div.cell-lg-6
@@ -65,6 +66,7 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
                         div
                             div(style="height: 350px")#price-chart-month.d-flex.flex-align-center.flex-justify-center
                                 div(data-role="activity" data-type="cycle" data-style="dark")
+
 
 
 

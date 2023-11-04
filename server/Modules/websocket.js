@@ -4,7 +4,8 @@ import {
     db_get_account_delegators_count,
     db_get_account_info,
     db_get_account_ledger,
-    db_get_account_stake, db_get_account_stats,
+    db_get_account_stake,
+    db_get_account_stats,
     db_get_accounts,
     db_get_accounts_count,
     db_get_block_info,
@@ -16,7 +17,12 @@ import {
     db_get_blocks_count_for_account,
     db_get_blocks_for_account,
     db_get_coinbase,
-    db_get_coinbase_count, db_get_price_days, db_get_price_hours, db_get_price_line, db_get_price_minutes,
+    db_get_coinbase_count,
+    db_get_price_candles,
+    db_get_price_days,
+    db_get_price_hours,
+    db_get_price_line,
+    db_get_price_minutes,
     db_get_trans_info,
     db_get_transactions,
     db_get_transactions_count,
@@ -91,6 +97,10 @@ export const websocket = () => {
                 }
                 case "price_month": {
                     response(ws, channel, await db_get_price_days(30))
+                    break
+                }
+                case "price_candles": {
+                    response(ws, channel, await db_get_price_candles(30))
                     break
                 }
                 case "block_stats": {

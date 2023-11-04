@@ -58,7 +58,7 @@ const getData = (data) => {
     return values
 }
 
-let chartHour, chart48H, chartMonth
+let chartHour, chart48H, chartMonth, chartCandles
 
 const drawPriceHour = data => {
     const container = $("#price-chart-hour")
@@ -126,6 +126,53 @@ const drawPriceMonth = data => {
     } else {
         chartMonth.updateSeries([{
             data: values
+        }])
+    }
+}
+
+
+const drawPriceCandles = data => {
+    console.log(data)
+    const container = $("#price-chart-candles")
+    const dd = []
+    for(let r of data) {
+        dd.push({
+            x: datetime(r._day).format("MM/DD/YYYY"),
+            y: [r.o, r.h, r.l, r.c]
+        })
+    }
+    if (!chartCandles) {
+        chartCandles = new ApexCharts(container[0], {
+            series: [{
+                data: dd
+            }],
+            chart: {
+                type: 'candlestick',
+                height: 350,
+                animations: {
+                    enabled: false,
+                },
+                toolbar: {
+                    show: false
+                },
+            },
+            title: {
+                text: 'CandleStick Last 30 Days',
+                align: 'left'
+            },
+            xaxis: {
+                type: 'datetime'
+            },
+            yaxis: {
+                tooltip: {
+                    enabled: true
+                }
+            }
+        })
+        chartCandles.render()
+    } else {
+        chartCandles.updateSeries([{
+            data: dd
         }])
     }
 }

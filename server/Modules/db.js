@@ -724,3 +724,20 @@ export const db_get_price_days = async (days = 30, from = 0, to = 20, step = 4) 
     `
     return (await query(sql)).rows
 }
+
+export const db_get_price_candles = async (days = 30) => {
+    const sql = `
+        with interv as (select max(timestamp) _max, min(timestamp) _min
+                  from price
+                  group by date_trunc('day', timestamp))
+        select date_trunc('day', _max) as _day, _max, _min,
+               (select value from price p where p.timestamp = _min) as o,
+               (select max(value) from price p where p.timestamp between _min and _max) as h,
+               (select min(value) from price p where p.timestamp between _min and _max) as l,
+               (select value from price p2 where p2.timestamp = _max) as c
+        from interv i
+        order by 1 desc
+        limit $1
+    `
+    return (await query(sql, [days])).rows
+}

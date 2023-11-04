@@ -9,6 +9,7 @@ globalThis.wsController = (ws, res) => {
             request("price_hour")
             request("price_48h")
             request("price_month")
+            request("price_candles")
             break
         }
         case "price": {
@@ -29,6 +30,11 @@ globalThis.wsController = (ws, res) => {
         case "price_month": {
             drawPriceMonth(data)
             setTimeout(request, 60000, "price_month")
+            break
+        }
+        case "price_candles": {
+            drawPriceCandles(data)
+            setTimeout(request, 60000, "price_candles")
             break
         }
     }

@@ -9,7 +9,16 @@ section.container-fluid.pos-fixed.fixed-top.z-top.bg-darkViolet.fg-white
             li
                 a(href="/blockchain") Blockchain
             li
-                a(href="/accounts") Accounts
+                a.dropdown-toggle.marker-light(href="#") Accounts
+                ul.d-menu.place-right(data-role="dropdown")
+                    li
+                        a(href="/accounts")
+                            span.icon.mif-user
+                            span Accounts
+                    li
+                        a(href="/producers")
+                            span.icon.mif-organization
+                            span Producers
             li
                 a.dropdown-toggle.marker-light(href="#") Transactions
                 ul.d-menu.place-right(data-role="dropdown")
