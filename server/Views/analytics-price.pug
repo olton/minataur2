@@ -14,11 +14,16 @@ html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
 
         section.container-fluid.mt-10
             div.container
-                h1 Mina Price (USD)
+                h1.mb-0
+                    span Mina Price
+                    small.ml-3 (USD)
+                div.reduce-2.pl-1
+                    span Powered by
+                    a.ml-1.fg-cyan.no-decor(href="https://www.coingecko.com/") www.coingecko.com
 
         section.container-fluid
             div.container
-                div.row
+                div.row.mt-4
                     div.cell-lg-12
                         div
                             div(style="height: 350px")#price-chart-candles.d-flex.flex-align-center.flex-justify-center
