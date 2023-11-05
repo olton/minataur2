@@ -69,15 +69,29 @@ script.
                     </div>
                     <div class="text-muted">${row.name || 'noname'}</div>
                 </td>
-                <td class="text-left">
-                    <div><span class="reduce-3">CURR: </span>${row.delegators_staking}</div>
-                    <div><span class="reduce-3">NEXT: </span>${row.delegators_next}</div>
+                <td class="text-left border-left bd-default">
+                    <div class="d-flex flex-row flex-align-center">
+                        <div>
+                            <div><span class="reduce-3">CURR: </span>${row.delegators_staking}</div>
+                            <div><span class="reduce-3">NEXT: </span>${row.delegators_next}</div>
+                        </div>
+                        <div class="ml-auto">
+                            <span class="${row.delegators_next === row.delegators_staking ? '' : row.delegators_next > row.delegators_staking ? 'mif-arrow-up fg-green' : 'mif-arrow-down fg-red'}"></span>
+                        </div>
+                    </div>
                 </td>
                 <td class="text-left">
-                    <div><span class="reduce-3">CURR: </span>${num2fmt(normMina(row.stake_staking), ",")}</div>
-                    <div><span class="reduce-3">NEXT: </span>${num2fmt(normMina(row.stake_next), ",")}</div>
+                    <div class="d-flex flex-row flex-align-center">
+                        <div>
+                            <div><span class="reduce-3">CURR: </span>${num2fmt(normMina(row.stake_staking), ",")}</div>
+                            <div><span class="reduce-3">NEXT: </span>${num2fmt(normMina(row.stake_next), ",")}</div>
+                        </div>
+                        <div class="ml-auto">
+                            <span class="${row.stake_next === row.stake_staking ? '' : row.stake_next > row.stake_staking ? 'mif-arrow-up fg-green' : 'mif-arrow-down fg-red'}"></span>
+                        </div>
+                    </div>
                 </td>
-                <td>
+                <td class="border-left bd-default">
                     <div><span class="reduce-3">TOTAL: </span>${row.blocks_total}</div>
                     <div><span class="reduce-3">CANON: </span>${row.blocks_canonical}</div>
                 </td>

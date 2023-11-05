@@ -19,5 +19,5 @@ const showLoader = () => {
 }
 
 const closeLoader = () => {
-    Metro.activity.close(loader)
+    if (loader) Metro.activity.close(loader)
 }
