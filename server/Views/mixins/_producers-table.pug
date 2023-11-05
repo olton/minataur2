@@ -8,6 +8,14 @@ mixin producers-table(tableId)
                         div Producer
                         div.text-small Name
 
+                    th(style="width: 100px;")
+                        div Delegators
+                        div.text-small Count
+
+                    th(style="width: 200px;")
+                        div Stake
+                        div.text-small Size
+
                     th(style="width: 80px;")
                         div Blocks
                         div.text-small Total
@@ -24,13 +32,7 @@ mixin producers-table(tableId)
                         div Epoch
                         div.text-small CRT
 
-                    th(style="width: 100px;")
-                        div Delegators
-                        div.text-small Count
-
-                    th(style="width: 200px;")
-                        div Stake
-                        div.text-small Size
+                    th: span DIR
 
 
             tbody
@@ -52,7 +54,9 @@ script.
         let index = 1
         for (let row of data) {
             let tr
-
+            const totalCrt = +row.blocks_total ? Math.round(row.blocks_canonical * 100 / row.blocks_total) : 0
+            const epochCrt = +row.blocks_total_epoch ? Math.round(row.blocks_canonical_epoch * 100 / row.blocks_total_epoch) : 0
+            const dirCrt = +totalCrt < +epochCrt
             tr = $("<tr>")
 
             tr.html(`
@@ -64,20 +68,6 @@ script.
                     </div>
                     <div class="text-muted">${row.name || 'noname'}</div>
                 </td>
-                <td>
-                    <div><span class="reduce-3">TOTAL: </span>${row.blocks_total}</div>
-                    <div><span class="reduce-3">CANON: </span>${row.blocks_canonical}</div>
-                </td>
-                <td class="text-center">
-                    <span class="enlarge-2">${+row.blocks_total ? Math.round(row.blocks_canonical * 100 / row.blocks_total) : 0}</span>%
-                </td>
-                <td>
-                    <div><span class="reduce-3">TOTAL: </span>${row.blocks_total_epoch}</div>
-                    <div><span class="reduce-3">CANON: </span>${row.blocks_canonical_epoch}</div>
-                </td>
-                <td class="text-center">
-                    <span class="enlarge-2">${+row.blocks_total_epoch ? Math.round(row.blocks_canonical_epoch * 100 / row.blocks_total_epoch) : 0}</span>%
-                </td>
                 <td class="text-left">
                     <div><span class="reduce-3">CURR: </span>${row.delegators_staking}</div>
                     <div><span class="reduce-3">NEXT: </span>${row.delegators_next}</div>
@@ -85,6 +75,23 @@ script.
                 <td class="text-left">
                     <div><span class="reduce-3">CURR: </span>${num2fmt(normMina(row.stake_staking), ",")}</div>
                     <div><span class="reduce-3">NEXT: </span>${num2fmt(normMina(row.stake_next), ",")}</div>
+                </td>
+                <td>
+                    <div><span class="reduce-3">TOTAL: </span>${row.blocks_total}</div>
+                    <div><span class="reduce-3">CANON: </span>${row.blocks_canonical}</div>
+                </td>
+                <td class="text-center">
+                    <span class="enlarge-2">${totalCrt}</span>%
+                </td>
+                <td>
+                    <div><span class="reduce-3">TOTAL: </span>${row.blocks_total_epoch}</div>
+                    <div><span class="reduce-3">CANON: </span>${row.blocks_canonical_epoch}</div>
+                </td>
+                <td class="text-center">
+                    <span class="enlarge-2">${epochCrt}</span>%
+                </td>
+                <td class="text-center">
+                    <span class="${dirCrt ? 'mif-arrow-up fg-green' : 'mif-arrow-down fg-red'}"></span>
                 </td>
             `)
 
