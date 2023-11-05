@@ -1,0 +1,97 @@
+mixin producers-table(tableId)
+    div.scroll-table-container
+        table.table.data-table.row-border.monospace.row-hover.mt-2.mb-2(id=tableId)
+            thead
+                tr
+                    th: span #
+                    th
+                        div Producer
+                        div.text-small Name
+
+                    th(style="width: 80px;")
+                        div Blocks
+                        div.text-small Total
+
+                    th.text-center(style="width: 100px;")
+                        div Total
+                        div.text-small CRT
+
+                    th(style="width: 80px;")
+                        div Blocks
+                        div.text-small Epoch
+
+                    th.text-center(style="width: 100px;")
+                        div Epoch
+                        div.text-small CRT
+
+                    th(style="width: 100px;")
+                        div Delegators
+                        div.text-small Count
+
+                    th(style="width: 200px;")
+                        div Stake
+                        div.text-small Size
+
+
+            tbody
+                tr
+                    td.text-center(colspan="8")
+                        div.d-flex.flex-align-center.flex-justify-center
+                            div(data-role="activity" data-type="bars" data-style="color")
+
+script.
+    ;const drawProducersTable = data => {
+        const rows = []
+
+        if (data.length === 0) {
+            return [$("<tr>").html(`
+                <td colspan="8" class="text-center">Nothing to show</td>
+            `)]
+        }
+
+        let index = 1
+        for (let row of data) {
+            let tr
+
+            tr = $("<tr>")
+
+            tr.html(`
+                <td class="text-center">${+row.locked ? "<span class='mif-lock' title='Balance locked'></span>" : ""}</td>
+                <td>
+                    <div class="d-flex flex-row flex-nowrap flex-align-center">
+                        <a class="link" href="/account/${row.key}">${shorten(row.key, 12)}</a>
+                        <span title="Copy hash to clipboard" class="ml-1 reduce-1 mif-copy copy-data-to-clipboard c-pointer" data-value="${row.key}"></span>
+                    </div>
+                    <div class="text-muted">${row.name || 'noname'}</div>
+                </td>
+                <td>
+                    <div><span class="reduce-3">TOTAL: </span>${row.blocks_total}</div>
+                    <div><span class="reduce-3">CANON: </span>${row.blocks_canonical}</div>
+                </td>
+                <td class="text-center">
+                    <span class="enlarge-2">${+row.blocks_total ? Math.round(row.blocks_canonical * 100 / row.blocks_total) : 0}</span>%
+                </td>
+                <td>
+                    <div><span class="reduce-3">TOTAL: </span>${row.blocks_total_epoch}</div>
+                    <div><span class="reduce-3">CANON: </span>${row.blocks_canonical_epoch}</div>
+                </td>
+                <td class="text-center">
+                    <span class="enlarge-2">${+row.blocks_total_epoch ? Math.round(row.blocks_canonical_epoch * 100 / row.blocks_total_epoch) : 0}</span>%
+                </td>
+                <td class="text-left">
+                    <div><span class="reduce-3">CURR: </span>${row.delegators_staking}</div>
+                    <div><span class="reduce-3">NEXT: </span>${row.delegators_next}</div>
+                </td>
+                <td class="text-left">
+                    <div><span class="reduce-3">CURR: </span>${num2fmt(normMina(row.stake_staking), ",")}</div>
+                    <div><span class="reduce-3">NEXT: </span>${num2fmt(normMina(row.stake_next), ",")}</div>
+                </td>
+            `)
+
+            rows.push(tr)
+
+            index++
+        }
+
+        return rows
+    }

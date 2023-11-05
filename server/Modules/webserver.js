@@ -99,6 +99,14 @@ const routes = () => {
         })
     })
 
+    app.get('/producers', async (req, res) => {
+        res.render('producers', {
+            title: 'Block Producers :: Minataur - The Fastest block explorer for Mina Blockchain',
+            appTitle: 'Block Producers',
+            client: JSON.stringify(client)
+        })
+    })
+
     app.get('/accounts', async (req, res) => {
         res.render('accounts', {
             title: 'Accounts :: Minataur - The Fastest block explorer for Mina Blockchain',

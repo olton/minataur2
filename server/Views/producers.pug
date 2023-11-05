@@ -1,0 +1,58 @@
+include mixins/_producers-table
+
+html(lang="en").light-theme.scrollbar-type-1.sb-darkViolet
+    include partials/_head
+
+    body.m4-cloak
+        include partials/_appbar
+
+        section.container-fluid
+            div.container
+                div.row
+                    div.cell-md-6
+                        div.d-flex.flex-nowrap.flex-align-center.pt-4
+                            div.h1.d-flex.flex-align-center
+                                span Block Producers
+                    div.cell-md-6
+                        div.h-100.d-flex.flex-align-center.flex-justify-center
+                            include partials/_search
+
+        section.container-fluid
+            div.container
+                div.row.mt-2
+                    div.cell-md-9
+                        input#accounts-search(
+                            data-role="input"
+                            data-prepend="Producer search: "
+                            placeholder="Enter producer address or name"
+                            data-search-button="false"
+                        )
+
+                    div.cell-md-3
+                        select#accounts-table-rows(data-role="select" data-filter="false" data-prepend="Show rows: " data-on-change="changeRowsCount")
+                            option(value="20") 20
+                            option(value="50" selected) 50
+                            option(value="100") 100
+
+                div.row
+                    div.cell-lg-6
+                        div.mt-2#pagination-top
+                    div.cell-lg-6.text-right-lg
+                        span.ml-1.text-muted.reduce-4.text-bold RECORDS FOUND
+                        div
+                            span.ml-1.text-bold(style="font-size: 24px; line-height: 1")#found-blocks 0
+
+
+                div.scroll-table-container.border.bd-default
+                    +producers-table("producers-table")
+
+                div.mt-4#pagination-bottom
+
+        include partials/_footer
+
+        include partials/_scripts
+
+        script
+            include js/producers/wsc.js
+            include js/producers/index.js
+

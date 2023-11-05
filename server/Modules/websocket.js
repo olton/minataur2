@@ -22,7 +22,7 @@ import {
     db_get_price_days,
     db_get_price_hours,
     db_get_price_line,
-    db_get_price_minutes,
+    db_get_price_minutes, db_get_producers, db_get_producers_count,
     db_get_trans_info,
     db_get_transactions,
     db_get_transactions_count,
@@ -230,6 +230,12 @@ export const websocket = () => {
                 }
                 case "search": {
                     response(ws, channel, await search(data.query))
+                    break
+                }
+                case "producers": {
+                    const rows = await db_get_producers({...data})
+                    const length = await db_get_producers_count({...data})
+                    response(ws, channel, {rows, length})
                     break
                 }
             }

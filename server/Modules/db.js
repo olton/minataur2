@@ -741,3 +741,51 @@ export const db_get_price_candles = async (days = 30) => {
     `
     return (await query(sql, [days])).rows
 }
+
+export const db_get_producers = async ({limit = 50, offset = 0, search}) => {
+    let sql = `
+        select *
+        from v_producers
+        where 1=1
+        %ACCOUNT%
+        order by id
+        limit $1 offset $2
+    `
+
+    sql = sql.replace("%ACCOUNT%", search ? `
+    and (
+        key = '${search}'
+        or lower(name) like '%${search}%'
+        or lower(site) like '%${search}%'
+        or lower(discord) like '%${search}%'
+        or lower(telegram) like '%${search}%'
+        or lower(twitter) like '%${search}%'
+        or lower(github) like '%${search}%'
+    )
+    ` : "")
+
+    return (await query(sql, [limit, offset])).rows
+}
+
+export const db_get_producers_count = async ({search}) => {
+    let sql = `
+        select count(*) as length
+        from v_producers
+        where 1=1
+        %ACCOUNT%
+    `
+
+    sql = sql.replace("%ACCOUNT%", search ? `
+    and (
+        key = '${search}'
+        or lower(name) like '%${search}%'
+        or lower(site) like '%${search}%'
+        or lower(discord) like '%${search}%'
+        or lower(telegram) like '%${search}%'
+        or lower(twitter) like '%${search}%'
+        or lower(github) like '%${search}%'
+    )
+    ` : "")
+
+    return (await query(sql, )).rows[0].length
+}
