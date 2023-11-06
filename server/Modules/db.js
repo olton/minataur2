@@ -745,7 +745,7 @@ export const db_get_price_candles = async (days = 30) => {
 export const db_get_producers = async ({limit = 50, offset = 0, search}) => {
     let sql = `
         select *
-        from v_producers
+        from mv_producers
         where 1=1
         %ACCOUNT%
         order by id
@@ -770,7 +770,7 @@ export const db_get_producers = async ({limit = 50, offset = 0, search}) => {
 export const db_get_producers_count = async ({search}) => {
     let sql = `
         select count(*) as length
-        from v_producers
+        from mv_producers
         where 1=1
         %ACCOUNT%
     `
