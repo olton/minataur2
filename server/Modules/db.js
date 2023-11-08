@@ -742,16 +742,18 @@ export const db_get_price_candles = async (days = 30) => {
     return (await query(sql, [days])).rows
 }
 
-export const db_get_producers = async ({limit = 50, offset = 0, search}) => {
+export const db_get_producers = async ({limit = 50, offset = 0, search, filter}) => {
     let sql = `
         select *
         from mv_producers
         where 1=1
+        %FILTER%    
         %ACCOUNT%
         order by id
         limit $1 offset $2
     `
 
+    sql = sql.replace("%FILTER%", filter && filter.currentEpoch ? `and blocks_total_epoch > 0` : ``)
     sql = sql.replace("%ACCOUNT%", search ? `
     and (
         key = '${search}'
@@ -767,7 +769,7 @@ export const db_get_producers = async ({limit = 50, offset = 0, search}) => {
     return (await query(sql, [limit, offset])).rows
 }
 
-export const db_get_producers_count = async ({search}) => {
+export const db_get_producers_count = async ({search, filter}) => {
     let sql = `
         select count(*) as length
         from mv_producers
@@ -775,6 +777,7 @@ export const db_get_producers_count = async ({search}) => {
         %ACCOUNT%
     `
 
+    sql = sql.replace("%FILTER%", filter && filter.currentEpoch ? `and blocks_total_epoch > 0` : ``)
     sql = sql.replace("%ACCOUNT%", search ? `
     and (
         key = '${search}'

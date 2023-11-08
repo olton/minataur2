@@ -95,14 +95,14 @@ script.
                     <div><span class="reduce-3">TOTAL: </span>${row.blocks_total}</div>
                     <div><span class="reduce-3">CANON: </span>${row.blocks_canonical}</div>
                 </td>
-                <td class="text-center">
+                <td class="text-center ${totalCrt >= 50 ? 'fg-green' : 'fg-red'}">
                     <span class="enlarge-2">${totalCrt}</span>%
                 </td>
                 <td>
                     <div><span class="reduce-3">TOTAL: </span>${row.blocks_total_epoch}</div>
                     <div><span class="reduce-3">CANON: </span>${row.blocks_canonical_epoch}</div>
                 </td>
-                <td class="text-center">
+                <td class="text-center ${epochCrt >= 50 ? 'fg-green' : 'fg-red'}">
                     <span class="enlarge-2">${epochCrt}</span>%
                 </td>
                 <td class="text-center">

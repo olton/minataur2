@@ -9,6 +9,9 @@ const createProducersRequest = () => {
     return {
         limit: producersLimit,
         offset: producersLimit * (producersPage - 1),
+        filter: {
+            currentEpoch: $("#current-epoch-only").is(":checked"),
+        },
         search: producersSearch
     }
 }
@@ -68,6 +71,10 @@ $("#pagination-top, #pagination-bottom").on("click", ".page-link", function(){
         producersPage = val
     }
     history.pushState('', '', `/producers?page=${producersPage}&size=${producersLimit}`)
+    refreshProducersTable()
+})
+
+$("#current-epoch-only").on("click", () => {
     refreshProducersTable()
 })
 
