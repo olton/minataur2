@@ -132,15 +132,15 @@ const drawPriceMonth = data => {
 
 
 const drawPriceCandles = data => {
-    console.log(data)
     const container = $("#price-chart-candles")
     const dd = []
-    for(let r of data) {
+    for(let r of data.reverse()) {
         dd.push({
-            x: datetime(r._day).format("MM/DD/YYYY"),
+            x: datetime(r._day).format("YYYY/MM/DD"),
             y: [r.o, r.h, r.l, r.c]
         })
     }
+
     if (!chartCandles) {
         chartCandles = new ApexCharts(container[0], {
             series: [{
@@ -148,7 +148,8 @@ const drawPriceCandles = data => {
             }],
             chart: {
                 type: 'candlestick',
-                height: 350,
+                width: "100%",
+                height: 450,
                 animations: {
                     enabled: false,
                 },
@@ -161,7 +162,12 @@ const drawPriceCandles = data => {
                 align: 'left'
             },
             xaxis: {
-                type: 'datetime'
+                labels: {
+                    rotateAlways: true,
+                    formatter: (value) => {
+                        return value ? datetime(value).format("DD, MMM") : ""
+                    }
+                }
             },
             yaxis: {
                 tooltip: {
