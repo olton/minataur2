@@ -140,7 +140,7 @@ const drawChartFee = data => {
         data: []
     }
 
-    for(let row of data.rows.reverse()) {
+    for(let row of data.rows) {
         series.data.push({
             y: +row.trans_fee/10**9,
             x: +row.height
