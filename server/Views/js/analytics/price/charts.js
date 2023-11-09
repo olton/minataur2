@@ -67,7 +67,7 @@ let chartHour, chart48H, chartMonth, chartCandles
 const drawPriceHour = data => {
     const container = $("#price-chart-hour")
     const values = getData(data)
-    console.log(values)
+
     if (!chartHour) {
         chartHour = new ApexCharts(container[0], merge({}, getOptions(values, 'Last Hour'), {
             xaxis: {
