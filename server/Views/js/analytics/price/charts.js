@@ -149,7 +149,7 @@ const drawPriceCandles = data => {
             chart: {
                 type: 'candlestick',
                 width: "100%",
-                height: 450,
+                height: 350,
                 animations: {
                     enabled: false,
                 },
@@ -162,6 +162,7 @@ const drawPriceCandles = data => {
                 align: 'left'
             },
             xaxis: {
+                tickAmount: 10,
                 labels: {
                     rotateAlways: true,
                     formatter: (value) => {
