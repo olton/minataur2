@@ -1,6 +1,5 @@
 ;
 const updatePrice = data => {
-    console.log(data)
     $("#current_price").html(data.current_price.toFixed(4))
     $("#last_updated").html(datetime(data.last_updated).format(config.format.datetime))
     $("#ath").html((data.ath).toFixed(4))
