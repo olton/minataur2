@@ -3,6 +3,7 @@
 const getOptions = (values, title) => {
     return {
         series: [{
+            name: 'Price',
             data: values
         }],
         chart: {
