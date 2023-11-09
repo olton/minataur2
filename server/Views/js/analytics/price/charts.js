@@ -48,11 +48,14 @@ const getOptions = (values, title) => {
 const getData = (data) => {
     const values = []
     const timeOffset = new Date().getTimezoneOffset()
+    const index = []
 
     for(let r of data) {
-        const date = datetime(r.timestamp)
+        const date = datetime(r.timestamp).format("MM/DD/YYYY HH:mm")
+        if (index.includes(date)) continue
+        index.push(date)
         values.push({
-            x: date.format("MM/DD/YYYY HH:mm"),
+            x: date,
             y: +r.value
         })
     }
@@ -64,12 +67,12 @@ let chartHour, chart48H, chartMonth, chartCandles
 const drawPriceHour = data => {
     const container = $("#price-chart-hour")
     const values = getData(data)
-
+    console.log(values)
     if (!chartHour) {
         chartHour = new ApexCharts(container[0], merge({}, getOptions(values, 'Last Hour'), {
             xaxis: {
                 tickAmount: 10
-            }
+            },
         }));
         chartHour.render();
     } else {
