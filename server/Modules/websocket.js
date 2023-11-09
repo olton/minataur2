@@ -7,7 +7,7 @@ import {
     db_get_account_stake,
     db_get_account_stats,
     db_get_accounts,
-    db_get_accounts_count,
+    db_get_accounts_count, db_get_block_analytics,
     db_get_block_info,
     db_get_block_internal_commands,
     db_get_block_trans,
@@ -236,6 +236,11 @@ export const websocket = () => {
                     const rows = await db_get_producers({...data})
                     const length = await db_get_producers_count({...data})
                     response(ws, channel, {rows, length})
+                    break
+                }
+                case "block_analytics" : {
+                    const rows = await db_get_block_analytics({...data})
+                    response(ws, channel, {rows})
                     break
                 }
             }

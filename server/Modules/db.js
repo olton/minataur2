@@ -790,5 +790,14 @@ export const db_get_producers_count = async ({search, filter}) => {
     )
     ` : "")
 
-    return (await query(sql, )).rows[0].length
+    return (await query(sql)).rows[0].length
 }
+
+export const db_get_block_analytics = async ({distance = 100}) => {
+    const sql = `
+        select * from v_block_stats bs
+        limit $1
+    `
+    return (await query(sql, [distance])).rows
+}
+

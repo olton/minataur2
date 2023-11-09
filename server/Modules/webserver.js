@@ -150,6 +150,14 @@ const routes = () => {
         })
     })
 
+    app.get('/analytics/transactions', async (req, res) => {
+        res.render('analytics-transactions', {
+            title: 'Mina Transactions Analytics :: Minataur - The Fastest block explorer for Mina Blockchain',
+            appTitle: 'Mina Transactions Analytics',
+            client: JSON.stringify(client)
+        })
+    })
+
     app.get('/search', async (req, res) => {
         const query = req.query
         const queryString = []

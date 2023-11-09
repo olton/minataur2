@@ -1,0 +1,3 @@
+;
+globalThis.distance = 100
+
