@@ -11,7 +11,7 @@ create table public.balances
 );
 
 alter table public.balances
-    owner to mina;
+    owner to postgres;
 
 create table public.ip
 (
@@ -23,7 +23,7 @@ create table public.ip
 );
 
 alter table public.ip
-    owner to mina;
+    owner to postgres;
 
 create index idx_ip_address
     on public.ip (ip);
@@ -52,7 +52,7 @@ create table public.ledger
 );
 
 alter table public.ledger
-    owner to mina;
+    owner to postgres;
 
 create index idx_ledger_epoch_number_since_genesis
     on public.ledger (epoch_since_genesis);
@@ -86,7 +86,7 @@ create table public.peers
 );
 
 alter table public.peers
-    owner to mina;
+    owner to postgres;
 
 create index idx_peers_coordinates
     on public.peers (latitude, longitude);
@@ -104,7 +104,7 @@ create table public.uptime_sidecar
 );
 
 alter table public.uptime_sidecar
-    owner to mina;
+    owner to postgres;
 
 create index uptime_sidecar_time_score
     on public.uptime_sidecar (timestamp, score);
@@ -122,7 +122,7 @@ create table public.uptime_snark
 );
 
 alter table public.uptime_snark
-    owner to mina;
+    owner to postgres;
 
 create index uptime_snark_time_score
     on public.uptime_snark (timestamp, score);
@@ -149,7 +149,7 @@ create table public.whois
 );
 
 alter table public.whois
-    owner to mina;
+    owner to postgres;
 
 create unique index ui_address_public_key
     on public.whois (public_key_id);
@@ -166,5 +166,5 @@ create table public.price
 );
 
 alter table public.price
-    owner to mina;
+    owner to postgres;
 

@@ -8,7 +8,7 @@ begin
 end;
 $$;
 
-alter function public.notify_new_block() owner to mina;
+alter function public.notify_new_block() owner to postgres;
 
 create function public.set_block_state() returns trigger
     language plpgsql
@@ -79,7 +79,7 @@ begin
 end;
 $$;
 
-alter function public.set_block_state() owner to mina;
+alter function public.set_block_state() owner to postgres;
 
 create function public.notify_new_user_tx_memo() returns trigger
     language plpgsql
@@ -94,7 +94,7 @@ begin
 end;
 $$;
 
-alter function public.notify_new_user_tx_memo() owner to mina;
+alter function public.notify_new_user_tx_memo() owner to postgres;
 
 create function public.notify_canonical_block() returns trigger
     language plpgsql
@@ -108,5 +108,5 @@ begin
 end;
 $$;
 
-alter function public.notify_canonical_block() owner to mina;
+alter function public.notify_canonical_block() owner to postgres;
 

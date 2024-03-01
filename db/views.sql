@@ -51,7 +51,7 @@ SELECT bl.id,
 FROM bl;
 
 alter table public.v_block_stats
-    owner to mina;
+    owner to postgres;
 
 create view public.v_block_stats_avg
             (avg_slots, avg_internal_trans_count, avg_zkapp_trans_count, avg_user_trans_count, avg_trans_fee,
@@ -65,7 +65,7 @@ SELECT avg(b.block_slots)          AS avg_slots,
 FROM v_block_stats b;
 
 alter table public.v_block_stats_avg
-    owner to mina;
+    owner to postgres;
 
 create view public.v_commands_in_block
             (id, height, user_commands_count, internal_commands_count, zkapp_commands_count) as
@@ -85,7 +85,7 @@ WHERE b.chain_status = 'canonical'::chain_status_type
 ORDER BY b.height DESC;
 
 alter table public.v_commands_in_block
-    owner to mina;
+    owner to postgres;
 
 create view public.v_block_info
             (id, height, hash, timestamp, chain_status, global_slot_since_genesis, global_slot_since_hard_fork,
@@ -184,7 +184,7 @@ FROM blocks b
          LEFT JOIN epoch_data ep2 ON ep2.id = b.next_epoch_data_id;
 
 alter table public.v_block_info
-    owner to mina;
+    owner to postgres;
 
 create view public.v_blocks
             (id, timestamp, height, chain_status, hash, global_slot_since_genesis, global_slot_since_hard_fork,
@@ -250,7 +250,7 @@ FROM blocks b
          LEFT JOIN public_keys pk ON pk.id = b.creator_id;
 
 alter table public.v_blocks
-    owner to mina;
+    owner to postgres;
 
 create view public.v_epoch
             (height, global_slot_since_genesis, global_slot_since_hard_fork, epoch_since_genesis, epoch_since_hard_fork,
@@ -301,7 +301,7 @@ FROM block,
      start_block;
 
 alter table public.v_epoch
-    owner to mina;
+    owner to postgres;
 
 create view public.v_internal_commands
             (block_id, hash, command_type, fee, sequence_no, secondary_sequence_no, status, failure_reason, confirm,
@@ -331,7 +331,7 @@ FROM internal_commands ic
          LEFT JOIN whois pr ON pr.public_key_id = ic.receiver_id;
 
 alter table public.v_internal_commands
-    owner to mina;
+    owner to postgres;
 
 create view public.v_last_canonical_block
             (id, timestamp, height, chain_status, hash, global_slot_since_genesis, global_slot_since_hard_fork,
@@ -363,7 +363,7 @@ ORDER BY b.height DESC
 LIMIT 1;
 
 alter table public.v_last_canonical_block
-    owner to mina;
+    owner to postgres;
 
 create view public.v_user_transactions
             (block_id, height, timestamp, hash, command_type, nonce, amount, fee, memo, sequence_no, status,
@@ -406,7 +406,7 @@ FROM user_commands uc
          LEFT JOIN whois pr3 ON pr3.public_key_id = uc.fee_payer_id;
 
 alter table public.v_user_transactions
-    owner to mina;
+    owner to postgres;
 
 create view public.v_zkapp_commands
             (block_id, hash, memo, sequence_no, status, fee, nonce, confirm, payer_id, payer_key, payer_name, height,
@@ -436,7 +436,7 @@ FROM zkapp_commands zc
          LEFT JOIN whois pr ON pr.public_key_id = pb.public_key_id;
 
 alter table public.v_zkapp_commands
-    owner to mina;
+    owner to postgres;
 
 create view public.v_ledger_staking
             (public_key_id, account_key, balance, delegate_key_id, delegate_key, nonce, receipt_chain_hash, voting_for,
@@ -469,7 +469,7 @@ WHERE l.epoch_since_genesis::double precision = ((SELECT e.epoch_since_genesis
                                                   FROM v_epoch e));
 
 alter table public.v_ledger_staking
-    owner to mina;
+    owner to postgres;
 
 create view public.v_ledger_next
             (public_key_id, account_key, balance, delegate_key_id, delegate_key, nonce, receipt_chain_hash, voting_for,
@@ -502,7 +502,7 @@ WHERE l.epoch_since_genesis::double precision = (((SELECT e.epoch_since_genesis
                                                    FROM v_epoch e)) + 1::double precision);
 
 alter table public.v_ledger_next
-    owner to mina;
+    owner to postgres;
 
 create view public.v_account_info
             (id, key, name, logo, site, telegram, twitter, github, discord, description, blocks_produced,
@@ -557,7 +557,7 @@ FROM public_keys pk
          LEFT JOIN v_ledger_staking l ON l.public_key_id = pk.id;
 
 alter table public.v_account_info
-    owner to mina;
+    owner to postgres;
 
 create view public.v_account_stats
             (account_id, account_key, blocks_win, blocks_total, blocks_canonical, blocks_canonical_epoch, tx_try,
@@ -627,7 +627,7 @@ FROM public_keys pk
          LEFT JOIN transactions_failed tf ON tf.source_id = pk.id;
 
 alter table public.v_account_stats
-    owner to mina;
+    owner to postgres;
 
 create view public.v_coinbase
             (block_id, height, block_hash, chain_status, timestamp, command_type, tx_hash, coinbase, sequence_no,
@@ -666,7 +666,7 @@ WHERE b.chain_status = 'canonical'::chain_status_type
 ORDER BY b.height DESC;
 
 alter table public.v_coinbase
-    owner to mina;
+    owner to postgres;
 
 create view public.v_accounts
             (id, key, name, logo, site, telegram, twitter, github, discord, description, balance, locked,
@@ -720,5 +720,5 @@ FROM public_keys pk
          LEFT JOIN whois wh2 ON wh2.public_key_id = l.delegate_key_id;
 
 alter table public.v_accounts
-    owner to mina;
+    owner to postgres;
 
