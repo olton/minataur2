@@ -2,6 +2,7 @@ body {
   display: flex;
   flex-flow: column;
   padding-top: 52px;
+  opacity: 0;
 }
 .hero {
   padding: 60px 0;
@@ -81,6 +82,9 @@ body {
     border-right: 1px solid #ccc;
     border-bottom: none;
   }
+}
+body {
+  padding: 50px 0 0 0!important;
 }
 .bg-lightSystem {
   background: #f7f3ff;

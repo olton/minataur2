@@ -722,3 +722,16 @@ FROM public_keys pk
 alter table public.v_accounts
     owner to postgres;
 
+create view public.v_hard_fork_block(height, state_hash, timestamp) as
+SELECT height,
+       state_hash,
+       "timestamp"
+FROM blocks b
+WHERE chain_status = 'canonical'::chain_status_type
+  AND global_slot_since_hard_fork = 0
+ORDER BY height DESC
+LIMIT 1;
+
+alter table public.v_hard_fork_block
+    owner to postgres;
+
