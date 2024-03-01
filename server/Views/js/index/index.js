@@ -9,6 +9,13 @@ const updateRuntime = data => {
     }
 }
 
+const updateHardForkBlock = data => {
+    if (data) {
+        $("#hard_fork_block_height").html(`<a class="link" href="/block/${data.state_hash}">${num2fmt(data.height)}</a>`)
+        $("#hard_fork_block_timestamp").html(datetime(+data.timestamp).format(config.format.datetime))
+    }
+}
+
 const updateEpoch = ({active_producers, block_time, epoch_blocks, height, epoch_since_genesis, epoch_since_hard_fork, epoch_start_block, current_slot, global_slot_since_genesis, global_slot_since_hard_fork} = {}) => {
     if (typeof height === "undefined") return
     const epochTimer = $("#epoch-timer")

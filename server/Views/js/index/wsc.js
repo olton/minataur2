@@ -16,11 +16,17 @@ globalThis.wsController = (ws, res) => {
             request("pool")
             request("blocks_crt")
             request("last_canonical_block")
+            request("hard_fork_block")
             break
         }
         case "runtime": {
             updateRuntime(data)
             if (!data) setTimeout(request, 10000, "runtime")
+            break
+        }
+        case "hard_fork_block": {
+            updateHardForkBlock(data)
+            if (!data) setTimeout(request, 10000, "hard_fork_block")
             break
         }
         case "epoch": {

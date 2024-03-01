@@ -59,6 +59,10 @@ export const websocket = () => {
                     response(ws, channel, cache.runtime)
                     break
                 }
+                case "hard_fork_block": {
+                    response(ws, channel, cache.hard_fork_block)
+                    break
+                }
                 case "epoch": {
                     response(ws, channel, cache.epoch)
                     break

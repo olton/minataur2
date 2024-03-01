@@ -4,7 +4,7 @@ import {
     db_get_blocks_crt,
     db_get_blocks_short,
     db_get_dispute,
-    db_get_epoch, db_get_last_canonical_block
+    db_get_epoch, db_get_hard_fork_block, db_get_last_canonical_block
 } from "./db.js";
 import {parseTime} from "../Helpers/parsers.js";
 import {get_price_info} from "./price.js"
@@ -140,4 +140,8 @@ export const cache_mina_client_status = () => {
         cache.daemon = res
     })
     setTimeout(cache_mina_client_status, parseTime('30s'))
+}
+
+export const cache_hard_fork_block = async () => {
+    cache.hard_fork_block = await db_get_hard_fork_block()
 }

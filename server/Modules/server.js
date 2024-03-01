@@ -3,11 +3,19 @@ import {create_db_connection} from "./postgres.js";
 import {create_api_server} from "./api.js";
 import {create_web_server} from "./webserver.js";
 import {
-    cache_block_stats, cache_block_stats_avg, cache_blocks_crt,
+    cache_block_stats,
+    cache_block_stats_avg,
+    cache_blocks_crt,
     cache_canonical_chain,
     cache_dispute,
-    cache_epoch, cache_graphql_state, cache_last_canonical_block, cache_mina_client_status, cache_peers,
-    cache_price_info, cache_runtime,
+    cache_epoch,
+    cache_graphql_state,
+    cache_hard_fork_block,
+    cache_last_canonical_block,
+    cache_mina_client_status,
+    cache_peers,
+    cache_price_info,
+    cache_runtime,
     cache_transaction_in_pool
 } from "./cache.js";
 import {listen_notifies} from "./db.js";
@@ -49,6 +57,7 @@ export const run = async () => {
     create_web_server()
     create_api_server()
 
+    await cache_hard_fork_block()
     cache_mina_client_status()
     cache_peers()
     cache_runtime()

@@ -801,3 +801,9 @@ export const db_get_block_analytics = async ({distance = 100}) => {
     return (await query(sql, [distance])).rows
 }
 
+export const db_get_hard_fork_block = async () => {
+    const sql = `
+        select * from v_hard_fork_block
+    `
+    return (await query(sql)).rows[0]
+}
